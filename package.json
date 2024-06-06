@@ -8,7 +8,7 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
+    "start": "npm run build && nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "npm run build && node dist/src/main",
@@ -27,8 +27,8 @@
     "migration:generate:uat": "NODE_ENV=uat npm run reset:build && npm run typeorm -- -d ormconfig.ts migration:generate ./src/database/migrations/uat/$npm_config_name",
     "migration:generate:prod": "NODE_ENV=prod npm run reset:build && npm run typeorm -- -d ormconfig.ts migration:generate ./src/database/migrations/prod/$npm_config_name",
     "migration:revert:dev": "NODE_ENV=dev npm run reset:build && npm run typeorm -- -d ormconfig.ts migration:revert",
-    "migration:revert:prod": "NODE_ENV=prod npm run reset:build && && npm run typeorm -- -d ormconfig.ts migration:revert",
-    "migration:revert:uat": "NODE_ENV=uat npm run reset:build && && npm run typeorm -- -d ormconfig.ts migration:revert",
+    "migration:revert:prod": "NODE_ENV=prod npm run reset:build && npm run typeorm -- -d ormconfig.ts migration:revert",
+    "migration:revert:uat": "NODE_ENV=uat npm run reset:build && npm run typeorm -- -d ormconfig.ts migration:revert",
     "migration:run:prod": "NODE_ENV=prod npm run reset:build && npm run typeorm -- -d ormconfig.ts migration:run",
     "migration:run:dev": "NODE_ENV=dev npm run reset:build && npm run typeorm -- -d ormconfig.ts migration:run",
     "migration:run:uat": "NODE_ENV=uat npm run reset:build && npm run typeorm -- -d ormconfig.ts migration:run",
@@ -38,9 +38,9 @@
     "seed:create:dev": "npm run typeorm -- migration:create ./src/database/seeds/dev/$npm_config_name",
     "seed:create:uat": "npm run typeorm -- migration:create ./src/database/seeds/uat/$npm_config_name",
     "seed:create:prod": "npm run typeorm -- migration:create ./src/database/seeds/prod/$npm_config_name",
-    "seed:revert:dev": "NODE_ENV=dev npm run reset:build && && npm run typeorm -- -d ormconfig.seeds.ts migration:revert",
-    "seed:revert:uat": "NODE_ENV=uat npm run reset:build && && npm run typeorm -- -d ormconfig.seeds.ts migration:revert",
-    "seed:revert:prod": "NODE_ENV=prod npm run reset:build && && npm run typeorm -- -d ormconfig.seeds.ts migration:revert",
+    "seed:revert:dev": "NODE_ENV=dev npm run reset:build && npm run typeorm -- -d ormconfig.seeds.ts migration:revert",
+    "seed:revert:uat": "NODE_ENV=uat npm run reset:build && npm run typeorm -- -d ormconfig.seeds.ts migration:revert",
+    "seed:revert:prod": "NODE_ENV=prod npm run reset:build && npm run typeorm -- -d ormconfig.seeds.ts migration:revert",
     "schema:sync": "npm run typeorm -- -d ./ormconfig.ts schema:sync"
   },
   "dependencies": {

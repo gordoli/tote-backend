@@ -1,7 +1,7 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ClassSerializerInterceptor, Logger } from '@nestjs/common';
-import { HttpExceptionFilter } from './shared';
+import { HttpExceptionFilter } from './library';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 

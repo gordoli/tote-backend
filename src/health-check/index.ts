@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { Controller, Get, Res } from '@nestjs/common';
-import { BaseController } from 'src/shared';
+import { BaseController } from 'src/library';
 import { Response } from 'express';
 
 @Controller('health')

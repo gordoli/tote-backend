@@ -11,7 +11,7 @@ import { ICachingService, InjectCaching } from 'src/core';
 import { MAIL_TYPE_KEYS } from 'src/core/mail/constant';
 import { BaseStatus, User, UserRepository } from 'src/database';
 import { SendMailPayload } from 'src/event-handler/types';
-import { HttpExceptionFilter } from 'src/shared';
+import { HttpExceptionFilter } from 'src/library';
 import { comparePasswords, hashPassword, makeId } from 'src/utils';
 import {
   ChangePasswordDTO,

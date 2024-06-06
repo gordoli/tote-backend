@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { OAuth2Client } from 'google-auth-library';
 import { ERROR_CODE_CONSTANT, MESSAGE_CONSTANT } from 'src/constants';
-import { HttpExceptionFilter } from 'src/shared';
+import { HttpExceptionFilter } from 'src/library';
 import { AuthGoogleLoginDto } from '../dto';
 import { SocialData } from '../types';
 import { LoggerService } from 'src/core';

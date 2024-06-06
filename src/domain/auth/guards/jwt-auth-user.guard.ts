@@ -7,7 +7,7 @@ import {
   MESSAGE_CONSTANT,
 } from 'src/constants';
 import { LoggerService } from 'src/core';
-import { HttpExceptionFilter } from 'src/shared';
+import { HttpExceptionFilter } from 'src/library';
 
 @Injectable()
 export class JwtAuthUserGuard extends AuthGuard(

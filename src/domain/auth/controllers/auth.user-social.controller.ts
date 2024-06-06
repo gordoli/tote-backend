@@ -9,7 +9,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { BaseController } from 'src/shared';
+import { BaseController } from 'src/library';
 import { AuthGoogleLoginDto } from '../dto';
 import { AuthGoogleService } from '../services/auth-google.service';
 import { UserSocialService } from '../services';

@@ -1,4 +1,4 @@
-import { BaseFilter } from 'src/shared';
+import { BaseFilter } from 'src/library';
 import {
   DataSource,
   DeepPartial,

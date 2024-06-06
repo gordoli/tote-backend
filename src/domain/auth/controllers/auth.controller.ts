@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { User } from 'src/database';
-import { BaseController } from 'src/shared';
+import { BaseController } from 'src/library';
 import { Public } from '../decorators';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import {

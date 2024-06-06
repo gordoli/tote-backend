@@ -7,7 +7,7 @@ import {
 import { LoggerService } from 'src/core';
 import { ICachingService, InjectCaching } from 'src/core/redis';
 import { User } from 'src/database';
-import { HttpExceptionFilter } from 'src/shared';
+import { HttpExceptionFilter } from 'src/library';
 import { genOtp } from 'src/utils';
 import { SendOTPType } from '../types';
 

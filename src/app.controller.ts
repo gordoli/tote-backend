@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { InjectCaching, ICachingService } from './core';
-import { BaseController } from './shared';
+import { BaseController } from './library';
 
 @Controller()
 export class AppController extends BaseController {
