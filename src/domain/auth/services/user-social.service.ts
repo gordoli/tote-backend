@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { User, UserProvider, UserRepository } from 'src/database';
 import { SocialData } from '../types';
-import { UserService } from './user.service';
+import { AuthUserService } from './auth-user.service';
 
 @Injectable()
 export class UserSocialService {
   constructor(
     private _userRepository: UserRepository,
-    private _userService: UserService,
+    private _userService: AuthUserService,
   ) {}
 
   public async upsertSocial(

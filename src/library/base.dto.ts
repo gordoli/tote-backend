@@ -33,13 +33,11 @@ export class BaseFilter {
     }
   }
 
-  get skip() {
-    const page = this.page || 1;
-    const perPage = this.page || 10;
+  public static getSkip(page = 1, perPage = 10) {
     return (page - 1) * perPage;
   }
 
-  get take() {
-    return this.perPage || 10;
+  public static getTake(perPage = 10) {
+    return perPage;
   }
 }

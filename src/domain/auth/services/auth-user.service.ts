@@ -12,7 +12,7 @@ import { MAIL_TYPE_KEYS } from 'src/core/mail/constant';
 import { BaseStatus, User, UserRepository } from 'src/database';
 import { SendMailPayload } from 'src/event-handler/types';
 import { HttpExceptionFilter } from 'src/library';
-import { comparePasswords, hashPassword, makeId } from 'src/utils';
+import { comparePasswords, hashPassword, makeId, mapNumber } from 'src/utils';
 import {
   ChangePasswordDTO,
   ForgotPasswordDTO,
@@ -26,7 +26,7 @@ import { OtpService } from './otp.service';
 import { TokenService } from './token.service';
 
 @Injectable()
-export class UserService {
+export class AuthUserService {
   constructor(
     private _userRepository: UserRepository,
     private _tokenService: TokenService,
@@ -85,7 +85,7 @@ export class UserService {
       USER_CONSTANT.CACHE_KEY.LAST_LOGGED_OUT,
       'user:' + userId,
     );
-    lastLoggedOut = lastLoggedOut || 0;
+    lastLoggedOut = mapNumber(lastLoggedOut);
     if (iat < lastLoggedOut) {
       HttpExceptionFilter.throwError(
         {

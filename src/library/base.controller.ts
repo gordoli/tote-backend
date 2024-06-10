@@ -18,15 +18,9 @@ export abstract class BaseController {
   }
 
   public responseCustom<T>(res: Response, data?: T, options?: ResponseOption) {
-    const {
-      message,
-      total,
-      code,
-      status = HttpStatus.OK,
-      extraData,
-      page,
-      perPage,
-    } = new ResponseOption(options);
+    const method = this._request.method;
+    const { message, total, code, status, extraData, page, perPage } =
+      new ResponseOption(options, method);
 
     res.status(status).send({
       status,
@@ -67,13 +61,16 @@ export class ResponseOption {
   page?: number;
   perPage?: number;
 
-  constructor(data?: Partial<ResponseOption>) {
+  constructor(data?: Partial<ResponseOption>, method?: string) {
     this.total = data?.total;
     this.message = data?.message || MESSAGE_CONSTANT.SUCCESS;
     this.code = data?.code || 'ok';
     this.extraData = data?.extraData;
-    this.status = data?.status || HttpStatus.OK;
-    this.page = data?.page;
+    this.status =
+      data?.status || method?.toLowerCase() === 'post'
+        ? HttpStatus.CREATED
+        : HttpStatus.OK;
+    this.page = data?.page || 1;
     this.perPage = data?.perPage;
   }
 }

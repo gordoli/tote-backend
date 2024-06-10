@@ -1,14 +1,6 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Res,
-  UseGuards,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
+import { MESSAGE_CONSTANT } from 'src/constants';
 import { User } from 'src/database';
 import { BaseController } from 'src/library';
 import { Public } from '../decorators';
@@ -24,17 +16,15 @@ import {
   VerifyOtpDto,
 } from '../dto';
 import { JwtAuthRefreshUserGuard, JwtAuthUserGuard } from '../guards';
-import { UserService } from '../services';
+import { AuthUserService } from '../services';
 import { OtpService } from '../services/otp.service';
 import { SendOTPType } from '../types';
-import { MESSAGE_CONSTANT } from 'src/constants';
 
 @Controller('auth')
-@UsePipes(new ValidationPipe())
 @UseGuards(JwtAuthUserGuard)
 export class AuthController extends BaseController {
   constructor(
-    private _userService: UserService,
+    private _userService: AuthUserService,
     private _otpService: OtpService,
   ) {
     super();

@@ -11,7 +11,7 @@
     "start": "npm run build && nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "npm run build && node dist/src/main",
+    "start:prod": "npm run reset:build && node dist/src/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -44,6 +44,7 @@
     "schema:sync": "npm run typeorm -- -d ./ormconfig.ts schema:sync"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.588.0",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/axios": "^3.0.2",
     "@nestjs/common": "^9.0.0",
@@ -79,7 +80,7 @@
     "@types/express-session": "^1.18.0",
     "@types/jest": "29.5.1",
     "@types/lodash": "^4.17.4",
-    "@types/multer": "^1.4.9",
+    "@types/multer": "^1.4.11",
     "@types/node": "18.16.12",
     "@types/nodemailer": "^6.4.15",
     "@types/passport-jwt": "^4.0.1",

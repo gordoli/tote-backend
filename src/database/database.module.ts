@@ -19,6 +19,7 @@ import { RepositoryModule } from './repositories';
           database: configService.get('PG_DB'),
           entities: [__dirname + '/../**/*.entity.js'],
           entityPrefix: 'tote_',
+          // logging: ['query', 'error'],
         };
       },
     }),

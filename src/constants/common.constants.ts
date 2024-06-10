@@ -10,4 +10,9 @@ export const COMMON_CONSTANT = {
     APP_VERSION: 'x-tote-app-version',
     API_VERSION: 'x-tote-api-version',
   },
+  FOLDER: {
+    TEMPORARY: 'temporary',
+    BRANDS: 'brands',
+    RATINGS: 'ratings',
+  },
 };

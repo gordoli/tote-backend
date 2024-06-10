@@ -1,22 +1,12 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Query,
-  Res,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
+import { UserProvider } from 'src/database';
 import { BaseController } from 'src/library';
 import { AuthGoogleLoginDto } from '../dto';
-import { AuthGoogleService } from '../services/auth-google.service';
 import { UserSocialService } from '../services';
-import { UserProvider } from 'src/database';
+import { AuthGoogleService } from '../services/auth-google.service';
 
 @Controller('auth/social')
-@UsePipes(new ValidationPipe())
 export class AuthUserSocialController extends BaseController {
   constructor(
     private _authGoogleService: AuthGoogleService,

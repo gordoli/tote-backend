@@ -5,7 +5,7 @@ import {
   AuthGoogleService,
   OtpService,
   TokenService,
-  UserService,
+  AuthUserService,
   UserSocialService,
 } from './services';
 import { JwtRefreshUserStrategy, JwtUserStrategy } from './strategies';
@@ -16,7 +16,7 @@ import { JwtRefreshUserStrategy, JwtUserStrategy } from './strategies';
   controllers: [AuthController, AuthUserSocialController],
   providers: [
     JwtService,
-    UserService,
+    AuthUserService,
     JwtUserStrategy,
     JwtRefreshUserStrategy,
     TokenService,
@@ -26,7 +26,7 @@ import { JwtRefreshUserStrategy, JwtUserStrategy } from './strategies';
   ],
   exports: [
     JwtService,
-    UserService,
+    AuthUserService,
     JwtUserStrategy,
     JwtRefreshUserStrategy,
     TokenService,

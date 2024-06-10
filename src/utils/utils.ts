@@ -80,3 +80,11 @@ export const makeId = (length: number) => {
   }
   return result.join('');
 };
+
+export const mapNumber = (num: string | number = 0): number => {
+  const parsedNumber = Number(num || 0);
+  if (Number.isNaN(parsedNumber)) {
+    return 0;
+  }
+  return parsedNumber;
+};

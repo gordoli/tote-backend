@@ -1,6 +1,8 @@
 import { SocialData } from 'src/domain/auth/types';
 import { Column, Entity } from 'typeorm';
 import { BaseEntity, BaseStatus } from './base.entity';
+import { Exclude } from 'class-transformer';
+import { mapNumber } from 'src/utils';
 
 export enum UserProvider {
   EMAIL = 'email',
@@ -25,9 +27,11 @@ export class User extends BaseEntity {
   lastName: string;
 
   @Column({ nullable: true })
+  @Exclude()
   password: string;
 
   @Column({ nullable: true })
+  @Exclude()
   refreshToken: string;
 
   @Column({ nullable: true })
@@ -44,6 +48,8 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   socialId: string;
+
+  statistics?: UserStatistics;
 
   constructor(data?: Partial<User>) {
     super(data);
@@ -93,5 +99,25 @@ export class User extends BaseEntity {
 
   static getUsernameByEmail(email: string) {
     return email.split('@')[0];
+  }
+
+  public mainInfo() {
+    return new User({
+      id: this.id,
+      username: this.username,
+      email: this.email,
+      avatar: this.avatar,
+    });
+  }
+}
+
+export class UserStatistics {
+  followingCount: number;
+  followerCount: number;
+  rankedProductCount: number;
+  constructor(data: Partial<UserStatistics> = {}) {
+    this.followerCount = mapNumber(data?.followerCount);
+    this.followingCount = mapNumber(data?.followingCount);
+    this.rankedProductCount = mapNumber(data?.rankedProductCount);
   }
 }

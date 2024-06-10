@@ -13,7 +13,7 @@ class Filterable {
   public static buildQuery<T>(
     Class: Class,
     queryBuilder: SelectQueryBuilder<T>,
-    { filter = {}, skip = 0, take = 10 }: BaseFilter,
+    { filter = {}, page, perPage }: BaseFilter,
   ): SelectQueryBuilder<T> {
     const instance = new Class({});
     Object.entries(filter).forEach(([property, value]) => {
@@ -23,8 +23,10 @@ class Filterable {
         });
       }
     });
-    queryBuilder.skip(skip);
-    if (take) queryBuilder.take(take);
+    queryBuilder.skip(BaseFilter.getSkip(page, perPage));
+    if (perPage) {
+      queryBuilder.take(BaseFilter.getTake(perPage));
+    }
     return queryBuilder;
   }
 }

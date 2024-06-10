@@ -10,7 +10,7 @@ import {
 import { LoggerService } from 'src/core';
 import { BaseStatus, User } from 'src/database';
 import { HttpExceptionFilter } from 'src/library';
-import { UserService } from '../services';
+import { AuthUserService } from '../services';
 
 @Injectable()
 export class JwtRefreshUserStrategy extends PassportStrategy(
@@ -18,7 +18,7 @@ export class JwtRefreshUserStrategy extends PassportStrategy(
   JWT_CONSTANT.STRATEGIES.REFRESH_USER_TOKEN,
 ) {
   private _logger = new LoggerService(JwtRefreshUserStrategy.name);
-  constructor(private _userService: UserService) {
+  constructor(private _userService: AuthUserService) {
     super({
       secretOrKey: process.env.REFRESH_SECRET_USER_JWT,
       jwtFromRequest: ExtractJwt.fromExtractors([
