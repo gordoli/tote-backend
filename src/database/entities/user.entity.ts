@@ -3,13 +3,14 @@ import { Column, Entity } from 'typeorm';
 import { BaseEntity, BaseStatus } from './base.entity';
 import { Exclude } from 'class-transformer';
 import { mapNumber } from 'src/utils';
+import { DATABASE_CONSTANT } from 'src/constants/database.constants';
 
 export enum UserProvider {
   EMAIL = 'email',
   GOOGLE = 'google',
 }
 
-@Entity('users')
+@Entity(DATABASE_CONSTANT.TABLE_NAME.USER)
 export class User extends BaseEntity {
   @Column({ nullable: true })
   username: string;

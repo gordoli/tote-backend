@@ -12,7 +12,7 @@ export class FollowsService {
       filter,
     );
     return {
-      items: items.map((el) => new User(el.follower).serialize()),
+      items: items.map((el) => new User(el.follower).mainInfo()),
       total,
     };
   }
@@ -23,7 +23,7 @@ export class FollowsService {
       filter,
     );
     return {
-      items: items.map((el) => new User(el.user).serialize()),
+      items: items.map((el) => new User(el.user).mainInfo()),
       total,
     };
   }

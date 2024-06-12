@@ -11,7 +11,6 @@ const dataSourceOptions: DataSourceOptions = {
   password: PG_PASSWORD,
   database: PG_DB,
   entities: [__dirname + '/../**/*.entity.js'],
-  entityPrefix: 'tote_',
   logging: true,
   migrationsTransactionMode: 'all',
 };

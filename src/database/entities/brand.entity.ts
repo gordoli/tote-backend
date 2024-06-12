@@ -2,8 +2,9 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
 import { mapNumber } from 'src/utils';
+import { DATABASE_CONSTANT } from 'src/constants/database.constants';
 
-@Entity('brands')
+@Entity(DATABASE_CONSTANT.TABLE_NAME.BRAND)
 export class Brand extends BaseEntity {
   @ManyToOne(() => User, (user) => user.id)
   user: User;
