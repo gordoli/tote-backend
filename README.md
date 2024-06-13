@@ -195,7 +195,71 @@ $ npm run seed:revert:prod
 ```
 
 ## Postman Collection
+
 You can use the Postman collection to test the API endpoints. Click the link below to access the collection:
 
 [Postman Collection for Tote Backend](https://www.postman.com/tote-backend/workspace/totebe/collection/35358825-3ce0b910-112d-4b43-8723-044763626b12?action=share&creator=35358825&active-environment=35358825-309ede22-3e2b-4002-a1e0-85457b7487a0)
 
+## Deployment
+
+1. **Update env following your deployment environment**
+
+   - Check `.env.example` and update your `.env` file following the example.
+
+2. **Install Dependencies**:
+
+   - Run the following command to install any new dependencies.
+
+     ```sh
+     npm install
+     ```
+
+3. **Run pending migrations and seeds**:
+
+   - Run the run the command above for run pending migrations and seeds.
+
+   ```sh
+   npm run migration run:${environment}
+   ```
+
+   ```sh
+   npm run seed:run:${environment}
+   ```
+
+4. **Restart the Server**:
+
+   - Use the provided shell script to restart the server using PM2. This ensures that the server picks up the latest changes:
+
+     ```sh
+     sh deploy.sh
+     ```
+
+   - If you don't have the shell script, you can manually restart the server using PM2 with the following commands:
+
+     ```sh
+     pm2 restart tote-api
+     ```
+
+## PM2 Setup
+
+### Initial Setup
+
+If PM2 is not installed on your server, you can install it globally using npm:
+
+```sh
+npm install -g pm2
+```
+
+### Explanation
+
+- **Deployment Section**:
+
+  - **Update env following your deployment environment**: This step ensures that the environment variables are correctly set up by updating the `.env` file based on the example provided in `.env.example`.
+  - **Install Dependencies**: This step instructs users to install any new dependencies using `npm install`.
+  - **Run pending migrations and seeds**: Run migrations and seeds before deploying to update your database schema and populate it with initial data.
+  - **Restart the Server**: This step provides instructions on how to restart the server using the `deploy.sh` script or manually with PM2.
+
+- **PM2 Setup Section**:
+  - **Initial Setup**: Instructions for installing PM2 globally if it's not already installed.
+  - **Start/Restart Server**: Instructions for starting the server for the first time using PM2 and restarting it after deploying new code.
+  - **Save PM2 Process List**: Instructions for saving the PM2 process list to ensure the application restarts on system boot.
