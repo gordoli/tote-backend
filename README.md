@@ -219,7 +219,7 @@ You can use the Postman collection to test the API endpoints. Click the link bel
    - Run the run the command above for run pending migrations and seeds.
 
    ```sh
-   npm run migration run:${environment}
+   npm run migration:run:${environment}
    ```
 
    ```sh
