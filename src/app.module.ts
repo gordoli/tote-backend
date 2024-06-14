@@ -7,12 +7,22 @@ import {
 import { CoreModule, RedisModule } from './core';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database';
-import { AuthModule } from './domain/auth/auth.module';
 import { AppService } from './app.service';
 import { EventHandlerModule } from './event-handler';
 import { LoggerMiddleware } from './middlewares';
 import { AppController } from './app.controller';
 import { HealthModule } from './health-check';
+import {
+  FilesModule,
+  UsersModule,
+  FollowsModule,
+  AuthModule,
+  CategoryModule,
+  BrandsModule,
+  RatingsModule,
+  FeedActivitiesModule,
+  CollectionsModule,
+} from './domain';
 
 @Global()
 @Module({
@@ -26,7 +36,6 @@ import { HealthModule } from './health-check';
     EventHandlerModule,
     CoreModule,
     DatabaseModule,
-    AuthModule,
     RedisModule.forRootAsync({
       useFactory: () => ({
         config: {
@@ -35,6 +44,15 @@ import { HealthModule } from './health-check';
         },
       }),
     }),
+    AuthModule,
+    FilesModule,
+    UsersModule,
+    FollowsModule,
+    CategoryModule,
+    BrandsModule,
+    RatingsModule,
+    FeedActivitiesModule,
+    CollectionsModule,
   ],
   providers: [AppService],
   exports: [CoreModule],
