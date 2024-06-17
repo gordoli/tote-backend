@@ -1,6 +1,6 @@
 import { MailData } from 'src/core';
 import { MAIL_TYPE_KEYS } from 'src/core/mail/constant';
-import { Rating, User } from 'src/database';
+import { RankProduct, User } from 'src/database';
 
 export class SendMailPayload {
   key: MAIL_TYPE_KEYS;
@@ -11,11 +11,11 @@ export class SendMailPayload {
   }
 }
 
-export class CreateFeedRatingPayload {
-  rating: Rating;
+export class CreateFeedRankProductPayload {
+  rankProduct: RankProduct;
   user: User;
-  constructor(data: Partial<CreateFeedRatingPayload>) {
-    this.rating = data.rating;
+  constructor(data: Partial<CreateFeedRankProductPayload>) {
+    this.rankProduct = data.rankProduct;
     this.user = data.user;
   }
 }

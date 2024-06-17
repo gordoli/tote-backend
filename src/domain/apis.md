@@ -31,7 +31,7 @@ curl -i -X POST -H 'Authorization: Bearer <token>' -F 'files=@/path/to/file1' -F
 #### Response
 
 ```json
-["http://example.com/files/file123","http://example.com/files/file123"]
+["http://example.com/files/file123", "http://example.com/files/file123"]
 ```
 
 ## Users
@@ -277,7 +277,7 @@ curl -i -X POST -H 'Authorization: Bearer <token>' -H 'Content-Type: application
   "website": "http://example.com",
   "createdAt": "2024-06-03T00:00:00.000Z",
   "updatedAt": "2024-06-03T00:00:00.000Z",
-  "overallRating": 0
+  "overallRanking": 0
 }
 ```
 
@@ -303,7 +303,7 @@ curl -i -H 'Authorization: Bearer <token>' http://example.com/brands?page=1&perP
     "website": "http://example.com",
     "createdAt": "2024-06-03T00:00:00.000Z",
     "updatedAt": "2024-06-03T00:00:00.000Z",
-    "overallRating": 0
+    "overallRanking": 0
   }
 ]
 ```
@@ -329,11 +329,11 @@ curl -i -H 'Authorization: Bearer <token>' http://example.com/brands/1
   "website": "http://example.com",
   "createdAt": "2024-06-03T00:00:00.000Z",
   "updatedAt": "2024-06-03T00:00:00.000Z",
-  "ratings":{
+  "rank-products":{
     "userRating":10,
     "friendsRating":10,
-    "overallRating":10,
-    "totalProductsRated":5
+    "overallRanking":10,
+    "totalRanking":5
   }
 ```
 
@@ -343,10 +343,10 @@ curl -i -H 'Authorization: Bearer <token>' http://example.com/brands/1
 
 ##### Request
 
-`POST /ratings`
+`POST /rank-products`
 
 ```bash
-curl -i -X POST -H 'Authorization: Bearer <your_access_token>' -d '{"rate": 1, "brandId": 1, "categoryId": 1, "preferProductId": 1, "link": "string", "image": "string", "name": "string"}' http://example.com/ratings
+curl -i -X POST -H 'Authorization: Bearer <your_access_token>' -d '{"rate": 1, "brandId": 1, "categoryId": 1, "preferProductId": 1, "link": "string", "image": "string", "name": "string"}' http://example.com/rank-products
 ```
 
 ##### Response
@@ -356,14 +356,14 @@ HTTP/1.1 204 No Content
 Date: <Date>
 ```
 
-#### My ratings
+#### My rank-products
 
 ##### Request
 
-`GET /user/ratings?page=1&perPage=1&categoryId=1&name=string`
+`GET /user/rank-products?page=1&perPage=1&categoryId=1&name=string`
 
 ```bash
-curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/user/ratings?page=1&perPage=1&categoryId=1&name=string
+curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/user/rank-products?page=1&perPage=1&categoryId=1&name=string
 ```
 
 ##### Response
@@ -374,6 +374,7 @@ Date: <Date>
 Content-Type: application/json
 Content-Length: XX
 ```
+
 ```json
 [
   {
@@ -400,10 +401,10 @@ Content-Length: XX
 
 ##### Request
 
-`GET /ratings/brands/:brandId?page=1&perPage=1`
+`GET /rank-products/brands/:brandId?page=1&perPage=1`
 
 ```bash
-curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/ratings/brands/:brandId?page=1&perPage=1
+curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/rank-products/brands/:brandId?page=1&perPage=1
 ```
 
 ##### Response
@@ -414,6 +415,7 @@ Date: <Date>
 Content-Type: application/json
 Content-Length: XX
 ```
+
 ```json
 [
   {
@@ -437,10 +439,10 @@ Content-Length: XX
 
 ##### Request
 
-`GET /user/ratings/brands/:brandId/friends?page=1&perPage=1`
+`GET /user/rank-products/brands/:brandId/friends?page=1&perPage=1`
 
 ```bash
-curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/user/ratings/brands/:brandId/friends?page=1&perPage=1
+curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/user/rank-products/brands/:brandId/friends?page=1&perPage=1
 ```
 
 ##### Response
@@ -451,6 +453,7 @@ Date: <Date>
 Content-Type: application/json
 Content-Length: XX
 ```
+
 ```json
 [
   {
@@ -490,6 +493,7 @@ Date: <Date>
 Content-Type: application/json
 Content-Length: XX
 ```
+
 ```json
 [
   {
@@ -536,6 +540,7 @@ Date: <Date>
 Content-Type: application/json
 Content-Length: XX
 ```
+
 ```json
 [
   {
@@ -588,6 +593,7 @@ Date: <Date>
 Content-Type: application/json
 Content-Length: XX
 ```
+
 ```json
 {
   "id": 1,
@@ -614,6 +620,7 @@ Date: <Date>
 Content-Type: application/json
 Content-Length: XX
 ```
+
 ```json
 [
   {
@@ -642,6 +649,7 @@ Date: <Date>
 Content-Type: application/json
 Content-Length: XX
 ```
+
 ```json
 {
   "id": 1,
@@ -667,6 +675,7 @@ Date: <Date>
 Content-Type: application/json
 Content-Length: XX
 ```
+
 ```json
 [
   {

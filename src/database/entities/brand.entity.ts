@@ -6,7 +6,10 @@ import { DATABASE_CONSTANT } from 'src/constants/database.constants';
 
 @Entity(DATABASE_CONSTANT.TABLE_NAME.BRAND)
 export class Brand extends BaseEntity {
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   user: User;
 
   @Column()
@@ -24,9 +27,9 @@ export class Brand extends BaseEntity {
   @Column({ nullable: true })
   website: string;
 
-  overallRating?: number;
+  overallRanking?: number;
 
-  ratings?: BrandRatings;
+  rankProducts?: BrandRanking;
 
   constructor(data?: Partial<Brand>) {
     super(data);
@@ -39,15 +42,15 @@ export class Brand extends BaseEntity {
   }
 }
 
-export class BrandRatings {
+export class BrandRanking {
   userRating: number;
   friendsRating: number;
-  overallRating: number;
-  totalProductsRated: number;
-  constructor(data: Partial<BrandRatings> = {}) {
+  overallRanking: number;
+  totalRanking: number;
+  constructor(data: Partial<BrandRanking> = {}) {
     this.userRating = mapNumber(data?.userRating);
     this.friendsRating = mapNumber(data?.friendsRating);
-    this.overallRating = mapNumber(data?.overallRating);
-    this.totalProductsRated = mapNumber(data?.totalProductsRated);
+    this.overallRanking = mapNumber(data?.overallRanking);
+    this.totalRanking = mapNumber(data?.totalRanking);
   }
 }

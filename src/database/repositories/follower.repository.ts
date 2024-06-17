@@ -7,7 +7,7 @@ import { mapNumber } from 'src/utils';
 
 @Injectable()
 export class FollowerRepository extends BaseRepository<Follower> {
-  constructor(private _dataSource: DataSource) {
+  constructor(_dataSource: DataSource) {
     super(Follower, _dataSource);
   }
 
@@ -34,6 +34,7 @@ export class FollowerRepository extends BaseRepository<Follower> {
     )
       .leftJoinAndSelect('follows.user', 'user')
       .where('follows.follower =:userId', { userId })
+      .orderBy('follows.id', 'DESC')
       .getManyAndCount();
   }
 
@@ -44,6 +45,7 @@ export class FollowerRepository extends BaseRepository<Follower> {
     )
       .leftJoinAndSelect('follows.follower', 'follower')
       .where('follows.user =:userId', { userId })
+      .orderBy('follows.id', 'DESC')
       .getManyAndCount();
   }
 

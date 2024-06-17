@@ -19,9 +19,9 @@ import {
   AuthModule,
   CategoryModule,
   BrandsModule,
-  RatingsModule,
-  FeedActivitiesModule,
-  CollectionsModule,
+  RankProductsModule,
+  FeedsModule,
+  WishListsModule,
 } from './domain';
 
 @Global()
@@ -50,9 +50,9 @@ import {
     FollowsModule,
     CategoryModule,
     BrandsModule,
-    RatingsModule,
-    FeedActivitiesModule,
-    CollectionsModule,
+    RankProductsModule,
+    FeedsModule,
+    WishListsModule,
   ],
   providers: [AppService],
   exports: [CoreModule],

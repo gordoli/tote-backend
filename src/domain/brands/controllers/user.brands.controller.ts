@@ -28,7 +28,7 @@ export class UserBrandsController extends BaseController {
     @Res() response: Response,
   ) {
     const brand = await this._brandService.create(dto, user);
-    this.responseCustom(response, this._brandService.handleStoreFiles(brand));
+    this.responseCustom(response, brand);
   }
 
   @Get()

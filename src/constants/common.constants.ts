@@ -13,6 +13,6 @@ export const COMMON_CONSTANT = {
   FOLDER: {
     TEMPORARY: 'temporary',
     BRANDS: 'brands',
-    RATINGS: 'ratings',
+    RATINGS: 'rank_products',
   },
 };

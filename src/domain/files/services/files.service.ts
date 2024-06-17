@@ -54,7 +54,7 @@ export class FilesService {
       Key: newFileKey,
     });
     await this._s3Client.send(command);
-    return newFileKey;
+    return this.getUrl(newFileKey);
   }
 
   public async permanentlyRemove(path: string): Promise<void> {

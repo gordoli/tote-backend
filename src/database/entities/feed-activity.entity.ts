@@ -1,34 +1,37 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
-import { Rating } from './rating.entity';
+import { RankProduct } from './rank-product.entity';
 import { DATABASE_CONSTANT } from 'src/constants/database.constants';
 
-export enum FEED_ACTIVITY_TYPE {
-  RATING = 'rating',
+export enum FEED_TYPE {
+  RANK_PRODUCT = 'rank_product',
   QUESTION = 'question',
   REQUEST = 'request',
 }
 
-@Entity(DATABASE_CONSTANT.TABLE_NAME.FEED_ACTIVITY)
-export class FeedActivity extends BaseEntity {
+@Entity(DATABASE_CONSTANT.TABLE_NAME.FEED)
+export class Feed extends BaseEntity {
   @Column()
-  type: FEED_ACTIVITY_TYPE;
+  type: FEED_TYPE;
 
   @Column()
-  @Index('idx_feed_activities_referenceId')
+  @Index('idx_feeds_referenceId')
   referenceId: number;
 
-  rating?: Rating;
+  rankProduct?: RankProduct;
 
   @Column({ nullable: true })
   title: string;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'createdBy' })
   createdBy: User;
 
-  constructor(data?: Partial<FeedActivity>) {
+  constructor(data?: Partial<Feed>) {
     super(data);
     this.type = data?.type;
     this.referenceId = data?.referenceId;

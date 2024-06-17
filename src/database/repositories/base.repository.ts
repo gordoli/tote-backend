@@ -8,6 +8,7 @@ import {
   Repository,
   SelectQueryBuilder,
 } from 'typeorm';
+import { Follower } from '../entities';
 
 class Filterable {
   public static buildQuery<T>(
@@ -87,5 +88,17 @@ export abstract class BaseRepository<T> extends Repository<T> {
       return existedData;
     }
     return this.save(data);
+  }
+
+  protected _friendOnly<T>(
+    queryBuilder: SelectQueryBuilder<T>,
+    columnAlias: string,
+    userId: number,
+  ) {
+    return queryBuilder.innerJoin(
+      Follower,
+      'follower',
+      `follower.follower = ${userId} AND follower.user = ${columnAlias}`,
+    );
   }
 }

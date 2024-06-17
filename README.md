@@ -194,12 +194,6 @@ $ npm run seed:revert:uat
 $ npm run seed:revert:prod
 ```
 
-## Postman Collection
-
-You can use the Postman collection to test the API endpoints. Click the link below to access the collection:
-
-[Postman Collection for Tote Backend](https://www.postman.com/tote-backend/workspace/totebe/collection/35358825-3ce0b910-112d-4b43-8723-044763626b12?action=share&creator=35358825&active-environment=35358825-309ede22-3e2b-4002-a1e0-85457b7487a0)
-
 ## Deployment
 
 1. **Update env following your deployment environment**

@@ -3,15 +3,15 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/constants';
 import { MailService } from 'src/core/mail/mail.service';
 import { LoggerService } from '../core/logger';
-import { CreateFeedRatingPayload, SendMailPayload } from './types';
-import { FeedActivitiesService } from 'src/domain';
+import { CreateFeedRankProductPayload, SendMailPayload } from './types';
+import { FeedsService } from 'src/domain';
 
 @Injectable()
 export class EventHandlerService {
   private _logger = new LoggerService(EventHandlerService.name);
   constructor(
     private _mailService: MailService,
-    private _feedActivitiesService: FeedActivitiesService,
+    private _feedsService: FeedsService,
   ) {}
 
   @OnEvent(EVENTS.SEND_MAIL)
@@ -27,15 +27,18 @@ export class EventHandlerService {
   }
 
   @OnEvent(EVENTS.FEED_ACTIVITY.CREATE_RATING)
-  public async onCreateRating(payload: CreateFeedRatingPayload) {
-    this._logger.debug('On create rating feed payload ', payload);
+  public async onCreateRating(payload: CreateFeedRankProductPayload) {
+    this._logger.debug('On create rankProduct feed payload ', payload);
     try {
-      await this._feedActivitiesService.createRatingFeed(
-        payload.rating,
+      await this._feedsService.createRatingFeed(
+        payload.rankProduct,
         payload.user,
       );
     } catch (error) {
-      this._logger.error('Have error when create rating feed ', error.message);
+      this._logger.error(
+        'Have error when create rankProduct feed ',
+        error.message,
+      );
     }
   }
 }

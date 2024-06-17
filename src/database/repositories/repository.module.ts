@@ -3,30 +3,30 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   Brand,
   Category,
-  Collection,
-  CollectionFeed,
-  FeedActivity,
+  WishList,
+  WishListFeed,
+  Feed,
   Follower,
-  Rating,
+  RankProduct,
   User,
 } from '../entities';
 import { UserRepository } from './user.repository';
 import { FollowerRepository } from './follower.repository';
 import { BrandRepository } from './brand.repository';
 import { CategoryRepository } from './category.repository';
-import { RatingRepository } from './rating.repository';
-import { FeedActivityRepository } from './feed-activity.repository';
-import { CollectionFeedRepository } from './collection-feed.repository';
-import { CollectionRepository } from './collection.repository';
+import { RankProductRepository } from './rank-product.repository';
+import { FeedRepository } from './feed.repository';
+import { WishListFeedRepository } from './wish-list-feed.repository';
+import { WishListRepository } from './wish-list.repository';
 const providers = [
   UserRepository,
   FollowerRepository,
   BrandRepository,
   CategoryRepository,
-  RatingRepository,
-  FeedActivityRepository,
-  CollectionRepository,
-  CollectionFeedRepository,
+  RankProductRepository,
+  FeedRepository,
+  WishListRepository,
+  WishListFeedRepository,
 ];
 @Module({
   imports: [
@@ -35,10 +35,10 @@ const providers = [
       Follower,
       Brand,
       Category,
-      Rating,
-      FeedActivity,
-      Collection,
-      CollectionFeed,
+      RankProduct,
+      Feed,
+      WishList,
+      WishListFeed,
     ]),
   ],
   providers,

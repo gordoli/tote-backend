@@ -12,17 +12,15 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
       useFactory(configService: ConfigService) {
         return {
           transport: {
-            host: 'smtp.mailgun.org',
-            port: 587,
-            ignoreTLS: false,
-            secure: false,
+            host: configService.get('MAILER_HOST'),
+            port: +configService.get('MAILER_PORT'),
             auth: {
-              user: configService.get('MAILGUN_USER'),
-              pass: configService.get('MAILGUN_PASS'),
+              user: configService.get('MAILER_USER'),
+              pass: configService.get('MAILER_PASS'),
             },
           },
           defaults: {
-            from: `"No Reply" <no-reply@xxx>`,
+            from: `"No Reply" <${configService.get('MAILER_SENDER')}>`,
           },
           template: {
             dir: process.cwd() + '/src/templates',

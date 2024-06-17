@@ -7,7 +7,7 @@ import { BaseFilter } from 'src/library';
 
 @Injectable()
 export class BrandRepository extends BaseRepository<Brand> {
-  constructor(private _dataSource: DataSource) {
+  constructor(_dataSource: DataSource) {
     super(Brand, _dataSource);
   }
 
@@ -23,6 +23,6 @@ export class BrandRepository extends BaseRepository<Brand> {
     if (name) {
       query.andWhere('brand.name LIKE :name', { name: `%${name}%` });
     }
-    return query.getManyAndCount();
+    return query.orderBy({ id: 'DESC' }).getManyAndCount();
   }
 }

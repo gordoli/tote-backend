@@ -2,7 +2,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { ERROR_CODE_CONSTANT } from 'src/constants';
 import {
   FollowerRepository,
-  RatingRepository,
+  RankProductRepository,
   User,
   UserRepository,
   UserStatistics,
@@ -14,14 +14,14 @@ export class UsersService {
   constructor(
     private _userRepository: UserRepository,
     private _followRepository: FollowerRepository,
-    private _ratingRepository: RatingRepository,
+    private _rankProductRepository: RankProductRepository,
   ) {}
 
   public async mapUserStatistics(user: User) {
     const [totalFollowers, totalFollowing, totalRatings] = await Promise.all([
       this._followRepository.getTotalFollowersById(user.id),
       this._followRepository.getTotalFollowingById(user.id),
-      this._ratingRepository.totalRatingsByUser(user.id),
+      this._rankProductRepository.totalRatingsByUser(user.id),
     ]);
     user.statistics = new UserStatistics({
       followerCount: totalFollowers,

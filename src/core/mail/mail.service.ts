@@ -1,4 +1,4 @@
-import { MailerService } from '@nestjs-modules/mailer';
+import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { LoggerService } from '../logger';
 import { MailData, MAIL_TEMPLATE } from './types';
@@ -16,7 +16,8 @@ export class MailService {
         throw new Error(`Mail type ${key} not implemented!`);
       }
       const { data, to, ...rest } = payload;
-      const options = {
+      const options: ISendMailOptions = {
+        from: process.env.MAILER_SENDER,
         to,
         subject: `[No reply] ${mailType.subject}`,
         template: mailType.template,
