@@ -1,10 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { SearchMembersDto } from 'src/domain/users/dto';
+import { BaseFilter } from 'src/library';
 import { DataSource, IsNull } from 'typeorm';
 import { User, UserProvider } from '../entities';
 import { BaseRepository } from './base.repository';
 
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
+  public static MAIN_SELECT = [
+    'id',
+    'username',
+    'email',
+    'firstName',
+    'lastName',
+    'avatar',
+  ];
   constructor(private _dataSource: DataSource) {
     super(User, _dataSource);
   }
@@ -53,5 +63,29 @@ export class UserRepository extends BaseRepository<User> {
       select: ['id', 'password'],
     });
     return data?.password;
+  }
+
+  public async searchMembers(dto: SearchMembersDto) {
+    const { name, ...rest } = dto;
+    const query = this._buildQuery(
+      new BaseFilter(rest),
+      this.createQueryBuilder('users'),
+    );
+    if (name) {
+      query.andWhere(
+        "(CONCAT(users.firstName, ' ', users.lastName) ILIKE :searchName)",
+        {
+          searchName: `%${name}%`,
+        },
+      );
+    }
+    return query
+      .select(UserRepository.getMainSelect('users'))
+      .orderBy('users.id', 'DESC')
+      .getManyAndCount();
+  }
+
+  public static getMainSelect(alias: string) {
+    return UserRepository.MAIN_SELECT.map((column) => `${alias}.${column}`);
   }
 }

@@ -23,12 +23,20 @@ export const randomElement = <T>(array: Array<T>): T => {
   return array[Math.floor(Math.random() * array.length)];
 };
 
-export const asyncMap = <T, K>(
+export const asyncMap = async <T, K>(
   arr: Array<T>,
   fn: (value: T, index?: number, array?: Array<T>) => Promise<K>,
 ) => {
   const promises = arr.map(fn);
   return Promise.all(promises);
+};
+
+export const asyncForEach = async <T, K>(
+  arr: Array<T>,
+  fn: (value: T, index?: number, array?: Array<T>) => Promise<K>,
+) => {
+  const promises = arr.map(fn);
+  await Promise.all(promises);
 };
 
 export const getBucketCacheKey = (key: string, id: number) => {

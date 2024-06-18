@@ -91,10 +91,10 @@ curl -i http://example.com/users/123
 
 #### Request
 
-`GET /user/follows/followers`
+`GET /users/follows/followers`
 
 ```
-curl -i -H 'Authorization: Bearer <token>' http://example.com/user/follows/followers
+curl -i -H 'Authorization: Bearer <token>' http://example.com/users/follows/followers
 ```
 
 #### Response
@@ -118,10 +118,10 @@ curl -i -H 'Authorization: Bearer <token>' http://example.com/user/follows/follo
 
 #### Request
 
-`GET /user/follows/following`
+`GET /users/follows/following`
 
 ```
-curl -i -H 'Authorization: Bearer <token>' http://example.com/user/follows/following
+curl -i -H 'Authorization: Bearer <token>' http://example.com/users/follows/following
 ```
 
 #### Response
@@ -360,10 +360,10 @@ Date: <Date>
 
 ##### Request
 
-`GET /user/rank-products?page=1&perPage=1&categoryId=1&name=string`
+`GET /users/rank-products?page=1&perPage=1&categoryId=1&name=string`
 
 ```bash
-curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/user/rank-products?page=1&perPage=1&categoryId=1&name=string
+curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/users/rank-products?page=1&perPage=1&categoryId=1&name=string
 ```
 
 ##### Response
@@ -439,10 +439,10 @@ Content-Length: XX
 
 ##### Request
 
-`GET /user/rank-products/brands/:brandId/friends?page=1&perPage=1`
+`GET /users/rank-products/brands/:brandId/friends?page=1&perPage=1`
 
 ```bash
-curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/user/rank-products/brands/:brandId/friends?page=1&perPage=1
+curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/users/rank-products/brands/:brandId/friends?page=1&perPage=1
 ```
 
 ##### Response
@@ -606,10 +606,10 @@ Content-Length: XX
 
 ##### Request
 
-`GET /user/collections`
+`GET /users/collections`
 
 ```bash
-curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/user/collections
+curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/users/collections
 ```
 
 ##### Response
@@ -661,10 +661,10 @@ Content-Length: XX
 
 ##### Request
 
-`GET /user/collections/wish-list?page=1&perPage=1&categoryId=1&name=string`
+`GET /users/collections/wish-list?page=1&perPage=1&categoryId=1&name=string`
 
 ```bash
-curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/user/collections/wish-list?page=1&perPage=1&categoryId=1&name=string
+curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/users/collections/wish-list?page=1&perPage=1&categoryId=1&name=string
 ```
 
 ##### Response

@@ -1,1 +1,1 @@
-export * from './user.wish-lists.controller';
+export * from './wish-lists.controller';

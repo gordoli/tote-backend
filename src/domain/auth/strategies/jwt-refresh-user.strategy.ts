@@ -36,7 +36,7 @@ export class JwtRefreshUserStrategy extends PassportStrategy(
     const token = JwtRefreshUserStrategy.extractJWT(request);
     const user = await this._userService.validateRefreshToken(payload, token);
 
-    if (user?.deletedAt) {
+    if (user?.deletedAt || !user) {
       HttpExceptionFilter.throwError(
         {
           code: ERROR_CODE_CONSTANT.USER.NOT_FOUND,
@@ -46,7 +46,7 @@ export class JwtRefreshUserStrategy extends PassportStrategy(
       );
     }
 
-    if (user.status === BaseStatus.Inactive) {
+    if (user?.status === BaseStatus.Inactive) {
       HttpExceptionFilter.throwError(
         {
           code: ERROR_CODE_CONSTANT.USER.DISABLED,

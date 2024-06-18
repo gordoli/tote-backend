@@ -8,6 +8,8 @@ import {
   UserStatistics,
 } from 'src/database';
 import { HttpExceptionFilter } from 'src/library';
+import { asyncForEach } from 'src/utils';
+import { SearchMembersDto } from '../dto';
 
 @Injectable()
 export class UsersService {
@@ -43,5 +45,14 @@ export class UsersService {
       );
     }
     return user;
+  }
+
+  public async searchMembers(dto: SearchMembersDto) {
+    const [items, total] = await this._userRepository.searchMembers(dto);
+    await asyncForEach(items, async (item) => this.mapUserStatistics(item));
+    return {
+      items,
+      total,
+    };
   }
 }

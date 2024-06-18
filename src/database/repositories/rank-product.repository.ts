@@ -5,6 +5,7 @@ import { mapNumber } from 'src/utils';
 import { DataSource, SelectQueryBuilder } from 'typeorm';
 import { RankProduct } from '../entities';
 import { BaseRepository } from './base.repository';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class RankProductRepository extends BaseRepository<RankProduct> {
@@ -13,7 +14,7 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
   }
 
   public async list(dto: ListRankProductDTO) {
-    const { name, isOnlyFriend, userId, ...rest } = dto;
+    const { name, isOnlyFriend, userId, brandId, ...rest } = dto;
     const query = this._buildQuery(
       new BaseFilter(rest),
       this.createQueryBuilder('rankProduct'),
@@ -21,14 +22,26 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
       .leftJoinAndSelect('rankProduct.brand', 'brand')
       .leftJoinAndSelect('rankProduct.category', 'category')
       .leftJoinAndSelect('rankProduct.createdBy', 'createdBy');
+
     if (name) {
       query.andWhere('rankProduct.name LIKE :name', { name: `%${name}%` });
+    }
+
+    if (brandId) {
+      query.andWhere('rankProduct.brandId =:brandId', { brandId });
     }
 
     if (isOnlyFriend && userId) {
       this._friendOnly(query, 'rankProduct.createdBy', userId);
     }
-    return query.orderBy('rankProduct.id', 'DESC').getManyAndCount();
+    return query
+      .select(
+        ['rankProduct', 'brand', 'category'].concat(
+          UserRepository.getMainSelect('createdBy'),
+        ),
+      )
+      .orderBy('rankProduct.id', 'DESC')
+      .getManyAndCount();
   }
 
   public async overallRatingBrands(brandIds: number[]) {

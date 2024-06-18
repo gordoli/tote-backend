@@ -44,9 +44,6 @@ export class RankProductsService {
 
   public async list(dto: ListRankProductDTO) {
     const [items, total] = await this._rankProductRepository.list(dto);
-    items.forEach((el) => {
-      el.createdBy = new User(el.createdBy).mainInfo();
-    });
     return {
       items,
       total,

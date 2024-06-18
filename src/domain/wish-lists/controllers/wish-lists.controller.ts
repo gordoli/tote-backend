@@ -15,9 +15,9 @@ import { BaseController } from 'src/library';
 import { AddFeedWishListDTO, CreateWishListDTO, WishListDTO } from '../dto';
 import { WishListService } from '../services';
 
-@Controller('user/wish-lists')
+@Controller('wishlists')
 @UseGuards(JwtAuthUserGuard)
-export class UserWishListsController extends BaseController {
+export class WishListsController extends BaseController {
   constructor(private _collectionsService: WishListService) {
     super();
   }

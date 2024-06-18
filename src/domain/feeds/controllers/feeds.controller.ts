@@ -6,9 +6,9 @@ import { ListFeedsDTO } from '../dto';
 import { Response } from 'express';
 import { User } from 'src/database';
 
-@Controller('user/feeds')
+@Controller('feeds')
 @UseGuards(JwtAuthUserGuard)
-export class UserFeedsController extends BaseController {
+export class FeedsController extends BaseController {
   constructor(private _feedsService: FeedsService) {
     super();
   }

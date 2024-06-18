@@ -32,6 +32,7 @@ export class CreateRankProductDTO {
 
 export class ListRankProductDTO extends BaseFilter {
   @IsOptional()
+  @Type(() => Number)
   createdBy: number;
 
   @IsOptional()

@@ -4,6 +4,6 @@ export * from './follower.entity';
 export * from './brand.entity';
 export * from './category.entity';
 export * from './rank-product.entity';
-export * from './feed-activity.entity';
+export * from './feed.entity';
 export * from './wish-list.entity';
 export * from './wish-list-feed.entity';

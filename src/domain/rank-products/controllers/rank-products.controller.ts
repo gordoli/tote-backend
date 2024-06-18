@@ -1,8 +1,16 @@
-import { Controller, Get, Query, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { BaseController } from 'src/library';
 import { RankProductsService } from '../services';
 import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
-import { ListRankProductDTO } from '../dto';
+import { CreateRankProductDTO, ListRankProductDTO } from '../dto';
 import { User } from 'src/database';
 import { Response } from 'express';
 
@@ -37,5 +45,15 @@ export class RankProductsController extends BaseController {
         perPage: dto.perPage,
       },
     );
+  }
+
+  @Post()
+  public async create(
+    @CurrentUser() user: User,
+    @Res() response: Response,
+    @Body() dto: CreateRankProductDTO,
+  ) {
+    const rankProduct = await this._ratingService.create(dto, user);
+    this.responseCustom(response, rankProduct);
   }
 }

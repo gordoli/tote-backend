@@ -1,7 +1,7 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { WishList } from './wish-list.entity';
-import { FEED_TYPE, Feed } from './feed-activity.entity';
+import { FEED_TYPE, Feed } from './feed.entity';
 import { RankProduct } from './rank-product.entity';
 import { User } from './user.entity';
 import { DATABASE_CONSTANT } from 'src/constants/database.constants';

@@ -1,7 +1,16 @@
-import { Controller, Get, Param, Query, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { BaseController } from 'src/library';
-import { ListBrandDTO } from '../dto';
+import { CreateBrandDTO, ListBrandDTO } from '../dto';
 import { BrandsService } from '../services';
 import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
 import { User } from 'src/database';
@@ -30,6 +39,16 @@ export class BrandsController extends BaseController {
     @Res() response: Response,
   ) {
     const brand = await this._brandService.detailById(id, user);
+    this.responseCustom(response, brand);
+  }
+
+  @Post()
+  public async create(
+    @CurrentUser() user: User,
+    @Body() dto: CreateBrandDTO,
+    @Res() response: Response,
+  ) {
+    const brand = await this._brandService.create(dto, user);
     this.responseCustom(response, brand);
   }
 }
