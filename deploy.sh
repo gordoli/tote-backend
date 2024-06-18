@@ -6,11 +6,16 @@ PROCESS_NAME="tote-api"
 # Command to start the process
 START_CMD="npm run start:prod"
 
+# Function to check if the process is running
+is_process_running() {
+    pm2 describe "$PROCESS_NAME" > /dev/null 2>&1
+}
+
 # Check if the process is already running
-if pm2 list | grep -q $PROCESS_NAME; then
+if is_process_running; then
     # If the process is running, restart it
     echo "Restarting $PROCESS_NAME..."
-    pm2 restart $PROCESS_NAME
+    pm2 restart "$PROCESS_NAME"
 else
     # If the process is not running, start it
     echo "Starting $PROCESS_NAME..."
