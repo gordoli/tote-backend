@@ -21,9 +21,9 @@ export class UserSocialService {
     socialData: SocialData,
     provider: UserProvider = UserProvider.GOOGLE,
   ) {
-    const socialEmail = socialData.email?.toLowerCase();
+    const socialEmail = socialData?.email;
 
-    const foundUser = await this._userRepository.findByEmail(socialEmail);
+    const foundUser = await this._userRepository.findByLowerEmail(socialEmail);
 
     if (foundUser) {
       return this._userService.loginResponse(foundUser);

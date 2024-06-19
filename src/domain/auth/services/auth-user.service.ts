@@ -7,7 +7,7 @@ import {
   MESSAGE_CONSTANT,
   USER_CONSTANT,
 } from 'src/constants';
-import { ICachingService, InjectCaching } from 'src/core';
+import { ICachingService, InjectCaching, LoggerService } from 'src/core';
 import { MAIL_TYPE_KEYS } from 'src/core/mail/constant';
 import { BaseStatus, User, UserRepository } from 'src/database';
 import { SendMailPayload } from 'src/event-handler/types';
@@ -27,6 +27,7 @@ import { TokenService } from './token.service';
 
 @Injectable()
 export class AuthUserService {
+  private _logger = new LoggerService(AuthUserService.name);
   constructor(
     private _userRepository: UserRepository,
     private _tokenService: TokenService,
@@ -123,14 +124,23 @@ export class AuthUserService {
   public async verifyForgotPassword(dto: VerifyForgotPasswordDTO) {
     const { newPassword, email } = dto;
     const password = hashPassword(newPassword);
-    return this._userRepository.updatePasswordByEmail(email, password);
+    const result = await this._userRepository.updatePasswordByEmail(
+      email,
+      password,
+    );
+    this._logger.debug('Verified forgot password result', result);
+    return result;
   }
 
   public async resetPassword(dto: ResetPasswordDTO) {
     const user = await this.findUserByEmail(dto.email);
     const newPassword = makeId(8);
     const password = hashPassword(newPassword);
-    await this._userRepository.update({ id: user.id }, { password });
+    const result = await this._userRepository.update(
+      { id: user.id },
+      { password },
+    );
+    this._logger.debug('Reset password result', result);
 
     this._eventEmitter.emit(
       EVENTS.SEND_MAIL,
@@ -176,7 +186,7 @@ export class AuthUserService {
 
   public async registration(registerDto: RegistrationDTO, sessionID: string) {
     const user = new User(registerDto);
-    const existedUser = await this._userRepository.findByEmail(user.email);
+    const existedUser = await this._userRepository.findByLowerEmail(user.email);
     if (existedUser && !existedUser.deletedAt) {
       HttpExceptionFilter.throwError(
         {
@@ -193,7 +203,8 @@ export class AuthUserService {
   }
 
   public async verifyEmail(email: string) {
-    await this._userRepository.verifyByEmail(email);
+    const result = await this._userRepository.verifyByEmail(email);
+    this._logger.debug('Verified update result', result);
   }
 
   public async sendOTP(email: string, sessionID: string, type: SendOTPType) {
@@ -222,7 +233,7 @@ export class AuthUserService {
   }
 
   public async findUserByEmail(email: string) {
-    const existedUser = await this._userRepository.findByEmail(email);
+    const existedUser = await this._userRepository.findByLowerEmail(email);
     if (!existedUser || existedUser.deletedAt) {
       HttpExceptionFilter.throwError(
         {

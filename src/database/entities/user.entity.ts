@@ -87,7 +87,7 @@ export class User extends BaseEntity {
   }
 
   static mapSocialProfile(socialData: SocialData, provider: UserProvider) {
-    const { id, email, firstName, lastName } = socialData;
+    const { id, email = '', firstName, lastName } = socialData;
     return new User({
       provider,
       socialId: id,

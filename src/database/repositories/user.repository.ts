@@ -28,25 +28,43 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   public async findByIdentity(username: string) {
-    return this.findOneBy([
-      { username, deletedAt: IsNull() },
-      { email: username, deletedAt: IsNull() },
-    ]);
+    return this.createQueryBuilder('users')
+      .where(
+        '(LOWER(users.username) = :username OR LOWER(users.email) = :username)',
+        { username: username.toLowerCase() },
+      )
+      .andWhere('users.deletedAt IS NULL')
+      .getOne();
   }
 
-  public async findByEmail(email: string) {
-    return this.findOneBy({ email });
+  public async findByLowerEmail(email: string) {
+    return this.createQueryBuilder('users')
+      .where('LOWER(users.email) = :email', { email: email?.toLowerCase() })
+      .getOne();
   }
 
   public async verifyByEmail(email: string) {
-    return this.update(
-      { email, isVerified: false, deletedAt: IsNull() },
-      { isVerified: true },
-    );
+    return this.createQueryBuilder()
+      .where('LOWER(email) = :email', { email: email?.toLowerCase() })
+      .andWhere('isVerified = false')
+      .andWhere('deletedAt IS NULL')
+      .update()
+      .set({
+        isVerified: true,
+      })
+      .execute();
   }
 
   public async updatePasswordByEmail(email: string, password: string) {
-    return this.update({ email, deletedAt: IsNull() }, { password });
+    return this.createQueryBuilder()
+      .where('LOWER(email) = :email', { email: email?.toLowerCase() })
+      .andWhere('isVerified = false')
+      .andWhere('deletedAt IS NULL')
+      .update()
+      .set({
+        password,
+      })
+      .execute();
   }
 
   public async updatePasswordById(id: number, password: string) {

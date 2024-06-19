@@ -35,15 +35,15 @@ export class OtpService {
     }
     this._logger.debug('Otp session cache key ', otpCacheKey);
     await this._cachingService.set(
-      otpCacheKey,
-      email,
+      otpCacheKey.toLowerCase(),
+      email.toLowerCase(),
       OTP_CONSTANT.SESSION_TTL,
     );
     return { otp };
   }
 
   public async validateOtp(key: string) {
-    const value = await this._cachingService.get<string>(key);
+    const value = await this._cachingService.get<string>(key.toLowerCase());
     if (!value) {
       HttpExceptionFilter.throwError(
         {
