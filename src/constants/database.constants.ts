@@ -3,6 +3,7 @@ export const DATABASE_CONSTANT = {
     USER: 'Users',
     BRAND: 'Brands',
     CATEGORY: 'Categories',
+    NOTIFICATION: 'Notifications',
     WISHLIST_FEED: 'WishlistFeeds',
     WISHLIST: 'Wishlists',
     FEED: 'Feeds',
