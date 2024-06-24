@@ -31,20 +31,11 @@ export class RankProductsController extends BaseController {
       dto.userId = user.id;
     }
     const { items, total } = await this._ratingService.list(dto);
-    this.responseCustom(
-      response,
-      items.map((el) => {
-        if (typeof el.createdBy === 'object') {
-          el.createdBy = new User(el.createdBy).mainInfo();
-        }
-        return el;
-      }),
-      {
-        total,
-        page: dto.page,
-        perPage: dto.perPage,
-      },
-    );
+    this.responseCustom(response, items, {
+      total,
+      page: dto.page,
+      perPage: dto.perPage,
+    });
   }
 
   @Post()

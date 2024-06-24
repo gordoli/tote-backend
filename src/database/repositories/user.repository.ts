@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SearchMembersDto } from 'src/domain/users/dto';
 import { BaseFilter } from 'src/library';
-import { DataSource, IsNull } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { User, UserProvider } from '../entities';
 import { BaseRepository } from './base.repository';
 

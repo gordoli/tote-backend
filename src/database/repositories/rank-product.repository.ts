@@ -21,7 +21,7 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
     )
       .leftJoinAndSelect('rankProduct.brand', 'brand')
       .leftJoinAndSelect('rankProduct.category', 'category')
-      .leftJoinAndSelect('rankProduct.createdBy', 'createdBy');
+      .leftJoin('rankProduct.createdBy', 'createdBy');
 
     if (name) {
       query.andWhere('rankProduct.name LIKE :name', { name: `%${name}%` });
@@ -35,11 +35,7 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
       this._friendOnly(query, 'rankProduct.createdBy', userId);
     }
     return query
-      .select(
-        ['rankProduct', 'brand', 'category'].concat(
-          UserRepository.getMainSelect('createdBy'),
-        ),
-      )
+      .addSelect(UserRepository.getMainSelect('createdBy'))
       .orderBy('rankProduct.id', 'DESC')
       .getManyAndCount();
   }

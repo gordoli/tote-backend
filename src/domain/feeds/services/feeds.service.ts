@@ -24,12 +24,6 @@ export class FeedsService {
 
   public async list(dto: ListFeedsDTO) {
     const [items, total] = await this._feedRepository.list(dto);
-    items.forEach((item) => {
-      item.createdBy = new User(item.createdBy).mainInfo();
-      if (item.rankProduct) {
-        item.rankProduct.createdBy = item.createdBy;
-      }
-    });
     return { items, total };
   }
 }
