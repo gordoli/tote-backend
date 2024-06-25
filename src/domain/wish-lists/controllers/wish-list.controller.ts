@@ -23,11 +23,11 @@ export class WishListController extends BaseController {
 
   @Get(':userId')
   public async list(
-    @CurrentUser() user: User,
+    @Param('userId') userId: number,
     @Query() dto: WishListProductDTO,
     @Res() response: Response,
   ) {
-    dto.createdBy = user.id;
+    dto.user = userId;
     const { items, total } = await this._wishListService.wishListProducts(dto);
     this.responseCustom(response, items, { total });
   }

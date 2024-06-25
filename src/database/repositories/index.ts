@@ -5,6 +5,6 @@ export * from './brand.repository';
 export * from './category.repository';
 export * from './rank-product.repository';
 export * from './feed.repository';
+export * from './custom-list.repository';
 export * from './wish-list.repository';
-export * from './wish-list-feed.repository';
 export * from './repository.module';

@@ -3,10 +3,10 @@ export const DATABASE_CONSTANT = {
     USER: 'Users',
     BRAND: 'Brands',
     CATEGORY: 'Categories',
-    WISHLIST_FEED: 'WishlistFeeds',
     WISHLIST: 'Wishlists',
     FEED: 'Feeds',
     FOLLOWER: 'Followers',
     RANK_PRODUCT: 'RankProducts',
+    CUSTOM_LIST: 'CustomLists',
   },
 };

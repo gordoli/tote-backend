@@ -1,29 +1,23 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { BaseEntity } from './base.entity';
-import { User } from './user.entity';
-import { WishListFeed } from './wish-list-feed.entity';
 import { DATABASE_CONSTANT } from 'src/constants/database.constants';
+import { Entity, ManyToOne } from 'typeorm';
+import { BaseEntity } from './base.entity';
+import { RankProduct } from './rank-product.entity';
+import { User } from './user.entity';
 
 @Entity(DATABASE_CONSTANT.TABLE_NAME.WISHLIST)
 export class WishList extends BaseEntity {
-  @Column()
-  name: string;
-
   @ManyToOne(() => User, (user) => user.id, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({ name: 'createdBy' })
-  createdBy: User;
+  user: User;
 
-  @OneToMany(() => WishListFeed, (wishListFeed) => wishListFeed.wishList)
-  wishListFeeds: WishListFeed[];
-
-  totalItems?: number;
+  @ManyToOne(() => RankProduct, (rankProduct) => rankProduct.id)
+  rankProduct: RankProduct;
 
   constructor(data?: Partial<WishList>) {
     super(data);
-    this.name = data?.name;
-    this.createdBy = data?.createdBy;
+    this.user = data?.user;
+    this.rankProduct = data?.rankProduct;
   }
 }

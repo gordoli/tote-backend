@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   Brand,
   Category,
+  CustomList,
   WishList,
-  WishListFeed,
   Feed,
   Follower,
   RankProduct,
@@ -16,8 +16,8 @@ import { BrandRepository } from './brand.repository';
 import { CategoryRepository } from './category.repository';
 import { RankProductRepository } from './rank-product.repository';
 import { FeedRepository } from './feed.repository';
-import { WishListFeedRepository } from './wish-list-feed.repository';
 import { WishListRepository } from './wish-list.repository';
+import { CustomListRepository } from './custom-list.repository';
 const providers = [
   UserRepository,
   FollowerRepository,
@@ -25,8 +25,8 @@ const providers = [
   CategoryRepository,
   RankProductRepository,
   FeedRepository,
+  CustomListRepository,
   WishListRepository,
-  WishListFeedRepository,
 ];
 @Module({
   imports: [
@@ -37,8 +37,8 @@ const providers = [
       Category,
       RankProduct,
       Feed,
+      CustomList,
       WishList,
-      WishListFeed,
     ]),
   ],
   providers,
