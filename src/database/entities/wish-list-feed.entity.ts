@@ -30,6 +30,7 @@ export class WishListFeed extends BaseEntity {
   @ManyToOne(() => WishList, (wishList) => wishList.id, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
+    nullable: true,
   })
   wishList: WishList;
 

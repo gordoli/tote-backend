@@ -6,8 +6,15 @@ import {
   WishListRepository,
   FeedRepository,
   User,
+  RankProductRepository,
+  FEED_TYPE,
 } from 'src/database';
-import { AddFeedWishListDTO, CreateWishListDTO, WishListDTO } from '../dto';
+import {
+  AddFeedWishListDTO,
+  CreateWishListDTO,
+  WishListDTO,
+  WishListProductDTO,
+} from '../dto';
 
 @Injectable()
 export class WishListService {
@@ -15,6 +22,7 @@ export class WishListService {
     private _wishListRepository: WishListRepository,
     private _wishListFeedRepository: WishListFeedRepository,
     private _feedRepository: FeedRepository,
+    private _rankProductRepository: RankProductRepository,
   ) {}
 
   public async createWishList(dto: CreateWishListDTO, user: User) {
@@ -83,6 +91,34 @@ export class WishListService {
         el.feed.createdBy = new User(el.feed.createdBy).mainInfo();
       }
     });
+    return {
+      items,
+      total,
+    };
+  }
+
+  public async addProduct(user: User, rankProductId: number) {
+    const existRankProduct = await this._rankProductRepository.existsBy({
+      id: rankProductId,
+    });
+    if (!existRankProduct) {
+      throw new NotFoundException(
+        `Rank product id ${rankProductId} not found!`,
+      );
+    }
+    return this._wishListFeedRepository.save(
+      new WishListFeed({
+        createdBy: user,
+        feedType: FEED_TYPE.DIRECT_RANK_PRODUCT,
+        referenceId: rankProductId,
+      }),
+    );
+  }
+
+  public async wishListProducts(dto: WishListProductDTO) {
+    const [items, total] = await this._wishListFeedRepository.wishListProducts(
+      dto,
+    );
     return {
       items,
       total,

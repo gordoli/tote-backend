@@ -3,7 +3,8 @@ import { BaseFilter } from 'src/library';
 import { DataSource } from 'typeorm';
 import { WishListFeed, FEED_TYPE, RankProduct } from '../entities';
 import { BaseRepository } from './base.repository';
-import { WishListDTO } from 'src/domain';
+import { WishListDTO, WishListProductDTO } from 'src/domain';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class WishListFeedRepository extends BaseRepository<WishListFeed> {
@@ -26,7 +27,7 @@ export class WishListFeedRepository extends BaseRepository<WishListFeed> {
         'feed.rankProduct',
         RankProduct,
         'rankProduct',
-        `feed.referenceId = rankProduct.id AND feed.type = '${FEED_TYPE.RANK_PRODUCT}'`,
+        `feed.referenceId = rankProduct.id AND (feed.type = '${FEED_TYPE.RANK_PRODUCT}')`,
       )
       .leftJoinAndSelect('rankProduct.category', 'category')
       .leftJoinAndSelect('rankProduct.brand', 'brand');
@@ -55,6 +56,30 @@ export class WishListFeedRepository extends BaseRepository<WishListFeed> {
         'category',
         'brand',
       ])
+      .orderBy('wishListFeed.id', 'DESC')
+      .getManyAndCount();
+  }
+
+  public async wishListProducts(dto: WishListProductDTO) {
+    const queryBuilder = this._buildQuery(
+      new BaseFilter(dto),
+      this.createQueryBuilder('wishListFeed')
+        .leftJoinAndMapOne(
+          'wishListFeed.rankProduct',
+          RankProduct,
+          'rankProduct',
+          'wishListFeed.referenceId = rankProduct.id',
+        )
+        .leftJoinAndSelect('rankProduct.category', 'category')
+        .leftJoinAndSelect('rankProduct.brand', 'brand')
+        .leftJoin('wishListFeed.createdBy', 'createdBy')
+        .where('wishListFeed.feedType = :productType', {
+          productType: FEED_TYPE.DIRECT_RANK_PRODUCT,
+        }),
+    );
+
+    return queryBuilder
+      .addSelect(UserRepository.getMainSelect('createdBy'))
       .orderBy('wishListFeed.id', 'DESC')
       .getManyAndCount();
   }

@@ -8,6 +8,7 @@ export enum FEED_TYPE {
   RANK_PRODUCT = 'rank_product',
   QUESTION = 'question',
   REQUEST = 'request',
+  DIRECT_RANK_PRODUCT = 'direct_rank_product',
 }
 
 @Entity(DATABASE_CONSTANT.TABLE_NAME.FEED)
