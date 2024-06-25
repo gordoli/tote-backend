@@ -20,17 +20,17 @@ export class WishListRepository extends BaseRepository<WishList> {
         userId,
       }),
     )
-      .leftJoinAndSelect('wishlist.rankProduct', 'rankProduct')
+      .leftJoinAndSelect('wishlist.product', 'product')
       .leftJoin('wishlist.user', 'user')
-      .leftJoinAndSelect('rankProduct.category', 'category')
-      .leftJoinAndSelect('rankProduct.brand', 'brand');
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.brand', 'brand');
 
     if (categoryId) {
-      query.andWhere('rankProduct.categoryId=:categoryId', { categoryId });
+      query.andWhere('product.categoryId=:categoryId', { categoryId });
     }
 
     if (name) {
-      query.andWhere('rankProduct.name LIKE :name', { name: `%${name}%` });
+      query.andWhere('product.name LIKE :name', { name: `%${name}%` });
     }
 
     return query
@@ -43,9 +43,9 @@ export class WishListRepository extends BaseRepository<WishList> {
     const queryBuilder = this._buildQuery(
       new BaseFilter(dto),
       this.createQueryBuilder('wishlist')
-        .leftJoinAndSelect('wishlist.rankProduct', 'rankProduct')
-        .leftJoinAndSelect('rankProduct.category', 'category')
-        .leftJoinAndSelect('rankProduct.brand', 'brand')
+        .leftJoinAndSelect('wishlist.product', 'product')
+        .leftJoinAndSelect('product.category', 'category')
+        .leftJoinAndSelect('product.brand', 'brand')
         .leftJoin('wishlist.user', 'user'),
     );
 
@@ -53,5 +53,17 @@ export class WishListRepository extends BaseRepository<WishList> {
       .addSelect(UserRepository.getMainSelect('user'))
       .orderBy('wishlist.id', 'DESC')
       .getManyAndCount();
+  }
+
+  public async wishLists(dto: WishListProductDTO) {
+    const queryBuilder = this._buildQuery(
+      new BaseFilter(dto),
+      this.createQueryBuilder('wishlist')
+        .leftJoinAndSelect('wishlist.product', 'product')
+        .leftJoinAndSelect('product.category', 'category')
+        .leftJoinAndSelect('product.brand', 'brand'),
+    );
+
+    return queryBuilder.orderBy('wishlist.id', 'DESC').getManyAndCount();
   }
 }

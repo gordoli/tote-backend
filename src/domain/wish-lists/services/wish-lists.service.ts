@@ -5,6 +5,7 @@ import {
   FeedRepository,
   RankProductRepository,
   User,
+  UserRepository,
   WishList,
   WishListRepository,
 } from 'src/database';
@@ -17,6 +18,7 @@ export class WishListService {
     private _wishListFeedRepository: WishListRepository,
     private _feedRepository: FeedRepository,
     private _rankProductRepository: RankProductRepository,
+    private _userRepository: UserRepository,
   ) {}
 
   public async createWishList(dto: CreateWishListDTO, user: User) {
@@ -70,7 +72,7 @@ export class WishListService {
     return this._wishListFeedRepository.save(
       new WishList({
         user,
-        rankProduct,
+        product: rankProduct,
       }),
     );
   }
@@ -80,6 +82,19 @@ export class WishListService {
       dto,
     );
     return {
+      items,
+      total,
+    };
+  }
+
+  public async userWishlistProducts(userId: number, dto: WishListProductDTO) {
+    dto.user = userId;
+    const [user, [items, total]] = await Promise.all([
+      this._userRepository.sanitizedUser(userId),
+      this._wishListFeedRepository.wishLists(dto),
+    ]);
+    return {
+      user,
       items,
       total,
     };

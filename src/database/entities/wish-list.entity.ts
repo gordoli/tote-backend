@@ -12,12 +12,12 @@ export class WishList extends BaseEntity {
   })
   user: User;
 
-  @ManyToOne(() => RankProduct, (rankProduct) => rankProduct.id)
-  rankProduct: RankProduct;
+  @ManyToOne(() => RankProduct, (product) => product.id)
+  product: RankProduct;
 
   constructor(data?: Partial<WishList>) {
     super(data);
     this.user = data?.user;
-    this.rankProduct = data?.rankProduct;
+    this.product = data?.product;
   }
 }

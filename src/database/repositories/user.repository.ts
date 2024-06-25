@@ -102,7 +102,12 @@ export class UserRepository extends BaseRepository<User> {
       .orderBy('users.id', 'DESC')
       .getManyAndCount();
   }
-
+  public async sanitizedUser(id: number) {
+    return this.createQueryBuilder('user')
+      .where('user.id=:id', { id })
+      .select(UserRepository.getMainSelect('user'))
+      .getOne();
+  }
   public static getMainSelect(alias: string) {
     return UserRepository.MAIN_SELECT.map((column) => `${alias}.${column}`);
   }

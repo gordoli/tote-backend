@@ -1,5 +1,5 @@
 #!/bin/bash
-
+npm run migration:run:dev
 # Name of the PM2 process
 PROCESS_NAME="tote-api"
 

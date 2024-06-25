@@ -27,9 +27,13 @@ export class WishListController extends BaseController {
     @Query() dto: WishListProductDTO,
     @Res() response: Response,
   ) {
-    dto.user = userId;
-    const { items, total } = await this._wishListService.wishListProducts(dto);
-    this.responseCustom(response, items, { total });
+    const { items, total, user } =
+      await this._wishListService.userWishlistProducts(userId, dto);
+    this.responseCustom(
+      response,
+      { user, products: items.map((item) => item.product) },
+      { total },
+    );
   }
 
   @Post('add/:productId')
