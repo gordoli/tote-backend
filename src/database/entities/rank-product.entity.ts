@@ -1,21 +1,19 @@
+import { DATABASE_CONSTANT } from 'src/constants/database.constants';
+import { fixedNumber, mapNumber } from 'src/utils';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { BaseEntity } from './base.entity';
-import { User } from './user.entity';
+import { BaseEntity, ColumnNumericTransformer } from './base.entity';
 import { Brand } from './brand.entity';
 import { Category } from './category.entity';
-import { mapNumber } from 'src/utils';
-import { DATABASE_CONSTANT } from 'src/constants/database.constants';
-
-export enum RANK_PRODUCT_RATE {
-  BAD = 1,
-  NORMAL = 2,
-  GOOD = 3,
-}
+import { User } from './user.entity';
 
 @Entity(DATABASE_CONSTANT.TABLE_NAME.RANK_PRODUCT)
 export class RankProduct extends BaseEntity {
-  @Column({ type: 'smallint' })
-  rate: RANK_PRODUCT_RATE;
+  @Column({
+    type: 'decimal',
+    transformer: new ColumnNumericTransformer(),
+    default: 10,
+  })
+  rate: number;
 
   @Column()
   link: string;
@@ -63,7 +61,6 @@ export class RankProduct extends BaseEntity {
   }
 
   public static getOverallRanking(avg = 0) {
-    const avgRanking = (10 * avg) / RANK_PRODUCT_RATE.GOOD;
-    return mapNumber(avgRanking.toFixed(2));
+    return mapNumber(fixedNumber(avg));
   }
 }

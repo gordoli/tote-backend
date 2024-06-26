@@ -1,6 +1,7 @@
+import { fixedNumber } from 'src/utils';
 import {
-  PrimaryGeneratedColumn,
   CreateDateColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -31,4 +32,14 @@ export class BaseEntity {
 export enum BaseStatus {
   Active = 'active',
   Inactive = 'inactive',
+}
+
+export class ColumnNumericTransformer {
+  public to(data: number): number {
+    return data;
+  }
+  public from(data: string): number {
+    if (!data) return null;
+    return parseFloat(fixedNumber(data));
+  }
 }

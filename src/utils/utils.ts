@@ -96,3 +96,7 @@ export const mapNumber = (num: string | number = 0): number => {
   }
   return parsedNumber;
 };
+
+export const fixedNumber = (num: string | number = 0, fractionDigits = 1) => {
+  return mapNumber(num).toFixed(fractionDigits);
+};

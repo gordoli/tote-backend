@@ -1,12 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
-import { RANK_PRODUCT_RATE } from 'src/database';
+import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { BaseFilter, TransformBoolean } from 'src/library';
 
 export class CreateRankProductDTO {
-  @IsEnum(RANK_PRODUCT_RATE)
-  @IsNotEmpty()
-  rate: RANK_PRODUCT_RATE;
+  @IsNumber()
+  @Type(() => Number)
+  rate: number;
 
   @IsNotEmpty()
   @Type(() => Number)
