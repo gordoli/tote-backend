@@ -14,17 +14,14 @@ export class UsersController extends BaseController {
 
   @Get('me')
   public async me(@CurrentUser() user: User, @Res() response: Response) {
-    const serializedUser = new User(user);
-    await this._usersService.mapUserStatistics(serializedUser);
+    const serializedUser = await this._usersService.getUserById(user.id);
     return this.responseCustom(response, serializedUser);
   }
 
   @Get(':id')
   @Public()
   public async profile(@Param('id') id: number, @Res() response: Response) {
-    const user = await this._usersService.getUserById(id);
-    const serializedUser = new User(user.serialize());
-    await this._usersService.mapUserStatistics(serializedUser);
+    const serializedUser = await this._usersService.getUserById(id);
     return this.responseCustom(response, serializedUser);
   }
 }

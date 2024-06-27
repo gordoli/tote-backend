@@ -9,7 +9,7 @@ import { RankProductsService } from '../services';
 @Controller('tote')
 @UseGuards(JwtAuthUserGuard)
 export class ToteController extends BaseController {
-  constructor(private _ratingService: RankProductsService) {
+  constructor(private _rankProductService: RankProductsService) {
     super();
   }
 
@@ -23,7 +23,7 @@ export class ToteController extends BaseController {
     if (dto.isOnlyFriend) {
       dto.userId = user.id;
     }
-    const { items, total } = await this._ratingService.list(dto);
+    const { items, total } = await this._rankProductService.list(dto);
     this.responseCustom(response, items, {
       total,
       page: dto.page,

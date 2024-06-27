@@ -39,6 +39,28 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
       .orderBy('rankProduct.id', 'DESC')
       .getManyAndCount();
   }
+  public async listByUser(dto: ListRankProductDTO) {
+    const { name, isOnlyFriend, userId, brandId, ...rest } = dto;
+    const query = this._buildQuery(
+      new BaseFilter(rest),
+      this.createQueryBuilder('rankProduct'),
+    )
+      .leftJoinAndSelect('rankProduct.brand', 'brand')
+      .leftJoinAndSelect('rankProduct.category', 'category');
+
+    if (name) {
+      query.andWhere('rankProduct.name LIKE :name', { name: `%${name}%` });
+    }
+
+    if (brandId) {
+      query.andWhere('rankProduct.brandId =:brandId', { brandId });
+    }
+
+    if (isOnlyFriend && userId) {
+      this._friendOnly(query, 'rankProduct.createdBy', userId);
+    }
+    return query.orderBy('rankProduct.id', 'DESC').getManyAndCount();
+  }
 
   public async overallRatingBrands(brandIds: number[]) {
     if (brandIds.length) {

@@ -1,10 +1,14 @@
 import { Global, Module } from '@nestjs/common';
-import { RankProductsController, ToteController } from './controllers';
+import {
+  ProductsController,
+  RankProductsController,
+  ToteController,
+} from './controllers';
 import { RankProductsService } from './services';
 
 @Global()
 @Module({
-  controllers: [RankProductsController, ToteController],
+  controllers: [RankProductsController, ToteController, ProductsController],
   providers: [RankProductsService],
   exports: [RankProductsService],
 })

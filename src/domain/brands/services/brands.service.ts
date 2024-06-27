@@ -19,10 +19,11 @@ export class BrandsService {
     return this._brandRepository.save(instance);
   }
 
-  public async list(dto: ListBrandDTO) {
+  public async list(dto: ListBrandDTO, mapRating = true) {
     const [items, total] = await this._brandRepository.list(dto);
-
-    await this._mapOverallRating(items);
+    if (mapRating) {
+      await this._mapOverallRating(items);
+    }
     return {
       items,
       total,

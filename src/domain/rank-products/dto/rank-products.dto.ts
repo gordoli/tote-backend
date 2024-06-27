@@ -43,6 +43,10 @@ export class ListRankProductDTO extends BaseFilter {
 
   @IsOptional()
   @Type(() => Number)
+  category: number;
+
+  @IsOptional()
+  @Type(() => Number)
   brandId: number;
 
   @IsOptional()

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { keyBy } from 'lodash';
 import { COMMON_CONSTANT, EVENTS } from 'src/constants';
 import {
   BrandRanking,
@@ -12,7 +13,6 @@ import {
 import { FilesService } from 'src/domain/files';
 import { CreateFeedRankProductPayload } from 'src/event-handler/types';
 import { CreateRankProductDTO, ListRankProductDTO } from '../dto';
-import { keyBy } from 'lodash';
 
 @Injectable()
 export class RankProductsService {
@@ -40,6 +40,16 @@ export class RankProductsService {
       }),
     );
     return rankProduct;
+  }
+
+  public async listByUser(userId: number, dto: ListRankProductDTO) {
+    dto.createdBy = userId;
+
+    const [items, total] = await this._rankProductRepository.listByUser(dto);
+    return {
+      items,
+      total,
+    };
   }
 
   public async list(dto: ListRankProductDTO) {

@@ -15,6 +15,8 @@ export const MESSAGE_CONSTANT = {
     VERIFY_SUCCESS: 'Your email has been successfully verified.',
     MAIL_NEW_PASSWORD:
       'Your new password has been sent to your email. Please check your inbox and follow the instructions to reset your password',
+    CONFLICT_EMAIL: 'This email address is already in use.',
+    CONFLICT_USERNAME: 'This username is already taken.',
   },
   OTP: {
     INVALID:

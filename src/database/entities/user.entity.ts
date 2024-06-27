@@ -1,9 +1,11 @@
 import { SocialData } from 'src/domain/auth/types';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { BaseEntity, BaseStatus } from './base.entity';
 import { Exclude } from 'class-transformer';
 import { mapNumber } from 'src/utils';
 import { DATABASE_CONSTANT } from 'src/constants/database.constants';
+import { RankProduct } from './rank-product.entity';
+import { Brand } from './brand.entity';
 
 export enum UserProvider {
   EMAIL = 'email',
@@ -13,12 +15,16 @@ export enum UserProvider {
 @Entity(DATABASE_CONSTANT.TABLE_NAME.USER)
 export class User extends BaseEntity {
   @Column({ nullable: true })
+  @Index('IDX_Users_username')
+  @Index('IDX_Users_lower_username', ['LOWER(username)'])
   username: string;
 
   @Column({ nullable: true })
   avatar: string;
 
   @Column()
+  @Index('IDX_Users_email')
+  @Index('IDX_Users_lower_email', ['LOWER(email)'])
   email: string;
 
   @Column({ nullable: true })
@@ -50,6 +56,12 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   socialId: string;
 
+  @OneToMany(() => RankProduct, (rankProduct) => rankProduct.createdBy)
+  products: RankProduct[];
+
+  @OneToMany(() => Brand, (rankProduct) => rankProduct.user)
+  brands: Brand[];
+
   statistics?: UserStatistics;
 
   constructor(data?: Partial<User>) {
@@ -66,6 +78,8 @@ export class User extends BaseEntity {
     this.firstName = data?.firstName;
     this.lastName = data?.lastName;
     this.avatar = data?.avatar;
+    this.products = data?.products;
+    this.brands = data?.brands;
   }
 
   public serialize() {
@@ -83,6 +97,8 @@ export class User extends BaseEntity {
       firstName: this.firstName,
       lastName: this.lastName,
       avatar: this.avatar,
+      products: this?.products,
+      brands: this?.brands,
     };
   }
 

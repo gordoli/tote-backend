@@ -7,7 +7,11 @@ import { BaseRepository } from './base.repository';
 
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
-  public static MAIN_SELECT = [
+  public static getMainSelect(alias: string) {
+    return UserRepository.MAIN_SELECT.map((column) => `${alias}.${column}`);
+  }
+
+  public static readonly MAIN_SELECT = [
     'id',
     'username',
     'email',
@@ -40,6 +44,14 @@ export class UserRepository extends BaseRepository<User> {
   public async findByLowerEmail(email: string) {
     return this.createQueryBuilder('users')
       .where('LOWER(users.email) = :email', { email: email?.toLowerCase() })
+      .getOne();
+  }
+
+  public async findByLowerUsername(username: string) {
+    return this.createQueryBuilder('users')
+      .where('LOWER(users.username) = :username', {
+        username: username?.toLowerCase(),
+      })
       .getOne();
   }
 
@@ -108,7 +120,14 @@ export class UserRepository extends BaseRepository<User> {
       .select(UserRepository.getMainSelect('user'))
       .getOne();
   }
-  public static getMainSelect(alias: string) {
-    return UserRepository.MAIN_SELECT.map((column) => `${alias}.${column}`);
+
+  public async userFullInformation(id: number) {
+    return this.createQueryBuilder('user')
+      .where('user.id=:id', { id })
+      .leftJoinAndSelect('user.products', 'products')
+      .leftJoinAndSelect('products.brand', 'brand')
+      .leftJoinAndSelect('products.category', 'category')
+      .leftJoinAndSelect('user.brands', 'brands')
+      .getOne();
   }
 }
