@@ -9,6 +9,7 @@ import {
   Follower,
   RankProduct,
   User,
+  Notification,
 } from '../entities';
 import { UserRepository } from './user.repository';
 import { FollowerRepository } from './follower.repository';
@@ -18,6 +19,7 @@ import { RankProductRepository } from './rank-product.repository';
 import { FeedRepository } from './feed.repository';
 import { WishListRepository } from './wish-list.repository';
 import { CustomListRepository } from './custom-list.repository';
+import { NotificationRepository } from './notification.repository';
 const providers = [
   UserRepository,
   FollowerRepository,
@@ -27,6 +29,7 @@ const providers = [
   FeedRepository,
   CustomListRepository,
   WishListRepository,
+  NotificationRepository,
 ];
 @Module({
   imports: [
@@ -39,6 +42,7 @@ const providers = [
       Feed,
       CustomList,
       WishList,
+      Notification,
     ]),
   ],
   providers,

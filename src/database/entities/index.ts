@@ -7,3 +7,4 @@ export * from './rank-product.entity';
 export * from './feed.entity';
 export * from './custom-list.entity';
 export * from './wish-list.entity';
+export * from './notification.entity';

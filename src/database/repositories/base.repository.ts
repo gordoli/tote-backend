@@ -24,7 +24,9 @@ class Filterable {
         });
       }
     });
-    queryBuilder.skip(BaseFilter.getSkip(page, perPage));
+    if (page) {
+      queryBuilder.skip(BaseFilter.getSkip(page, perPage));
+    }
     if (perPage) {
       queryBuilder.take(BaseFilter.getTake(perPage));
     }

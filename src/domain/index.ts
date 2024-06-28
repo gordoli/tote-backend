@@ -7,3 +7,4 @@ export * from './brands';
 export * from './rank-products';
 export * from './feeds';
 export * from './wish-lists';
+export * from './notifications';

@@ -22,6 +22,7 @@ import {
   RankProductsModule,
   FeedsModule,
   WishListsModule,
+  NotificationsModule,
 } from './domain';
 
 @Global()
@@ -53,6 +54,7 @@ import {
     RankProductsModule,
     FeedsModule,
     WishListsModule,
+    NotificationsModule,
   ],
   providers: [AppService],
   exports: [CoreModule],

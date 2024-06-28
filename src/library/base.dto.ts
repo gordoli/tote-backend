@@ -25,7 +25,7 @@ export class BaseFilter {
   filter: Record<string, any>;
   constructor(data?: Partial<BaseFilter>) {
     if (data) {
-      const { page = 1, perPage = 10, ...filter } = data;
+      const { page, perPage, ...filter } = data;
       delete filter.filter;
       this.page = page;
       this.perPage = perPage;

@@ -8,5 +8,6 @@ export const DATABASE_CONSTANT = {
     FOLLOWER: 'Followers',
     RANK_PRODUCT: 'RankProducts',
     CUSTOM_LIST: 'CustomLists',
+    NOTIFICATION: 'Notifications',
   },
 };

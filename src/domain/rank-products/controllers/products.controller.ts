@@ -1,29 +1,53 @@
-import { Controller, Get, Param, Query, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { Response } from 'express';
-import { JwtAuthUserGuard } from 'src/domain/auth';
+import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
 import { BaseController } from 'src/library';
-import { ListRankProductDTO } from '../dto';
+import { CreateRankProductDTO, ListRankProductDTO } from '../dto';
 import { RankProductsService } from '../services';
+import { User } from 'src/database';
 
 @Controller('products')
 @UseGuards(JwtAuthUserGuard)
 export class ProductsController extends BaseController {
-  constructor(private _ratingService: RankProductsService) {
+  constructor(private _rankProductsService: RankProductsService) {
     super();
   }
 
-  @Get(':categoryId')
+  @Get()
   public async list(
-    @Param('categoryId') categoryId: number,
+    @CurrentUser() user: User,
     @Query() dto: ListRankProductDTO,
     @Res() response: Response,
   ) {
-    dto.category = categoryId;
-    const { items, total } = await this._ratingService.list(dto);
-    this.responseCustom(response, items, {
+    if (dto.isOnlyFriend) {
+      dto.userId = user.id;
+    }
+
+    const { items, total } = await this._rankProductsService.list(dto);
+    await this._rankProductsService.mapWishlisted(items, user.id);
+    return this.responseCustom(response, items, {
       total,
       page: dto.page,
       perPage: dto.perPage,
     });
+  }
+
+  @Post()
+  public async create(
+    @CurrentUser() user: User,
+    @Res() response: Response,
+    @Body() dto: CreateRankProductDTO,
+  ) {
+    const rankProduct = await this._rankProductsService.create(dto, user);
+    return this.responseCustom(response, rankProduct);
   }
 }

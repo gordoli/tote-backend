@@ -9,12 +9,12 @@ import { UserRepository } from './user.repository';
 
 @Injectable()
 export class RankProductRepository extends BaseRepository<RankProduct> {
-  constructor(private _dataSource: DataSource) {
+  constructor(_dataSource: DataSource) {
     super(RankProduct, _dataSource);
   }
 
   public async list(dto: ListRankProductDTO) {
-    const { name, isOnlyFriend, userId, brandId, ...rest } = dto;
+    const { name, isOnlyFriend, userId, brandId, categoryId, ...rest } = dto;
     const query = this._buildQuery(
       new BaseFilter(rest),
       this.createQueryBuilder('rankProduct'),
@@ -29,6 +29,10 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
 
     if (brandId) {
       query.andWhere('rankProduct.brandId =:brandId', { brandId });
+    }
+
+    if (categoryId) {
+      query.andWhere('category.id =:categoryId', { categoryId });
     }
 
     if (isOnlyFriend && userId) {

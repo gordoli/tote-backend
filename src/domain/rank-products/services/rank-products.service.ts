@@ -9,10 +9,12 @@ import {
   RankProduct,
   RankProductRepository,
   User,
+  WishListRepository,
 } from 'src/database';
 import { FilesService } from 'src/domain/files';
 import { CreateFeedRankProductPayload } from 'src/event-handler/types';
 import { CreateRankProductDTO, ListRankProductDTO } from '../dto';
+import { In } from 'typeorm';
 
 @Injectable()
 export class RankProductsService {
@@ -22,6 +24,7 @@ export class RankProductsService {
     private _brandRepository: BrandRepository,
     private _categoryRepository: CategoryRepository,
     private _evenEmitter: EventEmitter2,
+    private _wishlistRepository: WishListRepository,
   ) {}
 
   public async create(dto: CreateRankProductDTO, user: User) {
@@ -58,6 +61,28 @@ export class RankProductsService {
       items,
       total,
     };
+  }
+
+  public async mapWishlisted(items: RankProduct[], userId: number) {
+    if (items.length) {
+      const foundWishlisted = await this._wishlistRepository.find({
+        where: {
+          product: { id: In(items.map((item) => item.id)) },
+          user: {
+            id: userId,
+          },
+        },
+        loadRelationIds: {
+          disableMixedMap: true,
+          relations: ['product', 'user'],
+        },
+      });
+      const dictionary = keyBy(foundWishlisted, 'product.id');
+
+      for (const item of items) {
+        item.wishlisted = Boolean(dictionary[item.id]);
+      }
+    }
   }
 
   public async handleInsertFile(rankProduct: RankProduct) {

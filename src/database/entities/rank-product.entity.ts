@@ -48,6 +48,8 @@ export class RankProduct extends BaseEntity {
   @JoinColumn({ name: 'createdBy' })
   createdBy: User;
 
+  wishlisted?: boolean;
+
   constructor(data?: Partial<RankProduct>) {
     super(data);
     this.rate = data?.rate;

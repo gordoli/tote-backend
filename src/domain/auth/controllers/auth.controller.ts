@@ -127,9 +127,13 @@ export class AuthController extends BaseController {
   public async resendOtp(@Res() response: Response, @Body() dto: ResendOtpDTO) {
     const sessionID = this._request.sessionID;
     await this._userService.sendOTP(dto.email, sessionID, dto.type);
-    return this.responseCustom(response, undefined, {
-      message: MESSAGE_CONSTANT.OTP.SENT_TO_EMAIL,
-    });
+    return this.responseCustom(
+      response,
+      { sessionID },
+      {
+        message: MESSAGE_CONSTANT.OTP.SENT_TO_EMAIL,
+      },
+    );
   }
 
   @Post('registration')

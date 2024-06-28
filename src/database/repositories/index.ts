@@ -7,4 +7,5 @@ export * from './rank-product.repository';
 export * from './feed.repository';
 export * from './custom-list.repository';
 export * from './wish-list.repository';
+export * from './notification.repository';
 export * from './repository.module';
