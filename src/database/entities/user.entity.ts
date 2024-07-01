@@ -1,11 +1,11 @@
+import { Exclude } from 'class-transformer';
+import { DATABASE_CONSTANT } from 'src/constants/database.constants';
 import { SocialData } from 'src/domain/auth/types';
+import { mapNumber } from 'src/utils';
 import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { BaseEntity, BaseStatus } from './base.entity';
-import { Exclude } from 'class-transformer';
-import { mapNumber } from 'src/utils';
-import { DATABASE_CONSTANT } from 'src/constants/database.constants';
-import { RankProduct } from './rank-product.entity';
 import { Brand } from './brand.entity';
+import { RankProduct } from './rank-product.entity';
 
 export enum UserProvider {
   EMAIL = 'email',
@@ -115,7 +115,8 @@ export class User extends BaseEntity {
   }
 
   static getUsernameByEmail(email: string) {
-    return email.split('@')[0];
+    const splicedEmail = email.split('@')[0];
+    return `${splicedEmail || ''}`;
   }
 
   public mainInfo() {

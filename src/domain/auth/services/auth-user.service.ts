@@ -1,5 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { randomUUID } from 'crypto';
 import {
   ERROR_CODE_CONSTANT,
   EVENTS,
@@ -197,9 +198,38 @@ export class AuthUserService {
       );
     }
     user.password = hashPassword(registerDto.password);
-    user.username = User.getUsernameByEmail(user.email);
+    user.username = await this.uniqUsername(registerDto.email);
     await this._userRepository.save(user);
     return this.sendOTP(user.email, sessionID, SendOTPType.VERIFY_EMAIL);
+  }
+
+  public async uniqUsername(email: string) {
+    const username = User.getUsernameByEmail(email);
+    const foundUsers = await this._userRepository
+      .createQueryBuilder('user')
+      .where('user.username ILIKE :username', {
+        username: `${username?.toLowerCase() || ''}%`,
+      })
+      .andWhere('user.deletedAt ISNULL')
+      .select(['user.id', 'user.username'])
+      .getMany();
+
+    const foundUsernames = foundUsers.map((el) => el.username);
+    this._logger.debug('Found username for uniq username', foundUsernames);
+    let uniqUsername: string;
+    while (true) {
+      uniqUsername = `${username}_${randomUUID().split('-')[0]}`;
+      const existedUsername = foundUsernames.some(
+        (el) => el.toLowerCase() === uniqUsername?.toLowerCase(),
+      );
+      if (existedUsername) {
+        continue;
+      } else {
+        break;
+      }
+    }
+    this._logger.debug('Uniq username', uniqUsername);
+    return uniqUsername;
   }
 
   public async verifyEmail(email: string) {

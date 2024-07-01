@@ -29,9 +29,15 @@ export class UserSocialService {
       return this._userService.loginResponse(foundUser);
     }
 
+    const userInstance = User.mapSocialProfile(socialData, provider);
+
+    userInstance.username = await this._userService.uniqUsername(
+      userInstance.email,
+    );
+
     const socialUser = await this.upsertSocial(
       { socialId: socialData.id, provider },
-      User.mapSocialProfile(socialData, provider),
+      userInstance,
     );
 
     return this._userService.loginResponse(socialUser);
