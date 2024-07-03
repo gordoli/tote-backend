@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -36,7 +37,7 @@ export class WishListController extends BaseController {
     );
   }
 
-  @Post('add/:productId')
+  @Post(':productId')
   public async add(
     @CurrentUser() user: User,
     @Param('productId') productId: number,
@@ -44,5 +45,15 @@ export class WishListController extends BaseController {
   ) {
     const rankProduct = await this._wishListService.addProduct(user, productId);
     this.responseCustom(response, rankProduct);
+  }
+
+  @Delete(':productId')
+  public async delete(
+    @CurrentUser() user: User,
+    @Param('productId') productId: number,
+    @Res() response: Response,
+  ) {
+    const result = await this._wishListService.deleteProduct(user, productId);
+    this.responseCustom(response, { affected: result?.affected });
   }
 }

@@ -9,12 +9,11 @@ import {
   RankProduct,
   RankProductRepository,
   User,
-  WishListRepository,
 } from 'src/database';
 import { FilesService } from 'src/domain/files';
+import { WishListService } from 'src/domain/wish-lists';
 import { CreateFeedRankProductPayload } from 'src/event-handler/types';
 import { CreateRankProductDTO, ListRankProductDTO } from '../dto';
-import { In } from 'typeorm';
 
 @Injectable()
 export class RankProductsService {
@@ -24,7 +23,7 @@ export class RankProductsService {
     private _brandRepository: BrandRepository,
     private _categoryRepository: CategoryRepository,
     private _evenEmitter: EventEmitter2,
-    private _wishlistRepository: WishListRepository,
+    private _wishListService: WishListService,
   ) {}
 
   public async create(dto: CreateRankProductDTO, user: User) {
@@ -65,19 +64,11 @@ export class RankProductsService {
 
   public async mapWishlisted(items: RankProduct[], userId: number) {
     if (items.length) {
-      const foundWishlisted = await this._wishlistRepository.find({
-        where: {
-          product: { id: In(items.map((item) => item.id)) },
-          user: {
-            id: userId,
-          },
-        },
-        loadRelationIds: {
-          disableMixedMap: true,
-          relations: ['product', 'user'],
-        },
-      });
-      const dictionary = keyBy(foundWishlisted, 'product.id');
+      const productIds = items.map((item) => item.id);
+      const dictionary = await this._wishListService.dictionaryUserProducts(
+        productIds,
+        userId,
+      );
 
       for (const item of items) {
         item.wishlisted = Boolean(dictionary[item.id]);

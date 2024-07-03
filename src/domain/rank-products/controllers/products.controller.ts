@@ -2,18 +2,17 @@ import {
   Body,
   Controller,
   Get,
-  Param,
   Post,
   Query,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { User } from 'src/database';
 import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
 import { BaseController } from 'src/library';
 import { CreateRankProductDTO, ListRankProductDTO } from '../dto';
 import { RankProductsService } from '../services';
-import { User } from 'src/database';
 
 @Controller('products')
 @UseGuards(JwtAuthUserGuard)

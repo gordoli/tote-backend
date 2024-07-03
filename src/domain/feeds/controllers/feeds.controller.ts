@@ -23,6 +23,7 @@ export class FeedsController extends BaseController {
       dto.userId = user.id;
     }
     const { items, total } = await this._feedsService.list(dto);
+    await this._feedsService.mapWishListed(items, user.id);
     this.responseCustom(response, items, {
       total,
       page: dto.page,

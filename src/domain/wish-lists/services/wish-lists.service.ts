@@ -10,9 +10,12 @@ import {
   WishListRepository,
 } from 'src/database';
 import { CreateWishListDTO, WishListProductDTO } from '../dto';
+import { LoggerService } from 'src/core';
+import { Dictionary, keyBy } from 'lodash';
 
 @Injectable()
 export class WishListService {
+  private _logger = new LoggerService(WishListService.name);
   constructor(
     private _customListRepository: CustomListRepository,
     private _wishListRepository: WishListRepository,
@@ -86,6 +89,15 @@ export class WishListService {
     );
   }
 
+  public async deleteProduct(user: User, rankProductId: number) {
+    const result = await this._wishListRepository.delete({
+      user,
+      product: { id: rankProductId },
+    });
+    this._logger.debug('Delete product result', result);
+    return result;
+  }
+
   public async wishListProducts(dto: WishListProductDTO) {
     const [items, total] = await this._wishListRepository.wishListProducts(dto);
     return {
@@ -105,5 +117,20 @@ export class WishListService {
       items,
       total,
     };
+  }
+
+  public async dictionaryUserProducts(
+    productIds: number[],
+    userId: number,
+  ): Promise<Dictionary<WishList>> {
+    if (productIds.length) {
+      const foundWishListed =
+        await this._wishListRepository.existsByProductIdsAndUser(
+          productIds,
+          userId,
+        );
+      return keyBy(foundWishListed, 'product.id');
+    }
+    return {};
   }
 }

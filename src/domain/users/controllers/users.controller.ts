@@ -55,10 +55,14 @@ export class UsersController extends BaseController {
 
   @Get(':userId')
   public async userFullInformation(
+    @CurrentUser() currentUser: User,
     @Param('userId') userId: number,
     @Res() response: Response,
   ) {
-    const user = await this._usersService.userFullInformation(userId);
+    const user = await this._usersService.userFullInformation(
+      userId,
+      currentUser,
+    );
     return this.responseCustom(response, user);
   }
 

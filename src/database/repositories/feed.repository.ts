@@ -36,4 +36,19 @@ export class FeedRepository extends BaseRepository<Feed> {
       .addSelect(userSelects)
       .getManyAndCount();
   }
+
+  public async findByUserId(userId: number) {
+    return this.createQueryBuilder('feed')
+      .leftJoinAndMapOne(
+        'feed.rankProduct',
+        RankProduct,
+        'rankProduct',
+        `feed.referenceId = rankProduct.id AND feed.type = '${FEED_TYPE.RANK_PRODUCT}'`,
+      )
+      .leftJoinAndSelect('rankProduct.category', 'category')
+      .leftJoinAndSelect('rankProduct.brand', 'brand')
+      .where('feed.createdBy =:userId', { userId })
+      .orderBy('feed.id', 'DESC')
+      .getMany();
+  }
 }

@@ -65,4 +65,11 @@ export class FollowerRepository extends BaseRepository<Follower> {
       ['user', 'follower'],
     );
   }
+
+  public async isFollowed(userId: number, followerId: number) {
+    return this.existsBy({
+      user: { id: userId },
+      follower: { id: followerId },
+    });
+  }
 }

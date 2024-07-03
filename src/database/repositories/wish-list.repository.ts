@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { WishListDTO, WishListProductDTO } from 'src/domain';
 import { BaseFilter } from 'src/library';
-import { DataSource } from 'typeorm';
+import { DataSource, In } from 'typeorm';
 import { WishList } from '../entities';
 import { BaseRepository } from './base.repository';
 import { UserRepository } from './user.repository';
@@ -65,5 +65,23 @@ export class WishListRepository extends BaseRepository<WishList> {
     );
 
     return queryBuilder.orderBy('wishlist.id', 'DESC').getManyAndCount();
+  }
+
+  public async existsByProductIdsAndUser(productIds: number[], userId: number) {
+    if (productIds.length) {
+      return this.find({
+        where: {
+          product: { id: In([...new Set(productIds)]) },
+          user: {
+            id: userId,
+          },
+        },
+        loadRelationIds: {
+          disableMixedMap: true,
+          relations: ['product', 'user'],
+        },
+      });
+    }
+    return [];
   }
 }

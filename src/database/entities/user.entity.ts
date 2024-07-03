@@ -6,6 +6,7 @@ import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { BaseEntity, BaseStatus } from './base.entity';
 import { Brand } from './brand.entity';
 import { RankProduct } from './rank-product.entity';
+import { Feed } from './feed.entity';
 
 export enum UserProvider {
   EMAIL = 'email',
@@ -64,6 +65,10 @@ export class User extends BaseEntity {
 
   statistics?: UserStatistics;
 
+  feeds?: Feed[];
+
+  isFollowed?: boolean;
+
   constructor(data?: Partial<User>) {
     super(data);
     this.username = data?.username;
@@ -80,6 +85,7 @@ export class User extends BaseEntity {
     this.avatar = data?.avatar;
     this.products = data?.products;
     this.brands = data?.brands;
+    this.feeds = data?.feeds;
   }
 
   public serialize() {
@@ -99,6 +105,7 @@ export class User extends BaseEntity {
       avatar: this.avatar,
       products: this?.products,
       brands: this?.brands,
+      feeds: this?.feeds,
     };
   }
 

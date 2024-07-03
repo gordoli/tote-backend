@@ -1,6 +1,7 @@
 import { ConflictException, HttpStatus, Injectable } from '@nestjs/common';
 import { ERROR_CODE_CONSTANT, MESSAGE_CONSTANT } from 'src/constants';
 import {
+  FeedRepository,
   FollowerRepository,
   RankProductRepository,
   User,
@@ -17,6 +18,7 @@ export class UsersService {
     private _userRepository: UserRepository,
     private _followRepository: FollowerRepository,
     private _rankProductRepository: RankProductRepository,
+    private _feedRepository: FeedRepository,
   ) {}
 
   public async mapUserStatistics(user: User) {
@@ -49,7 +51,7 @@ export class UsersService {
     return serializedUser;
   }
 
-  public async userFullInformation(id: number) {
+  public async userFullInformation(id: number, currentUser: User) {
     const user = await this._userRepository.userFullInformation(id);
     if (!user) {
       HttpExceptionFilter.throwError(
@@ -62,6 +64,11 @@ export class UsersService {
     }
     const serializedUser = new User(user.serialize());
     await this.mapUserStatistics(serializedUser);
+    serializedUser.feeds = await this._feedRepository.findByUserId(id);
+    serializedUser.isFollowed = await this._followRepository.isFollowed(
+      id,
+      currentUser.id,
+    );
     return serializedUser;
   }
 
