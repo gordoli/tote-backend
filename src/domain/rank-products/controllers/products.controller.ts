@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
+  Put,
   Query,
   Res,
   UseGuards,
@@ -11,7 +13,11 @@ import { Response } from 'express';
 import { User } from 'src/database';
 import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
 import { BaseController } from 'src/library';
-import { CreateRankProductDTO, ListRankProductDTO } from '../dto';
+import {
+  CreateRankProductDTO,
+  ListRankProductDTO,
+  UpdateRankProductDTO,
+} from '../dto';
 import { RankProductsService } from '../services';
 
 @Controller('products')
@@ -47,6 +53,17 @@ export class ProductsController extends BaseController {
     @Body() dto: CreateRankProductDTO,
   ) {
     const rankProduct = await this._rankProductsService.create(dto, user);
+    return this.responseCustom(response, rankProduct);
+  }
+
+  @Put(':id')
+  public async update(
+    @Param('id') id: number,
+    @CurrentUser() user: User,
+    @Res() response: Response,
+    @Body() dto: UpdateRankProductDTO,
+  ) {
+    const rankProduct = await this._rankProductsService.update(id, dto, user);
     return this.responseCustom(response, rankProduct);
   }
 }

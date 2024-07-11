@@ -1,6 +1,6 @@
 import { MailData } from 'src/core';
 import { MAIL_TYPE_KEYS } from 'src/core/mail/constant';
-import { RankProduct, User } from 'src/database';
+import { RankProduct, User, WishList } from 'src/database';
 
 export class SendMailPayload {
   key: MAIL_TYPE_KEYS;
@@ -11,11 +11,26 @@ export class SendMailPayload {
   }
 }
 
-export class CreateFeedRankProductPayload {
-  rankProduct: RankProduct;
-  user: User;
-  constructor(data: Partial<CreateFeedRankProductPayload>) {
-    this.rankProduct = data.rankProduct;
-    this.user = data.user;
-  }
+export enum FEED_PAYLOAD_ACTION {
+  ADD_WISHLIST = 'add_wishlist',
+  REMOVE_WISHLIST = 'remove_wishlist',
+  ADD_RANK_PRODUCT = 'add_rank_product',
 }
+export type BaseFeedPayload = {
+  user: User;
+};
+
+export type FeedData =
+  | {
+      data: WishList;
+      action:
+        | FEED_PAYLOAD_ACTION.ADD_WISHLIST
+        | FEED_PAYLOAD_ACTION.REMOVE_WISHLIST;
+    }
+  | {
+      data: RankProduct;
+      action: FEED_PAYLOAD_ACTION.ADD_RANK_PRODUCT;
+    };
+
+// Combined type for handling feed payload
+export type HandleFeedPayload = BaseFeedPayload & FeedData;

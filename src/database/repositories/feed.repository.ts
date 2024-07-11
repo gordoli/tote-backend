@@ -17,16 +17,7 @@ export class FeedRepository extends BaseRepository<Feed> {
     const query = this._buildQuery(
       new BaseFilter(rest),
       this.createQueryBuilder('feed'),
-    )
-      .leftJoin('feed.createdBy', 'createdBy')
-      .leftJoinAndMapOne(
-        'feed.rankProduct',
-        RankProduct,
-        'rankProduct',
-        `feed.referenceId = rankProduct.id AND feed.type = '${FEED_TYPE.RANK_PRODUCT}'`,
-      )
-      .leftJoinAndSelect('rankProduct.category', 'category')
-      .leftJoinAndSelect('rankProduct.brand', 'brand');
+    ).leftJoin('feed.createdBy', 'createdBy');
     if (isOnlyFriend && userId) {
       this._friendOnly(query, 'feed.createdBy', userId);
     }

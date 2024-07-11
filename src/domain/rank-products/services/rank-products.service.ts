@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { keyBy } from 'lodash';
 import { COMMON_CONSTANT, EVENTS } from 'src/constants';
@@ -12,8 +12,16 @@ import {
 } from 'src/database';
 import { FilesService } from 'src/domain/files';
 import { WishListService } from 'src/domain/wish-lists';
-import { CreateFeedRankProductPayload } from 'src/event-handler/types';
-import { CreateRankProductDTO, ListRankProductDTO } from '../dto';
+import {
+  FEED_PAYLOAD_ACTION,
+  HandleFeedPayload,
+} from 'src/event-handler/types';
+import {
+  CreateRankProductDTO,
+  ListRankProductDTO,
+  UpdateRankProductDTO,
+} from '../dto';
+import { HttpExceptionFilter } from 'src/library';
 
 @Injectable()
 export class RankProductsService {
@@ -22,7 +30,7 @@ export class RankProductsService {
     private _fileService: FilesService,
     private _brandRepository: BrandRepository,
     private _categoryRepository: CategoryRepository,
-    private _evenEmitter: EventEmitter2,
+    private _eventEmitter: EventEmitter2,
     private _wishListService: WishListService,
   ) {}
 
@@ -34,14 +42,40 @@ export class RankProductsService {
     instance.createdBy = user;
     await this.handleInsertFile(instance);
     const rankProduct = await this._rankProductRepository.save(instance);
-    this._evenEmitter.emit(
-      EVENTS.FEED_ACTIVITY.CREATE_RATING,
-      new CreateFeedRankProductPayload({
-        rankProduct,
-        user,
-      }),
-    );
+    const payload: HandleFeedPayload = {
+      data: rankProduct,
+      user,
+      action: FEED_PAYLOAD_ACTION.ADD_RANK_PRODUCT,
+    };
+    this._eventEmitter.emit(EVENTS.FEED_ACTIVITY.HANDLE, payload);
     return rankProduct;
+  }
+
+  public async update(id: number, dto: UpdateRankProductDTO, user: User) {
+    const rankProduct = await this._rankProductRepository.findOneBy({
+      createdBy: { id: user.id },
+      id,
+    });
+    if (!rankProduct) {
+      HttpExceptionFilter.throwError(
+        {
+          code: 'not_found_rank_product',
+          message: `Rank product id ${id} not found!`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const { brand = rankProduct.brand, category = rankProduct.category } =
+      await this.assertDto(dto);
+
+    rankProduct.brand = brand;
+    rankProduct.category = category;
+
+    for (const key in dto) {
+      rankProduct[key] = dto[key] || rankProduct[key];
+    }
+    await this.handleInsertFile(rankProduct);
+    return this._rankProductRepository.save(rankProduct);
   }
 
   public async listByUser(userId: number, dto: ListRankProductDTO) {
@@ -129,5 +163,13 @@ export class RankProductsService {
     const overallRatings =
       await this._rankProductRepository.overallRatingBrands(brands);
     return keyBy(overallRatings, 'brandId');
+  }
+
+  public async dictionaryByIds(ids: number[]) {
+    if (ids.length) {
+      const rankProducts = await this._rankProductRepository.findByIds(ids);
+      return keyBy(rankProducts, 'id');
+    }
+    return {};
   }
 }

@@ -1,9 +1,8 @@
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { WishListsModule } from '../wish-lists';
 import { ProductsController } from './controllers';
 import { RankProductsService } from './services';
-import { WishListsModule } from '../wish-lists';
 
-@Global()
 @Module({
   imports: [WishListsModule],
   controllers: [ProductsController],

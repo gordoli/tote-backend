@@ -50,6 +50,8 @@ export class RankProduct extends BaseEntity {
 
   wishlisted?: boolean;
 
+  wishlistId?: number;
+
   constructor(data?: Partial<RankProduct>) {
     super(data);
     this.rate = data?.rate;

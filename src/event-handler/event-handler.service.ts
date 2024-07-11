@@ -2,9 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/constants';
 import { MailService } from 'src/core/mail/mail.service';
-import { LoggerService } from '../core/logger';
-import { CreateFeedRankProductPayload, SendMailPayload } from './types';
+import { FEED_TYPE } from 'src/database';
 import { FeedsService } from 'src/domain';
+import { LoggerService } from '../core/logger';
+import {
+  FEED_PAYLOAD_ACTION,
+  HandleFeedPayload,
+  SendMailPayload,
+} from './types';
 
 @Injectable()
 export class EventHandlerService {
@@ -26,14 +31,33 @@ export class EventHandlerService {
     }
   }
 
-  @OnEvent(EVENTS.FEED_ACTIVITY.CREATE_RATING)
-  public async onCreateRating(payload: CreateFeedRankProductPayload) {
+  @OnEvent(EVENTS.FEED_ACTIVITY.HANDLE)
+  public async onFeedHandler(payload: HandleFeedPayload) {
     this._logger.debug('On create rankProduct feed payload ', payload);
+    this._logger.debug('Payload action for handler', payload.action);
     try {
-      await this._feedsService.createRatingFeed(
-        payload.rankProduct,
-        payload.user,
-      );
+      switch (payload.action) {
+        case FEED_PAYLOAD_ACTION.ADD_RANK_PRODUCT:
+          await this._feedsService.createRatingFeed(payload.data, payload.user);
+          break;
+
+        case FEED_PAYLOAD_ACTION.ADD_WISHLIST:
+          await this._feedsService.createWishlistFeed(
+            payload.data,
+            payload.user,
+          );
+          break;
+
+        case FEED_PAYLOAD_ACTION.REMOVE_WISHLIST:
+          await this._feedsService.deleteWishlistFeed(
+            payload.data,
+            payload.user,
+          );
+          break;
+
+        default:
+          break;
+      }
     } catch (error) {
       this._logger.error(
         'Have error when create rankProduct feed ',

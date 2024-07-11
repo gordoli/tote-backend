@@ -29,6 +29,20 @@ export class CreateRankProductDTO {
   name: string;
 }
 
+export class UpdateRankProductDTO extends CreateRankProductDTO {
+  @IsOptional()
+  @Type(() => Number)
+  rate: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  brandId: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  categoryId: number;
+}
+
 export class ListRankProductDTO extends BaseFilter {
   @IsOptional()
   @Type(() => Number)

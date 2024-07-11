@@ -6,6 +6,7 @@ import { DATABASE_CONSTANT } from 'src/constants/database.constants';
 
 export enum FEED_TYPE {
   RANK_PRODUCT = 'rank_product',
+  WISHLIST = 'wishlist',
   QUESTION = 'question',
   REQUEST = 'request',
   DIRECT_RANK_PRODUCT = 'direct_rank_product',

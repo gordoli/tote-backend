@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventHandlerService } from './event-handler.service';
+import { FeedsModule } from 'src/domain';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { EventHandlerService } from './event-handler.service';
       // disable throwing uncaughtException if an error event is emitted and it has no listeners
       ignoreErrors: false,
     }),
+    FeedsModule,
   ],
   providers: [EventHandlerService],
   exports: [EventEmitterModule],

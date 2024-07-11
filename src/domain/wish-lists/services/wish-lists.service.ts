@@ -1,4 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Dictionary, keyBy } from 'lodash';
+import { EVENTS } from 'src/constants';
+import { LoggerService } from 'src/core';
 import {
   CustomList,
   CustomListRepository,
@@ -9,9 +13,12 @@ import {
   WishList,
   WishListRepository,
 } from 'src/database';
+import {
+  FEED_PAYLOAD_ACTION,
+  HandleFeedPayload,
+} from 'src/event-handler/types';
+import { In } from 'typeorm';
 import { CreateWishListDTO, WishListProductDTO } from '../dto';
-import { LoggerService } from 'src/core';
-import { Dictionary, keyBy } from 'lodash';
 
 @Injectable()
 export class WishListService {
@@ -22,6 +29,7 @@ export class WishListService {
     private _feedRepository: FeedRepository,
     private _rankProductRepository: RankProductRepository,
     private _userRepository: UserRepository,
+    private _eventEmitter: EventEmitter2,
   ) {}
 
   public async createWishList(dto: CreateWishListDTO, user: User) {
@@ -64,7 +72,7 @@ export class WishListService {
   }
 
   public async addProduct(user: User, rankProductId: number) {
-    const [rankProduct, wishList] = await Promise.all([
+    const [rankProduct, existed] = await Promise.all([
       this._rankProductRepository.findOneBy({
         id: rankProductId,
       }),
@@ -78,24 +86,44 @@ export class WishListService {
         `Rank product id ${rankProductId} not found!`,
       );
     }
-    if (wishList) {
-      return wishList;
+    if (existed) {
+      return existed;
     }
-    return this._wishListRepository.save(
+    const wishlist = await this._wishListRepository.save(
       new WishList({
         user,
         product: rankProduct,
       }),
     );
+
+    const payload: HandleFeedPayload = {
+      data: wishlist,
+      action: FEED_PAYLOAD_ACTION.ADD_WISHLIST,
+      user,
+    };
+    this._eventEmitter.emit(EVENTS.FEED_ACTIVITY.HANDLE, payload);
+    return wishlist;
   }
 
   public async deleteProduct(user: User, rankProductId: number) {
-    const result = await this._wishListRepository.delete({
-      user,
+    const wishlist = await this._wishListRepository.findOneBy({
+      user: { id: user.id },
       product: { id: rankProductId },
     });
-    this._logger.debug('Delete product result', result);
-    return result;
+    if (wishlist) {
+      const result = await this._wishListRepository.delete({
+        user: { id: user.id },
+        product: { id: rankProductId },
+      });
+      this._logger.debug('Delete product result', result);
+      const payload: HandleFeedPayload = {
+        data: wishlist,
+        action: FEED_PAYLOAD_ACTION.REMOVE_WISHLIST,
+        user,
+      };
+      this._eventEmitter.emit(EVENTS.FEED_ACTIVITY.HANDLE, payload);
+      return result;
+    }
   }
 
   public async wishListProducts(dto: WishListProductDTO) {
@@ -132,5 +160,18 @@ export class WishListService {
       return keyBy(foundWishListed, 'product.id');
     }
     return {};
+  }
+
+  public async feedWishlists(ids: number[]) {
+    if (ids.length) {
+      return this._wishListRepository.find({
+        where: { id: In(ids) },
+        loadRelationIds: {
+          relations: ['product'],
+          disableMixedMap: true,
+        },
+      });
+    }
+    return [];
   }
 }

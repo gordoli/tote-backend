@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ListRankProductDTO } from 'src/domain';
 import { BaseFilter } from 'src/library';
 import { mapNumber } from 'src/utils';
-import { DataSource, SelectQueryBuilder } from 'typeorm';
+import { DataSource, In, SelectQueryBuilder } from 'typeorm';
 import { RankProduct } from '../entities';
 import { BaseRepository } from './base.repository';
 import { UserRepository } from './user.repository';
@@ -127,6 +127,19 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
 
   public async totalRatingsByUser(userId: number) {
     return this.countBy({ createdBy: { id: userId } });
+  }
+
+  public async findByIds(ids: number[]) {
+    if (ids.length) {
+      return this.find({
+        where: { id: In(ids) },
+        relations: {
+          brand: true,
+          category: true,
+        },
+      });
+    }
+    return [];
   }
 
   private _selectAvgRating(queryBuilder: SelectQueryBuilder<RankProduct>) {

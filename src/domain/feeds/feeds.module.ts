@@ -1,11 +1,11 @@
-import { Global, Module } from '@nestjs/common';
-import { FeedsService } from './services';
-import { FeedsController } from './controllers';
+import { Module } from '@nestjs/common';
+import { RankProductsModule } from '../rank-products';
 import { WishListsModule } from '../wish-lists';
+import { FeedsController } from './controllers';
+import { FeedsService } from './services';
 
-@Global()
 @Module({
-  imports: [WishListsModule],
+  imports: [WishListsModule, RankProductsModule],
   controllers: [FeedsController],
   providers: [FeedsService],
   exports: [FeedsService],
