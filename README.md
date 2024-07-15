@@ -47,4 +47,17 @@ $ npm run start
    npm run seed:run:${environment}
    ```
 
+4. **Restart the Server**:
+     ```sh
+     pm2 restart tote-api
+     ```
+
+## PM2 Setup
+
+### Initial Setup
+
+If PM2 is not installed on your server, you can install it globally using npm:
+
+```sh
+npm install -g pm2
 ```
