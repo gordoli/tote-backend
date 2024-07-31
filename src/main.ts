@@ -8,6 +8,8 @@ import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './library';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { apiReference } from '@scalar/nestjs-api-reference'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -31,6 +33,25 @@ async function bootstrap() {
       saveUninitialized: false,
     }),
   );
+
+  // Docs
+  const config = new DocumentBuilder()
+    .setTitle('Tote API')
+    .setDescription('Tote API')
+    .setVersion('0.1')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+
+  const OpenApiSpecification =
+  app.use(
+    '/api-docs',
+    apiReference({
+      spec: {
+        content: document,
+      },
+    }),
+  )
+
   app.use(cookieParser());
   await app.listen(process.env.PORT);
   Logger.log(`APP RUN ON PORT ${process.env.PORT}`);
