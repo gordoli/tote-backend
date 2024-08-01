@@ -27,7 +27,7 @@ export class EventHandlerService {
       await this._mailService.sendMail(key, data);
       this._logger.debug('Send mail done');
     } catch (error) {
-      this._logger.error('Have error when send mail ', error);
+      this._logger.error('Have error when send mail ', error.message);
     }
   }
 
