@@ -40,13 +40,12 @@ async function bootstrap() {
     .setDescription('Tote API')
     .setVersion('0.1')
     .build();
-  const document = SwaggerModule.createDocument(app, config);
 
-  const OpenApiSpecification = app.use(
+  app.use(
     '/api-docs',
     apiReference({
       spec: {
-        content: document,
+        content: SwaggerModule.createDocument(app, config),
       },
     }),
   );
