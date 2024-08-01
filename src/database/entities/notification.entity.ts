@@ -19,7 +19,7 @@ export class Notification extends BaseEntity {
   sender: User;
 
   @Column({ nullable: true })
-  senderId: number;
+  senderId: string;
 
   @ManyToOne(() => User, (user) => user.id, {
     onDelete: 'CASCADE',
@@ -29,7 +29,7 @@ export class Notification extends BaseEntity {
   receiver: User;
 
   @Column({ nullable: true })
-  receiverId: number;
+  receiverId: string;
 
   @Column()
   type: NotificationType;

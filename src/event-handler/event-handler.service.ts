@@ -59,10 +59,7 @@ export class EventHandlerService {
           break;
       }
     } catch (error) {
-      this._logger.error(
-        'Have error when create rankProduct feed ',
-        error,
-      );
+      this._logger.error('Have error when create rankProduct feed ', error);
     }
   }
 }

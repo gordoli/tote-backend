@@ -6,7 +6,7 @@ import { BaseFilter } from 'src/library';
 export class FollowsService {
   constructor(private _followRepository: FollowerRepository) {}
 
-  public async userFollowers(userId: number, filter: BaseFilter) {
+  public async userFollowers(userId: string, filter: BaseFilter) {
     const [items, total] = await this._followRepository.followersByUserId(
       userId,
       filter,
@@ -17,7 +17,7 @@ export class FollowsService {
     };
   }
 
-  public async userFollowing(userId: number, filter: BaseFilter) {
+  public async userFollowing(userId: string, filter: BaseFilter) {
     const [items, total] = await this._followRepository.followingByUserId(
       userId,
       filter,
@@ -28,11 +28,11 @@ export class FollowsService {
     };
   }
 
-  public async followUser(user: User, userId: number) {
+  public async followUser(user: User, userId: string) {
     return this._followRepository.followUser(userId, user.id);
   }
 
-  public async unFollowUser(user: User, userId: number) {
+  public async unFollowUser(user: User, userId: string) {
     return this._followRepository.unFollowUser(userId, user.id);
   }
 }

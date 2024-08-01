@@ -23,11 +23,11 @@ export class UserRepository extends BaseRepository<User> {
     super(User, _dataSource);
   }
 
-  public async updateRefreshToken(id: number, refreshToken: string) {
+  public async updateRefreshToken(id: string, refreshToken: string) {
     return this.update({ id }, { refreshToken });
   }
 
-  public async deleteRefreshToken(id: number) {
+  public async deleteRefreshToken(id: string) {
     return this.update({ id }, { refreshToken: null });
   }
 
@@ -79,7 +79,7 @@ export class UserRepository extends BaseRepository<User> {
       .execute();
   }
 
-  public async updatePasswordById(id: number, password: string) {
+  public async updatePasswordById(id: string, password: string) {
     return this.update({ id }, { password });
   }
 
@@ -87,7 +87,7 @@ export class UserRepository extends BaseRepository<User> {
     return this.findOneBy({ provider, socialId });
   }
 
-  public async getPasswordById(id: number) {
+  public async getPasswordById(id: string) {
     const data = await this.findOne({
       where: { id },
       select: ['id', 'password'],
@@ -114,14 +114,14 @@ export class UserRepository extends BaseRepository<User> {
       .orderBy('users.id', 'DESC')
       .getManyAndCount();
   }
-  public async sanitizedUser(id: number) {
+  public async sanitizedUser(id: string) {
     return this.createQueryBuilder('user')
       .where('user.id=:id', { id })
       .select(UserRepository.getMainSelect('user'))
       .getOne();
   }
 
-  public async userFullInformation(id: number) {
+  public async userFullInformation(id: string) {
     return this.createQueryBuilder('user')
       .where('user.id=:id', { id })
       .leftJoinAndSelect('user.products', 'products')

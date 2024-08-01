@@ -9,15 +9,15 @@ export class CreateRankProductDTO {
 
   @IsNotEmpty()
   @Type(() => Number)
-  brandId: number;
+  brandId: string;
 
   @IsNotEmpty()
   @Type(() => Number)
-  categoryId: number;
+  categoryId: string;
 
   @IsOptional()
   @Type(() => Number)
-  preferProductId: number;
+  preferProductId: string;
 
   @IsOptional()
   link: string;
@@ -36,24 +36,24 @@ export class UpdateRankProductDTO extends CreateRankProductDTO {
 
   @IsOptional()
   @Type(() => Number)
-  brandId: number;
+  brandId: string;
 
   @IsOptional()
   @Type(() => Number)
-  categoryId: number;
+  categoryId: string;
 }
 
 export class ListRankProductDTO extends BaseFilter {
   @IsOptional()
   @Type(() => Number)
-  createdBy: number;
+  createdBy: string;
 
   @IsOptional()
   name: string;
 
   @IsOptional()
   @Type(() => Number)
-  categoryId: number;
+  categoryId: string;
 
   @IsOptional()
   @Type(() => Number)
@@ -61,12 +61,12 @@ export class ListRankProductDTO extends BaseFilter {
 
   @IsOptional()
   @Type(() => Number)
-  brandId: number;
+  brandId: string;
 
   @IsOptional()
   @TransformBoolean()
   isOnlyFriend: boolean;
 
   @IsOptional()
-  userId: number;
+  userId: string;
 }

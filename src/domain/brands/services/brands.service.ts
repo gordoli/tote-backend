@@ -30,7 +30,7 @@ export class BrandsService {
     };
   }
 
-  public async detailById(id: number, user: User) {
+  public async detailById(id: string, user: User) {
     const brand = await this._brandRepository.findOneBy({ id });
     if (!brand) {
       throw new NotFoundException(`Brand id ${id} not found`);

@@ -58,7 +58,7 @@ export class UsersController extends BaseController {
   @Get(':userId')
   public async userFullInformation(
     @CurrentUser() currentUser: User,
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
     @Res() response: Response,
   ) {
     const user = await this._usersService.userFullInformation(
@@ -70,7 +70,7 @@ export class UsersController extends BaseController {
 
   @Get(':userId/brands')
   public async brandsByUser(
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
     @Query() dto: ListBrandDTO,
     @Res() response: Response,
   ) {
@@ -81,7 +81,7 @@ export class UsersController extends BaseController {
 
   @Get(':userId/products')
   public async rankProductsByUser(
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
     @Query() dto: ListRankProductDTO,
     @Res() response: Response,
   ) {

@@ -26,7 +26,7 @@ export class FollowsController extends BaseController {
   @Get(':userId/following')
   public async userFollowing(
     @Res() response: Response,
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
     @Query() dto: BaseFilter,
   ) {
     const { items, total } = await this._followsService.userFollowing(
@@ -43,7 +43,7 @@ export class FollowsController extends BaseController {
   @Get(':userId/followers')
   public async userFollowers(
     @Res() response: Response,
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
     @Query() dto: BaseFilter,
   ) {
     const { items, total } = await this._followsService.userFollowers(
@@ -61,7 +61,7 @@ export class FollowsController extends BaseController {
   public async followUser(
     @Res() response: Response,
     @CurrentUser() user: User,
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
   ) {
     await this._followsService.followUser(user, userId);
     this.responseCustom(response);
@@ -71,7 +71,7 @@ export class FollowsController extends BaseController {
   public async unFollowUser(
     @Res() response: Response,
     @CurrentUser() user: User,
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
   ) {
     await this._followsService.unFollowUser(user, userId);
     this.responseCustom(response);

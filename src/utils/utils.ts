@@ -39,14 +39,6 @@ export const asyncForEach = async <T, K>(
   await Promise.all(promises);
 };
 
-export const getBucketCacheKey = (key: string, id: number) => {
-  return `${key.toLowerCase()}bucket:${Math.floor(id / 1000)}`;
-};
-
-export const generateUniqId = () => {
-  return `${new Date().getTime()}`;
-};
-
 export const textToSlug = (text: string) => {
   return text
     .toString()

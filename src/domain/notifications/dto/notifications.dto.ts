@@ -3,8 +3,8 @@ import { BaseFilter } from 'src/library';
 
 export class ListNotificationsDto extends BaseFilter {
   @IsOptional()
-  senderId: number;
+  senderId: string;
 
   @IsOptional()
-  receiverId: number;
+  receiverId: string;
 }

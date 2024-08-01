@@ -35,7 +35,7 @@ export class UsersService {
     return user;
   }
 
-  public async getUserById(id: number) {
+  public async getUserById(id: string) {
     const user = await this._userRepository.findOneBy({ id });
     if (!user) {
       HttpExceptionFilter.throwError(
@@ -51,7 +51,7 @@ export class UsersService {
     return serializedUser;
   }
 
-  public async userFullInformation(id: number, currentUser: User) {
+  public async userFullInformation(id: string, currentUser: User) {
     const user = await this._userRepository.userFullInformation(id);
     if (!user) {
       HttpExceptionFilter.throwError(
@@ -124,7 +124,7 @@ export class UsersService {
     }
   }
 
-  private _isConflict(user: User, id: number) {
+  private _isConflict(user: User, id: string) {
     return user && !user.deletedAt && user.id !== id;
   }
 }

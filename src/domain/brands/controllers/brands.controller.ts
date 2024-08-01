@@ -37,7 +37,7 @@ export class BrandsController extends BaseController {
   @Get(':id')
   public async detail(
     @CurrentUser() user: User,
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Res() response: Response,
   ) {
     const brand = await this._brandService.detailById(id, user);

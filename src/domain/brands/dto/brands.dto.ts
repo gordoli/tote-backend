@@ -22,7 +22,7 @@ export class CreateBrandDTO {
 export class ListBrandDTO extends BaseFilter {
   @IsOptional()
   @Type(() => Number)
-  userId: number;
+  userId: string;
 
   @IsOptional()
   name: string;
