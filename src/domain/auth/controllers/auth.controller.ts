@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { MESSAGE_CONSTANT } from 'src/constants';
 import { User } from 'src/database';
@@ -19,7 +19,8 @@ import { JwtAuthRefreshUserGuard, JwtAuthUserGuard } from '../guards';
 import { AuthUserService } from '../services';
 import { OtpService } from '../services/otp.service';
 import { SendOTPType } from '../types';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiExtraModels, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { LoginResponse } from '../responses';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -39,6 +40,9 @@ export class AuthController extends BaseController {
 
   @Post('login')
   @Public()
+  @ApiExtraModels(LoginResponse)
+  @ApiCreatedResponse({description: "User with access/refresh tokens", type: LoginResponse })
+  @ApiUnauthorizedResponse()
   public async login(@Body() loginDto: LoginDTO, @Res() response: Response) {
     const { user, accessToken, refreshToken } = await this._userService.login(
       loginDto,
