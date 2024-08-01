@@ -95,7 +95,7 @@ export abstract class BaseRepository<T> extends Repository<T> {
   protected _friendOnly<T>(
     queryBuilder: SelectQueryBuilder<T>,
     columnAlias: string,
-    userId: number,
+    userId: string,
   ) {
     return queryBuilder.innerJoin(
       Follower,

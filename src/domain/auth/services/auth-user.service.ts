@@ -82,7 +82,7 @@ export class AuthUserService {
     return true;
   }
 
-  public async validateTokenIat(userId: number, iat: number) {
+  public async validateTokenIat(userId: string, iat: number) {
     let lastLoggedOut = await this._cachingService.hGet<number>(
       USER_CONSTANT.CACHE_KEY.LAST_LOGGED_OUT,
       'user:' + userId,

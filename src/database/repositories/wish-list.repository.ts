@@ -12,7 +12,7 @@ export class WishListRepository extends BaseRepository<WishList> {
     super(WishList, _dataSource);
   }
 
-  public async userList(userId: number, dto: WishListDTO) {
+  public async userList(userId: string, dto: WishListDTO) {
     const { categoryId, name, collectionId, ...rest } = dto;
     const query = this._buildQuery(
       new BaseFilter(rest),
@@ -67,7 +67,7 @@ export class WishListRepository extends BaseRepository<WishList> {
     return queryBuilder.orderBy('wishlist.id', 'DESC').getManyAndCount();
   }
 
-  public async existsByProductIdsAndUser(productIds: number[], userId: number) {
+  public async existsByProductIdsAndUser(productIds: string[], userId: string) {
     if (productIds.length) {
       return this.find({
         where: {

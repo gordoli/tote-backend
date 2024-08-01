@@ -46,7 +46,7 @@ export class WishListService {
     };
   }
 
-  private async _assertAddFeedDto(id: number, feedId: number, userId: number) {
+  private async _assertAddFeedDto(id: string, feedId: string, userId: string) {
     const [feed, isExistCollection] = await Promise.all([
       feedId
         ? this._feedRepository.findOneBy({
@@ -71,7 +71,7 @@ export class WishListService {
     };
   }
 
-  public async addProduct(user: User, rankProductId: number) {
+  public async addProduct(user: User, rankProductId: string) {
     const [rankProduct, existed] = await Promise.all([
       this._rankProductRepository.findOneBy({
         id: rankProductId,
@@ -105,7 +105,7 @@ export class WishListService {
     return wishlist;
   }
 
-  public async deleteProduct(user: User, rankProductId: number) {
+  public async deleteProduct(user: User, rankProductId: string) {
     const wishlist = await this._wishListRepository.findOneBy({
       user: { id: user.id },
       product: { id: rankProductId },
@@ -134,7 +134,7 @@ export class WishListService {
     };
   }
 
-  public async userWishlistProducts(userId: number, dto: WishListProductDTO) {
+  public async userWishlistProducts(userId: string, dto: WishListProductDTO) {
     dto.user = userId;
     const [user, [items, total]] = await Promise.all([
       this._userRepository.sanitizedUser(userId),
@@ -148,8 +148,8 @@ export class WishListService {
   }
 
   public async dictionaryUserProducts(
-    productIds: number[],
-    userId: number,
+    productIds: string[],
+    userId: string,
   ): Promise<Dictionary<WishList>> {
     if (productIds.length) {
       const foundWishListed =
@@ -162,7 +162,7 @@ export class WishListService {
     return {};
   }
 
-  public async feedWishlists(ids: number[]) {
+  public async feedWishlists(ids: string[]) {
     if (ids.length) {
       return this._wishListRepository.find({
         where: { id: In(ids) },

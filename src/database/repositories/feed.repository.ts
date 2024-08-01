@@ -28,7 +28,7 @@ export class FeedRepository extends BaseRepository<Feed> {
       .getManyAndCount();
   }
 
-  public async findByUserId(userId: number) {
+  public async findByUserId(userId: string) {
     return this.createQueryBuilder('feed')
       .leftJoinAndMapOne(
         'feed.rankProduct',

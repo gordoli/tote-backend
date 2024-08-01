@@ -7,5 +7,5 @@ export class ListFeedsDTO extends BaseFilter {
   isOnlyFriend: boolean;
 
   @IsOptional()
-  userId: number;
+  userId: string;
 }

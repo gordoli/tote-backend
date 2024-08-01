@@ -26,7 +26,7 @@ export class WishListController extends BaseController {
 
   @Get(':userId')
   public async list(
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
     @Query() dto: WishListProductDTO,
     @Res() response: Response,
   ) {
@@ -42,7 +42,7 @@ export class WishListController extends BaseController {
   @Post(':productId')
   public async add(
     @CurrentUser() user: User,
-    @Param('productId') productId: number,
+    @Param('productId') productId: string,
     @Res() response: Response,
   ) {
     const rankProduct = await this._wishListService.addProduct(user, productId);
@@ -52,7 +52,7 @@ export class WishListController extends BaseController {
   @Delete(':productId')
   public async delete(
     @CurrentUser() user: User,
-    @Param('productId') productId: number,
+    @Param('productId') productId: string,
     @Res() response: Response,
   ) {
     const result = await this._wishListService.deleteProduct(user, productId);

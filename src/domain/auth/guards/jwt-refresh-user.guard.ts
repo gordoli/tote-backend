@@ -12,7 +12,7 @@ export class JwtAuthRefreshUserGuard extends AuthGuard(
   public async canActivate(context: ExecutionContext): Promise<any> {
     try {
       return await super.canActivate(context);
-    } catch (error) {
+    } catch (error: any) {
       this._logger.error('INVALID JWT ERROR', error);
       HttpExceptionFilter.throwError(
         {

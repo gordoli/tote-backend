@@ -60,7 +60,7 @@ export class ProductsController extends BaseController {
 
   @Put(':id')
   public async update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @CurrentUser() user: User,
     @Res() response: Response,
     @Body() dto: UpdateRankProductDTO,

@@ -51,7 +51,7 @@ export class RankProductsService {
     return rankProduct;
   }
 
-  public async update(id: number, dto: UpdateRankProductDTO, user: User) {
+  public async update(id: string, dto: UpdateRankProductDTO, user: User) {
     const rankProduct = await this._rankProductRepository.findOneBy({
       createdBy: { id: user.id },
       id,
@@ -78,7 +78,7 @@ export class RankProductsService {
     return this._rankProductRepository.save(rankProduct);
   }
 
-  public async listByUser(userId: number, dto: ListRankProductDTO) {
+  public async listByUser(userId: string, dto: ListRankProductDTO) {
     dto.createdBy = userId;
 
     const [items, total] = await this._rankProductRepository.listByUser(dto);
@@ -96,7 +96,7 @@ export class RankProductsService {
     };
   }
 
-  public async mapWishlisted(items: RankProduct[], userId: number) {
+  public async mapWishlisted(items: RankProduct[], userId: string) {
     if (items.length) {
       const productIds = items.map((item) => item.id);
       const dictionary = await this._wishListService.dictionaryUserProducts(
@@ -138,8 +138,8 @@ export class RankProductsService {
   }
 
   public async getBrandRatings(
-    brandId: number,
-    userId: number,
+    brandId: string,
+    userId: string,
   ): Promise<BrandRanking> {
     const [userRating, friendsRating, overallRanking, totalRanking] =
       await Promise.all([
@@ -159,13 +159,13 @@ export class RankProductsService {
     });
   }
 
-  public async getBrandsOverallRanking(brands: number[]) {
+  public async getBrandsOverallRanking(brandIds: string[]) {
     const overallRatings =
-      await this._rankProductRepository.overallRatingBrands(brands);
+      await this._rankProductRepository.overallRatingBrands(brandIds);
     return keyBy(overallRatings, 'brandId');
   }
 
-  public async dictionaryByIds(ids: number[]) {
+  public async dictionaryByIds(ids: string[]) {
     if (ids.length) {
       const rankProducts = await this._rankProductRepository.findByIds(ids);
       return keyBy(rankProducts, 'id');

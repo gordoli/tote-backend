@@ -21,7 +21,7 @@ export class Feed extends BaseEntity {
 
   @Column()
   @Index('idx_feeds_referenceId')
-  referenceId: number;
+  referenceId: string;
 
   rankProduct?: RankProduct;
 

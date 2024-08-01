@@ -84,7 +84,7 @@ export class FeedsService {
     }
   }
 
-  public async mapWishListed(items: Feed[], userId: number) {
+  public async mapWishListed(items: Feed[], userId: string) {
     if (items.length) {
       const productIds = items.map((item) => item.rankProduct?.id);
       const dictionary = await this._wishListService.dictionaryUserProducts(
