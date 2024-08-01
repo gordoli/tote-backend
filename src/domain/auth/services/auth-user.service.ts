@@ -152,36 +152,8 @@ export class AuthUserService {
     );
   }
 
-  public async validateUser(loginDto: LoginDTO) {
-    const { username, password } = loginDto;
-    const user = await this._userRepository.findByIdentity(username);
-    if (!user) {
-      HttpExceptionFilter.throwError(
-        {
-          code: ERROR_CODE_CONSTANT.USER.NOT_FOUND,
-          message: MESSAGE_CONSTANT.USER.NOT_FOUND,
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
-    if (user.status === BaseStatus.Inactive) {
-      HttpExceptionFilter.throwError(
-        {
-          code: ERROR_CODE_CONSTANT.USER.DISABLED,
-          message: MESSAGE_CONSTANT.USER.DISABLED,
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
-    if (!comparePasswords(password, user.password)) {
-      HttpExceptionFilter.throwError(
-        {
-          code: ERROR_CODE_CONSTANT.USER.WRONG_PASSWORD,
-          message: MESSAGE_CONSTANT.USER.WRONG_PASSWORD,
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
+  public async validateUser(email: string) {
+    const user = await this._userRepository.findByIdentity(email);
     return new User(user);
   }
 

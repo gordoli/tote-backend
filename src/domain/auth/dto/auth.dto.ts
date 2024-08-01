@@ -4,7 +4,7 @@ import { SendOTPType } from '../types';
 export class LoginDTO {
   @IsString()
   @IsNotEmpty()
-  username: string;
+  email: string;
   @IsString()
   @IsNotEmpty()
   password: string;

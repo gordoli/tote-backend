@@ -21,6 +21,7 @@ import { OtpService } from '../services/otp.service';
 import { SendOTPType } from '../types';
 import { ApiCreatedResponse, ApiExtraModels, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { LoginResponse } from '../responses';
+import { supabase } from 'src/main';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -44,9 +45,18 @@ export class AuthController extends BaseController {
   @ApiCreatedResponse({description: "User with access/refresh tokens", type: LoginResponse })
   @ApiUnauthorizedResponse()
   public async login(@Body() loginDto: LoginDTO, @Res() response: Response) {
-    const { user, accessToken, refreshToken } = await this._userService.login(
-      loginDto,
-    );
+    const { data, error } = await supabase.auth.signInWithPassword(
+    {
+      email: loginDto.email,
+      password: loginDto.password
+    })
+
+    // if (error) {
+    //   response.send(error);
+    // }
+
+    const user = await this._userService.validateUser(data.user.email);
+
     return this.responseCustom(response, {
       user: user.serialize(),
       accessToken,
