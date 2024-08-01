@@ -10,17 +10,6 @@ export class JwtAuthRefreshUserGuard extends AuthGuard(
 ) {
   private _logger = new LoggerService(JwtAuthRefreshUserGuard.name);
   public async canActivate(context: ExecutionContext): Promise<any> {
-    try {
-      return await super.canActivate(context);
-    } catch (error) {
-      this._logger.error('INVALID JWT ERROR', error);
-      HttpExceptionFilter.throwError(
-        {
-          code: error?.response?.code || ERROR_CODE_CONSTANT.USER.NOT_FOUND,
-          message: error?.response?.message || error?.message,
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
+    return await super.canActivate(context);
   }
 }

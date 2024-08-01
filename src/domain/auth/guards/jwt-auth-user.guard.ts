@@ -18,23 +18,16 @@ export class JwtAuthUserGuard extends AuthGuard(
     super();
   }
   public async canActivate(context: ExecutionContext): Promise<any> {
-    try {
-      const isPublic = this._reflector.get<boolean>(
-        'isPublic',
-        context.getHandler(),
-      );
-      if (isPublic) {
-        return true;
-      }
-
-      return await super.canActivate(context);
-    } catch (error) {
-      this._logger.error('INVALID JWT ERROR', error);
-      const code = error?.response?.code || ERROR_CODE_CONSTANT.USER.NOT_FOUND;
-      const message =
-        error?.response?.message ||
-        error?.message ||
-        MESSAGE_CONSTANT.USER.NOT_FOUND;
+    const isPublic = this._reflector.get<boolean>(
+      'isPublic',
+      context.getHandler(),
+    );
+    if (isPublic) {
+      return true;
+    } else {
+      this._logger.error('INVALID JWT ERROR');
+      const code = ERROR_CODE_CONSTANT.USER.NOT_FOUND;
+      const message = MESSAGE_CONSTANT.USER.NOT_FOUND;
       HttpExceptionFilter.throwError(
         {
           code,
@@ -43,5 +36,6 @@ export class JwtAuthUserGuard extends AuthGuard(
         HttpStatus.UNAUTHORIZED,
       );
     }
+    return await super.canActivate(context);
   }
 }

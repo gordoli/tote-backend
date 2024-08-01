@@ -128,21 +128,17 @@ export class RedisClientService implements ICachingService {
     dataFetcher: () => Promise<{ data: T; ttl: number }>,
     errorHandler: (error: Error) => Promise<T>,
   ): Promise<T> {
-    try {
-      const cachedData = await this.hGet<T>(key, field);
-      if (cachedData) {
-        return cachedData;
-      }
-      const { data, ttl } = await dataFetcher();
-
-      if (data) {
-        await this.hSet(key, field, data, ttl);
-      }
-
-      return data;
-    } catch (error) {
-      return errorHandler?.(error);
+    const cachedData = await this.hGet<T>(key, field);
+    if (cachedData) {
+      return cachedData;
     }
+    const { data, ttl } = await dataFetcher();
+
+    if (data) {
+      await this.hSet(key, field, data, ttl);
+    }
+
+    return data;
   }
 
   public async getCachedOrFetch<T>(
@@ -150,18 +146,14 @@ export class RedisClientService implements ICachingService {
     dataFetcher: () => Promise<{ data: T; ttl: number }>,
     errorHandler: (error: Error) => Promise<T>,
   ): Promise<T> {
-    try {
-      const cachedData = await this.get<T>(key);
-      if (cachedData) {
-        return cachedData;
-      }
-      const { data, ttl } = await dataFetcher();
-      if (data && ttl) {
-        await this.set(key, data, ttl);
-      }
-      return data;
-    } catch (error) {
-      return errorHandler?.(error);
+    const cachedData = await this.get<T>(key);
+    if (cachedData) {
+      return cachedData;
     }
+    const { data, ttl } = await dataFetcher();
+    if (data && ttl) {
+      await this.set(key, data, ttl);
+    }
+    return data;
   }
 }

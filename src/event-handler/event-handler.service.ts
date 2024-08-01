@@ -27,7 +27,7 @@ export class EventHandlerService {
       await this._mailService.sendMail(key, data);
       this._logger.debug('Send mail done');
     } catch (error) {
-      this._logger.error('Have error when send mail ', error.message);
+      this._logger.error('Have error when send mail ', error);
     }
   }
 
@@ -61,7 +61,7 @@ export class EventHandlerService {
     } catch (error) {
       this._logger.error(
         'Have error when create rankProduct feed ',
-        error.message,
+        error,
       );
     }
   }
