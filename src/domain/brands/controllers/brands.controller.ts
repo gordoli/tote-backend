@@ -14,7 +14,9 @@ import { CreateBrandDTO, ListBrandDTO } from '../dto';
 import { BrandsService } from '../services';
 import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
 import { User } from 'src/database';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Brands')
 @Controller('brands')
 @UseGuards(JwtAuthUserGuard)
 export class BrandsController extends BaseController {

@@ -3,6 +3,9 @@ import { Response } from 'express';
 import { BaseController } from 'src/library';
 import { CategoryService } from '../services';
 
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('Categories')
 @Controller('categories')
 export class CategoryController extends BaseController {
   constructor(private _categoryService: CategoryService) {

@@ -7,12 +7,14 @@ import { BaseEntity, BaseStatus } from './base.entity';
 import { Brand } from './brand.entity';
 import { RankProduct } from './rank-product.entity';
 import { Feed } from './feed.entity';
+import { ApiTags } from '@nestjs/swagger';
 
 export enum UserProvider {
   EMAIL = 'email',
   GOOGLE = 'google',
 }
 
+@ApiTags('User')
 @Entity(DATABASE_CONSTANT.TABLE_NAME.USER)
 export class User extends BaseEntity {
   @Column({ nullable: true })

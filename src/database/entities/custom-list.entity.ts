@@ -2,7 +2,9 @@ import { DATABASE_CONSTANT } from 'src/constants/database.constants';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User')
 @Entity(DATABASE_CONSTANT.TABLE_NAME.CUSTOM_LIST)
 export class CustomList extends BaseEntity {
   @Column()

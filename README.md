@@ -1,63 +1,41 @@
 ## NestJS Tote Backend
 
-This repository contains the NestJS Tote Backend, a starter project built with the Nest framework and TypeScript. This backend includes common features such as Redis, logging, JWT-based authentication with refresh and access tokens and login google.
+This repository contains the NestJS Tote Backend, a starter project built with the
+- Nest.JS
+- TypeScript (#trendy)
 
-## Installation
+Includes:
+- Redis
+- Logging
+- OpenAPI docs
+- JWT-based authentication with refresh and access tokens
+- _note: moving auth to Supabase auth_
+
+## Setup
 
 To install the dependencies, run the following command:
 
-```bash
-$ npm install
+```sh
+$ bun install
+$ bun run start
 ```
 
-## Running the App
+## Docs
 
-You can run the app in different modes as needed:
-
-# Development Mode
-
-```bash
-$ npm run start
-```
-
+Documentation using [scalar](https://github.com/scalar/scalar) is available at `/api-docs` :)
 
 ## Deployment
 
-1. **Update env following your deployment environment**
-
-   - Check `.env.example` and update your `.env` file following the example.
-
-2. **Install Dependencies**:
-
-   - Run the following command to install any new dependencies.
-
-     ```sh
-     npm install
-     ```
-
-3. **Run pending migrations and seeds**:
-
-   - Run the run the command above for run pending migrations and seeds.
-
-   ```sh
-   npm run migration:run:${environment}
-   ```
-
-   ```sh
-   npm run seed:run:${environment}
-   ```
-
-4. **Restart the Server**:
-     ```sh
-     pm2 restart tote-api
-     ```
-
-## PM2 Setup
-
-### Initial Setup
-
-If PM2 is not installed on your server, you can install it globally using npm:
-
+1. Update `.env` file from `.env.example` to prod credentials
+2. `npm install`
+3. Run pending migrations and seeds:
 ```sh
-npm install -g pm2
+bun run migration:run:${environment}
+bun run seed:run:${environment}
 ```
+4. Deploy!
+```sh
+railway link
+railway up
+```
+

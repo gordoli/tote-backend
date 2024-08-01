@@ -13,7 +13,9 @@ import { User } from 'src/database';
 import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
 import { BaseController, BaseFilter } from 'src/library';
 import { FollowsService } from '../services';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Follows')
 @Controller('follows')
 @UseGuards(JwtAuthUserGuard)
 export class FollowsController extends BaseController {
