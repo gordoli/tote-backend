@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/constants';
 import { MailService } from 'src/core/mail/mail.service';
@@ -26,8 +26,12 @@ export class EventHandlerService {
       const { key, data } = payload;
       await this._mailService.sendMail(key, data);
       this._logger.debug('Send mail done');
-    } catch (error) {
-      this._logger.error('Have error when send mail ', error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        this._logger.error('Unable to send mail with error:', error.message);
+      } else {
+        this._logger.error('Unknown error on mail send');
+      }
     }
   }
 

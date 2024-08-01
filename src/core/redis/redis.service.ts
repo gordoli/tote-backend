@@ -140,8 +140,12 @@ export class RedisClientService implements ICachingService {
       }
 
       return data;
-    } catch (error) {
-      return errorHandler?.(error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return errorHandler?.(error);
+      } else {
+        this._logger.error('unknown error thrown', error);
+      }
     }
   }
 
@@ -161,7 +165,11 @@ export class RedisClientService implements ICachingService {
       }
       return data;
     } catch (error) {
-      return errorHandler?.(error);
+      if (error instanceof Error) {
+        return errorHandler?.(error);
+      } else {
+        this._logger.error('unknown error thrown', error);
+      }
     }
   }
 }
