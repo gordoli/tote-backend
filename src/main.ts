@@ -9,7 +9,7 @@ import * as session from 'express-session';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './library';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { apiReference } from '@scalar/nestjs-api-reference'
+import { apiReference } from '@scalar/nestjs-api-reference';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -42,15 +42,14 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
-  const OpenApiSpecification =
-  app.use(
+  const OpenApiSpecification = app.use(
     '/api-docs',
     apiReference({
       spec: {
         content: document,
       },
     }),
-  )
+  );
 
   app.use(cookieParser());
   await app.listen(process.env.PORT);

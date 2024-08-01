@@ -14,7 +14,9 @@ import { BaseController } from 'src/library';
 import { WishListProductDTO } from '../dto';
 import { WishListService } from '../services';
 import { User } from 'src/database';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Wishlist')
 @Controller('wishlist')
 @UseGuards(JwtAuthUserGuard)
 export class WishListController extends BaseController {

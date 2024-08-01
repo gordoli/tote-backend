@@ -5,7 +5,9 @@ import { FeedsService } from '../services';
 import { ListFeedsDTO } from '../dto';
 import { Response } from 'express';
 import { User } from 'src/database';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Feeds')
 @Controller('feeds')
 @UseGuards(JwtAuthUserGuard)
 export class FeedsController extends BaseController {

@@ -12,7 +12,9 @@ import { User } from 'src/database';
 import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
 import { BaseController } from 'src/library';
 import { FilesService } from '../services';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Files')
 @Controller('files')
 @UseGuards(JwtAuthUserGuard)
 export class FilesController extends BaseController {

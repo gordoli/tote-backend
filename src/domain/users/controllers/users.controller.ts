@@ -19,7 +19,9 @@ import {
   ListRankProductDTO,
   RankProductsService,
 } from 'src/domain/rank-products';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('users')
 @UseGuards(JwtAuthUserGuard)
 export class UsersController extends BaseController {
