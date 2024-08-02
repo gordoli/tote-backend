@@ -55,20 +55,8 @@ export class AuthUserService {
       accessToken: jwt,
     };
   }
-
-  public async login(loginDto: LoginDTO) {
-    const user = await this.validateUser(loginDto);
-    return this.loginResponse(user);
-  }
-
-  public async loginResponse(user: User) {
-    const { accessToken, refreshToken } =
-      await this._tokenService.updateUserToken(user);
-    return {
-      user: new User(user),
-      accessToken,
-      refreshToken,
-    };
+  public async findUser(email: string) {
+    return await this._userRepository.findByIdentity(email);
   }
 
   public async logout(user: User) {
@@ -118,7 +106,7 @@ export class AuthUserService {
 
   public async forgotPassword(dto: ForgotPasswordDTO, sessionID: string) {
     const { email } = dto;
-    await this.findUserByEmail(email);
+    await this.findUser(email);
     return this.sendOTP(email, sessionID, SendOTPType.FORGOT_PASSWORD);
   }
 
@@ -134,7 +122,7 @@ export class AuthUserService {
   }
 
   public async resetPassword(dto: ResetPasswordDTO) {
-    const user = await this.findUserByEmail(dto.email);
+    const user = await this.findUser(dto.email);
     const newPassword = makeId(8);
     const password = hashPassword(newPassword);
     const result = await this._userRepository.update(
@@ -150,11 +138,6 @@ export class AuthUserService {
         key: MAIL_TYPE_KEYS.RESET_PASSWORD,
       }),
     );
-  }
-
-  public async validateUser(email: string) {
-    const user = await this._userRepository.findByIdentity(email);
-    return new User(user);
   }
 
   public async registration(registerDto: RegistrationDTO, sessionID: string) {
@@ -232,19 +215,5 @@ export class AuthUserService {
     }
     this._eventEmitter.emit(EVENTS.SEND_MAIL, payload);
     return { otp };
-  }
-
-  public async findUserByEmail(email: string) {
-    const existedUser = await this._userRepository.findByLowerEmail(email);
-    if (!existedUser || existedUser.deletedAt) {
-      HttpExceptionFilter.throwError(
-        {
-          code: ERROR_CODE_CONSTANT.USER.NOT_FOUND,
-          message: ERROR_CODE_CONSTANT.USER.NOT_FOUND,
-        },
-        HttpStatus.NOT_FOUND,
-      );
-    }
-    return existedUser;
   }
 }

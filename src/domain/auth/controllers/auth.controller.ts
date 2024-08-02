@@ -1,4 +1,15 @@
-import { Body, Controller, Get, HttpCode, Post, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpException,
+  InternalServerErrorException,
+  Post,
+  Res,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { MESSAGE_CONSTANT } from 'src/constants';
 import { User } from 'src/database';
@@ -19,9 +30,15 @@ import { JwtAuthRefreshUserGuard, JwtAuthUserGuard } from '../guards';
 import { AuthUserService } from '../services';
 import { OtpService } from '../services/otp.service';
 import { SendOTPType } from '../types';
-import { ApiCreatedResponse, ApiExtraModels, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiExtraModels,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { LoginResponse } from '../responses';
 import { supabase } from 'src/main';
+import { AuthError } from '@supabase/supabase-js';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -42,42 +59,35 @@ export class AuthController extends BaseController {
   @Post('login')
   @Public()
   @ApiExtraModels(LoginResponse)
-  @ApiCreatedResponse({description: "User with access/refresh tokens", type: LoginResponse })
+  @ApiCreatedResponse({
+    description: 'User with access/refresh tokens',
+    type: LoginResponse,
+  })
   @ApiUnauthorizedResponse()
-  public async login(@Body() loginDto: LoginDTO, @Res() response: Response) {
-    const { data, error } = await supabase.auth.signInWithPassword(
-    {
+  public async login(@Body() loginDto: LoginDTO) {
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: loginDto.email,
-      password: loginDto.password
-    })
+      password: loginDto.password,
+    });
 
-    // if (error) {
-    //   response.send(error);
-    // }
+    if (error instanceof AuthError) {
+      if (error.code == 'user_not_found') {
+        throw new UnauthorizedException();
+      } else {
+        throw new InternalServerErrorException(
+          'Unhandled Supabase auth error code: ${error.code}',
+        );
+      }
+    }
 
-    const user = await this._userService.validateUser(data.user.email);
+    const user = await this._userService.findUser(data.user.email);
 
-    return this.responseCustom(response, {
+    return {
       user: user.serialize(),
-      accessToken,
-      refreshToken,
-    });
-  }
-
-  @Post('refresh')
-  @Public()
-  @UseGuards(JwtAuthRefreshUserGuard)
-  public async refreshToken(
-    @CurrentUser() user: User,
-    @Body() dto: { refreshToken: string },
-    @Res() response: Response,
-  ) {
-    const { accessToken, user: foundUser } =
-      await this._userService.refreshAccessToken(user);
-    return this.responseCustom(response, {
-      user: foundUser.serialize(),
-      accessToken,
-    });
+      sessionExpiry: data.session.expires_at,
+      accessToken: data.session.access_token,
+      refreshToken: data.session.refresh_token,
+    };
   }
 
   @Post('logout')
