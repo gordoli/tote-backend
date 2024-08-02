@@ -6,10 +6,9 @@ import {
   Patch,
   Query,
   Res,
-  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
+import { CurrentUser } from 'src/domain/auth';
 import { BaseController } from 'src/library';
 import { EditUserDto, SearchMembersDto } from '../dto';
 import { UsersService } from '../services';
@@ -23,7 +22,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Users')
 @Controller('users')
-@UseGuards(JwtAuthUserGuard)
+// TODO: auth guard
 export class UsersController extends BaseController {
   constructor(
     private _usersService: UsersService,

@@ -23,14 +23,6 @@ export class UserRepository extends BaseRepository<User> {
     super(User, _dataSource);
   }
 
-  public async updateRefreshToken(id: string, refreshToken: string) {
-    return this.update({ id }, { refreshToken });
-  }
-
-  public async deleteRefreshToken(id: string) {
-    return this.update({ id }, { refreshToken: null });
-  }
-
   public async findByIdentity(username: string) {
     return this.createQueryBuilder('users')
       .where(

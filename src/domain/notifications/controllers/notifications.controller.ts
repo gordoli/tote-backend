@@ -1,7 +1,7 @@
-import { Controller, Get, Query, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { User } from 'src/database';
-import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
+import { CurrentUser } from 'src/domain/auth';
 import { BaseController } from 'src/library';
 import { ListNotificationsDto } from '../dto';
 import { NotificationsService } from '../services';
@@ -9,7 +9,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Notifications')
 @Controller('notifications')
-@UseGuards(JwtAuthUserGuard)
+// TODO: AuthGuard
 export class NotificationsController extends BaseController {
   constructor(private _notificationsService: NotificationsService) {
     super();

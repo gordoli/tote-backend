@@ -3,20 +3,19 @@ import {
   Post,
   Res,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import { User } from 'src/database';
-import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
+import { CurrentUser } from 'src/domain/auth';
 import { BaseController } from 'src/library';
 import { FilesService } from '../services';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Files')
 @Controller('files')
-@UseGuards(JwtAuthUserGuard)
+// TODO: AuthGuard
 export class FilesController extends BaseController {
   constructor(private _filesService: FilesService) {
     super();

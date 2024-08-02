@@ -26,7 +26,7 @@ export class UserSocialService {
     const foundUser = await this._userRepository.findByLowerEmail(socialEmail);
 
     if (foundUser) {
-      return this._userService.loginResponse(foundUser);
+      return foundUser;
     }
 
     const userInstance = User.mapSocialProfile(socialData, provider);
@@ -40,6 +40,6 @@ export class UserSocialService {
       userInstance,
     );
 
-    return this._userService.loginResponse(socialUser);
+    return socialUser;
   }
 }
