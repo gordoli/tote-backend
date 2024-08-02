@@ -6,10 +6,9 @@ import {
   Post,
   Query,
   Res,
-  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
+import { CurrentUser } from 'src/domain/auth';
 import { BaseController } from 'src/library';
 import { WishListProductDTO } from '../dto';
 import { WishListService } from '../services';
@@ -18,7 +17,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Wishlist')
 @Controller('wishlist')
-@UseGuards(JwtAuthUserGuard)
+// TODO: AuthGuard
 export class WishListController extends BaseController {
   constructor(private _wishListService: WishListService) {
     super();

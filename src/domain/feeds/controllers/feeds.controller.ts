@@ -1,5 +1,5 @@
-import { Controller, Get, Query, Res, UseGuards } from '@nestjs/common';
-import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
+import { Controller, Get, Query, Res } from '@nestjs/common';
+import { CurrentUser } from 'src/domain/auth';
 import { BaseController } from 'src/library';
 import { FeedsService } from '../services';
 import { ListFeedsDTO } from '../dto';
@@ -9,7 +9,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Feeds')
 @Controller('feeds')
-@UseGuards(JwtAuthUserGuard)
+// TODO: AuthGuard
 export class FeedsController extends BaseController {
   constructor(private _feedsService: FeedsService) {
     super();

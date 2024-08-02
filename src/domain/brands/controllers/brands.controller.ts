@@ -1,24 +1,15 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Query,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { BaseController } from 'src/library';
 import { CreateBrandDTO, ListBrandDTO } from '../dto';
 import { BrandsService } from '../services';
-import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
+import { CurrentUser } from 'src/domain/auth';
 import { User } from 'src/database';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Brands')
 @Controller('brands')
-@UseGuards(JwtAuthUserGuard)
+// TODO: AuthGuard
 export class BrandsController extends BaseController {
   constructor(private _brandService: BrandsService) {
     super();

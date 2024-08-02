@@ -9,9 +9,6 @@ export const MESSAGE_CONSTANT = {
       'The current password you entered is incorrect. Please try again.',
     USER_ALREADY_EXISTS:
       'An account with this email already exists. Please log in or use a different email.',
-    WRONG_TOKEN: 'The provided token is invalid. Please request a new one.',
-    TOKEN_EXPIRED:
-      'The token has expired. Please request a new token to proceed.',
     VERIFY_SUCCESS: 'Your email has been successfully verified.',
     MAIL_NEW_PASSWORD:
       'Your new password has been sent to your email. Please check your inbox and follow the instructions to reset your password',

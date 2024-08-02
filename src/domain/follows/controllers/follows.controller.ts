@@ -6,18 +6,17 @@ import {
   Put,
   Query,
   Res,
-  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { User } from 'src/database';
-import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
+import { CurrentUser } from 'src/domain/auth';
 import { BaseController, BaseFilter } from 'src/library';
 import { FollowsService } from '../services';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Follows')
 @Controller('follows')
-@UseGuards(JwtAuthUserGuard)
+// TODO: AuthGuard
 export class FollowsController extends BaseController {
   constructor(private _followsService: FollowsService) {
     super();

@@ -4,34 +4,29 @@ import { randomUUID } from 'crypto';
 import {
   ERROR_CODE_CONSTANT,
   EVENTS,
-  JWT_CONSTANT,
   MESSAGE_CONSTANT,
-  USER_CONSTANT,
 } from 'src/constants';
 import { ICachingService, InjectCaching, LoggerService } from 'src/core';
 import { MAIL_TYPE_KEYS } from 'src/core/mail/constant';
-import { BaseStatus, User, UserRepository } from 'src/database';
+import { User, UserRepository } from 'src/database';
 import { SendMailPayload } from 'src/event-handler/types';
 import { HttpExceptionFilter } from 'src/library';
-import { comparePasswords, hashPassword, makeId, mapNumber } from 'src/utils';
+import { comparePasswords, hashPassword, makeId } from 'src/utils';
 import {
   ChangePasswordDTO,
   ForgotPasswordDTO,
-  LoginDTO,
   RegistrationDTO,
   ResetPasswordDTO,
   VerifyForgotPasswordDTO,
 } from '../dto';
 import { SendOTPType } from '../types';
 import { OtpService } from './otp.service';
-import { TokenService } from './token.service';
 
 @Injectable()
 export class AuthUserService {
   private _logger = new LoggerService(AuthUserService.name);
   constructor(
     private _userRepository: UserRepository,
-    private _tokenService: TokenService,
     private _otpService: OtpService,
     private _eventEmitter: EventEmitter2,
     @InjectCaching() private _cachingService: ICachingService,
@@ -41,50 +36,19 @@ export class AuthUserService {
     return this._userRepository.findOneBy({ id: payload.id });
   }
 
-  public async validateRefreshToken(
-    payload: Partial<User>,
-    refreshToken: string,
-  ) {
-    return this._userRepository.findOneBy({ id: payload.id, refreshToken });
-  }
-
-  public async refreshAccessToken(user: User) {
-    const jwt = await this._tokenService.genToken(user);
-    return {
-      user: user,
-      accessToken: jwt,
-    };
-  }
   public async findUser(email: string) {
     return await this._userRepository.findByIdentity(email);
   }
 
   public async logout(user: User) {
-    await this._cachingService.hSet(
-      USER_CONSTANT.CACHE_KEY.LAST_LOGGED_OUT,
-      'user:' + user.id,
-      Date.now(),
-      JWT_CONSTANT.ACCESS_TOKEN_EXPIRE,
-    );
-    await this._tokenService.deleteUserToken(user);
+    // FIXME: How to do token expiry from supabase, need to save it?
+    // await this._cachingService.hSet(
+    //   USER_CONSTANT.CACHE_KEY.LAST_LOGGED_OUT,
+    //   'user:' + user.id,
+    //   Date.now(),
+    //   JWT_CONSTANT.ACCESS_TOKEN_EXPIRE,
+    // );
     return true;
-  }
-
-  public async validateTokenIat(userId: string, iat: number) {
-    let lastLoggedOut = await this._cachingService.hGet<number>(
-      USER_CONSTANT.CACHE_KEY.LAST_LOGGED_OUT,
-      'user:' + userId,
-    );
-    lastLoggedOut = mapNumber(lastLoggedOut);
-    if (iat < lastLoggedOut) {
-      HttpExceptionFilter.throwError(
-        {
-          code: ERROR_CODE_CONSTANT.USER.TOKEN_EXPIRED,
-          message: MESSAGE_CONSTANT.USER.TOKEN_EXPIRED,
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
   }
 
   public async changePassword(user: User, dto: ChangePasswordDTO) {

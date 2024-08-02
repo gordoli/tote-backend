@@ -7,11 +7,10 @@ import {
   Put,
   Query,
   Res,
-  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { User } from 'src/database';
-import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
+import { CurrentUser } from 'src/domain/auth';
 import { BaseController } from 'src/library';
 import {
   CreateRankProductDTO,
@@ -23,7 +22,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Products')
 @Controller('products')
-@UseGuards(JwtAuthUserGuard)
+// TODO: AuthGuard
 export class ProductsController extends BaseController {
   constructor(private _rankProductsService: RankProductsService) {
     super();

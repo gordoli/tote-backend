@@ -2,13 +2,10 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode,
-  HttpException,
   InternalServerErrorException,
   Post,
   Res,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { MESSAGE_CONSTANT } from 'src/constants';
@@ -26,7 +23,6 @@ import {
   VerifyForgotPasswordDTO,
   VerifyOtpDto,
 } from '../dto';
-import { JwtAuthRefreshUserGuard, JwtAuthUserGuard } from '../guards';
 import { AuthUserService } from '../services';
 import { OtpService } from '../services/otp.service';
 import { SendOTPType } from '../types';
@@ -42,7 +38,7 @@ import { AuthError } from '@supabase/supabase-js';
 
 @ApiTags('Auth')
 @Controller('auth')
-@UseGuards(JwtAuthUserGuard)
+// TODO: AuthGuard
 export class AuthController extends BaseController {
   constructor(
     private _userService: AuthUserService,
