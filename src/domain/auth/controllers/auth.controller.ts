@@ -34,7 +34,7 @@ import {
 } from '@nestjs/swagger';
 import { LoginResponse } from '../responses';
 import { supabase } from 'src/main';
-import { AuthError } from '@supabase/supabase-js';
+import { isAuthApiError } from '@supabase/supabase-js';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -66,14 +66,18 @@ export class AuthController extends BaseController {
       password: loginDto.password,
     });
 
-    if (error instanceof AuthError) {
+    if (isAuthApiError(error)) {
       if (error.code == 'user_not_found') {
         throw new UnauthorizedException();
       } else {
         throw new InternalServerErrorException(
-          'Unhandled Supabase auth error code: ${error.code}',
+          `Unhandled Supabase auth error code: ${error}`,
         );
       }
+    } else if (error) {
+      throw new InternalServerErrorException(
+        `Unhandled unknown error: ${error}`,
+      );
     }
 
     const user = await this._userService.findUser(data.user.email);
