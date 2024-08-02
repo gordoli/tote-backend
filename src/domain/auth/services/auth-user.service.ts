@@ -1,11 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { randomUUID } from 'crypto';
-import {
-  ERROR_CODE_CONSTANT,
-  EVENTS,
-  MESSAGE_CONSTANT,
-} from 'src/constants';
+import { ERROR_CODE_CONSTANT, EVENTS, MESSAGE_CONSTANT } from 'src/constants';
 import { ICachingService, InjectCaching, LoggerService } from 'src/core';
 import { MAIL_TYPE_KEYS } from 'src/core/mail/constant';
 import { User, UserRepository } from 'src/database';

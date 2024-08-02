@@ -70,9 +70,7 @@ export class AuthController extends BaseController {
       if (error.code == 'user_not_found') {
         throw new UnauthorizedException();
       } else {
-        throw new InternalServerErrorException(
-          `Unhandled Supabase auth error code: ${error}`,
-        );
+        throw new UnauthorizedException(`${error}`);
       }
     } else if (error) {
       throw new InternalServerErrorException(
