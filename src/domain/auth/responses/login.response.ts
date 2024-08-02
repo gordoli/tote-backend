@@ -1,8 +1,12 @@
-import { User } from 'src/database';
+import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
+import * as supabaseJs from '@supabase/supabase-js';
 
-export class LoginResponse {
+export class LoginResponse<
+  User extends supabaseJs.User,
+  Session extends supabaseJs.Session,
+  WeakPassword extends supabaseJs.WeakPassword,
+> {
   user: User;
-  sessionExpiry: number;
-  accessToken: string;
-  refreshToken: string;
+  session: Session;
+  weakPassword?: WeakPassword;
 }

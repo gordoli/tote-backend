@@ -27,14 +27,13 @@ import { AuthUserService } from '../services';
 import { OtpService } from '../services/otp.service';
 import { SendOTPType } from '../types';
 import {
-  ApiCreatedResponse,
-  ApiExtraModels,
+  ApiInternalServerErrorResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { LoginResponse } from '../responses';
 import { supabase } from 'src/main';
-import { isAuthApiError } from '@supabase/supabase-js';
+import * as supabaseJs from '@supabase/supabase-js';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -54,25 +53,26 @@ export class AuthController extends BaseController {
 
   @Post('login')
   @Public()
-  @ApiExtraModels(LoginResponse)
-  @ApiCreatedResponse({
-    description: 'User with access/refresh tokens',
-    type: LoginResponse,
+  @ApiUnauthorizedResponse({
+    description: 'User not found, or AuthApiError from Supabase',
+    type: supabaseJs.AuthApiError,
   })
-  @ApiUnauthorizedResponse()
-  public async login(@Body() loginDto: LoginDTO) {
+  @ApiInternalServerErrorResponse({ description: 'Unknown auth errors' })
+  public async login(
+    @Body() loginDto: LoginDTO,
+  ): Promise<
+    LoginResponse<supabaseJs.User, supabaseJs.Session, supabaseJs.WeakPassword>
+  > {
     const { data, error } = await supabase.auth.signInWithPassword({
       email: loginDto.email,
       password: loginDto.password,
     });
 
-    if (isAuthApiError(error)) {
+    if (supabaseJs.isAuthApiError(error)) {
       if (error.code == 'user_not_found') {
         throw new UnauthorizedException();
       } else {
-        throw new InternalServerErrorException(
-          `Unhandled Supabase auth error code: ${error}`,
-        );
+        throw new UnauthorizedException(`${error}`);
       }
     } else if (error) {
       throw new InternalServerErrorException(
@@ -80,14 +80,7 @@ export class AuthController extends BaseController {
       );
     }
 
-    const user = await this._userService.findUser(data.user.email);
-
-    return {
-      user: user.serialize(),
-      sessionExpiry: data.session.expires_at,
-      accessToken: data.session.access_token,
-      refreshToken: data.session.refresh_token,
-    };
+    return data;
   }
 
   @Post('logout')
