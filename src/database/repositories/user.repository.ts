@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { SearchMembersDto } from 'src/domain/users/dto';
 import { BaseFilter } from 'src/library';
 import { DataSource } from 'typeorm';
-import { User, UserProvider } from '../entities';
+import { User } from '../entities';
 import { BaseRepository } from './base.repository';
 
 @Injectable()
@@ -57,34 +57,6 @@ export class UserRepository extends BaseRepository<User> {
         isVerified: true,
       })
       .execute();
-  }
-
-  public async updatePasswordByEmail(email: string, password: string) {
-    return this.createQueryBuilder()
-      .where('LOWER(email) = :email', { email: email?.toLowerCase() })
-      .andWhere('isVerified = false')
-      .andWhere('deletedAt IS NULL')
-      .update()
-      .set({
-        password,
-      })
-      .execute();
-  }
-
-  public async updatePasswordById(id: string, password: string) {
-    return this.update({ id }, { password });
-  }
-
-  public async socialUser(socialId: string, provider: UserProvider) {
-    return this.findOneBy({ provider, socialId });
-  }
-
-  public async getPasswordById(id: string) {
-    const data = await this.findOne({
-      where: { id },
-      select: ['id', 'password'],
-    });
-    return data?.password;
   }
 
   public async searchMembers(dto: SearchMembersDto) {
