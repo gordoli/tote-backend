@@ -18,6 +18,9 @@ export class RegistrationDTO {
   @IsNotEmpty()
   password: string;
   @IsString()
+  @IsNotEmpty()
+  username: string;
+  @IsString()
   @IsOptional()
   firstName: string;
   @IsString()

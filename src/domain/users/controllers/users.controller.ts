@@ -12,13 +12,13 @@ import { CurrentUser } from 'src/domain/auth';
 import { BaseController } from 'src/library';
 import { EditUserDto, SearchMembersDto } from '../dto';
 import { UsersService } from '../services';
-import { User } from 'src/database';
 import { BrandsService, ListBrandDTO } from 'src/domain/brands';
 import {
   ListRankProductDTO,
   RankProductsService,
 } from 'src/domain/rank-products';
 import { ApiTags } from '@nestjs/swagger';
+import { User } from 'src/database';
 
 @ApiTags('Users')
 @Controller('users')
