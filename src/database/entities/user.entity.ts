@@ -1,6 +1,4 @@
-import { Exclude } from 'class-transformer';
 import { DATABASE_CONSTANT } from 'src/constants/database.constants';
-import { SocialData } from 'src/domain/auth/types';
 import { mapNumber } from 'src/utils';
 import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { BaseEntity, BaseStatus } from './base.entity';
@@ -8,11 +6,6 @@ import { Brand } from './brand.entity';
 import { RankProduct } from './rank-product.entity';
 import { Feed } from './feed.entity';
 import { ApiTags } from '@nestjs/swagger';
-
-export enum UserProvider {
-  EMAIL = 'email',
-  GOOGLE = 'google',
-}
 
 @ApiTags('User')
 @Entity(DATABASE_CONSTANT.TABLE_NAME.USER)
