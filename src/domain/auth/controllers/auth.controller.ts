@@ -17,7 +17,6 @@ import {
   ForgotPasswordDTO,
   LoginDTO,
   RegistrationDTO,
-  ResendOtpDTO,
   ResetPasswordDTO,
   VerifyForgotPasswordDTO,
   VerifyOtpDto,

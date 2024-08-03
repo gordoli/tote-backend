@@ -1,5 +1,4 @@
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { SendOTPType } from '../types';
 
 export class LoginDTO {
   @IsString()
@@ -62,9 +61,3 @@ export class VerifyForgotPasswordDTO extends VerifyOtpDto {
 }
 
 export class ResetPasswordDTO extends ForgotPasswordDTO {}
-
-export class ResendOtpDTO extends ForgotPasswordDTO {
-  @IsEnum(SendOTPType)
-  @IsNotEmpty()
-  type: SendOTPType;
-}
