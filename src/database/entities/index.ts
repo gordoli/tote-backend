@@ -3,7 +3,7 @@ export * from './user.entity';
 export * from './follower.entity';
 export * from './brand.entity';
 export * from './category.entity';
-export * from './rank-product.entity';
+export * from './product.entity';
 export * from './feed.entity';
 export * from './custom-list.entity';
 export * from './wish-list.entity';

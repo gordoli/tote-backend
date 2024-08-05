@@ -2,7 +2,7 @@ import { Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { BaseFilter, TransformBoolean } from 'src/library';
 
-export class CreateRankProductDTO {
+export class CreateProductDTO {
   @IsNumber()
   @Type(() => Number)
   rate: number;
@@ -29,7 +29,7 @@ export class CreateRankProductDTO {
   name: string;
 }
 
-export class UpdateRankProductDTO extends CreateRankProductDTO {
+export class UpdateProductDTO extends CreateProductDTO {
   @IsOptional()
   @Type(() => Number)
   rate: number;
@@ -43,7 +43,7 @@ export class UpdateRankProductDTO extends CreateRankProductDTO {
   categoryId: string;
 }
 
-export class ListRankProductDTO extends BaseFilter {
+export class ListProductDTO extends BaseFilter {
   @IsOptional()
   @Type(() => Number)
   createdBy: string;

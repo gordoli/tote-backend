@@ -3,7 +3,7 @@ import { mapNumber } from 'src/utils';
 import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { BaseEntity, BaseStatus } from './base.entity';
 import { Brand } from './brand.entity';
-import { RankProduct } from './rank-product.entity';
+import { Product } from './product.entity';
 import { Feed } from './feed.entity';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -38,8 +38,8 @@ export class User extends BaseEntity {
   @Column({ default: false })
   isVerified: boolean;
 
-  @OneToMany(() => RankProduct, (rankProduct) => rankProduct.createdBy)
-  products: RankProduct[];
+  @OneToMany(() => Product, (rankProduct) => rankProduct.createdBy)
+  products: Product[];
 
   statistics?: UserStatistics;
 

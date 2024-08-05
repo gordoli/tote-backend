@@ -9,7 +9,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Product')
 @Entity(DATABASE_CONSTANT.TABLE_NAME.RANK_PRODUCT)
-export class RankProduct extends BaseEntity {
+export class Product extends BaseEntity {
   @Column({
     type: 'decimal',
     transformer: new ColumnNumericTransformer(),
@@ -54,7 +54,7 @@ export class RankProduct extends BaseEntity {
 
   wishlistId?: number;
 
-  constructor(data?: Partial<RankProduct>) {
+  constructor(data?: Partial<Product>) {
     super(data);
     this.rate = data?.rate;
     this.link = data?.link;

@@ -12,26 +12,22 @@ import { Response } from 'express';
 import { User } from 'src/database';
 import { CurrentUser } from 'src/domain/auth';
 import { BaseController } from 'src/library';
-import {
-  CreateRankProductDTO,
-  ListRankProductDTO,
-  UpdateRankProductDTO,
-} from '../dto';
-import { RankProductsService } from '../services';
+import { CreateProductDTO, ListProductDTO, UpdateProductDTO } from '../dto';
+import { ProductsService } from '../services';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Products')
 @Controller('products')
 // TODO: AuthGuard
 export class ProductsController extends BaseController {
-  constructor(private _rankProductsService: RankProductsService) {
+  constructor(private _rankProductsService: ProductsService) {
     super();
   }
 
   @Get()
   public async list(
     @CurrentUser() user: User,
-    @Query() dto: ListRankProductDTO,
+    @Query() dto: ListProductDTO,
     @Res() response: Response,
   ) {
     if (dto.isOnlyFriend) {
@@ -51,7 +47,7 @@ export class ProductsController extends BaseController {
   public async create(
     @CurrentUser() user: User,
     @Res() response: Response,
-    @Body() dto: CreateRankProductDTO,
+    @Body() dto: CreateProductDTO,
   ) {
     const rankProduct = await this._rankProductsService.create(dto, user);
     return this.responseCustom(response, rankProduct);
@@ -62,7 +58,7 @@ export class ProductsController extends BaseController {
     @Param('id') id: string,
     @CurrentUser() user: User,
     @Res() response: Response,
-    @Body() dto: UpdateRankProductDTO,
+    @Body() dto: UpdateProductDTO,
   ) {
     const rankProduct = await this._rankProductsService.update(id, dto, user);
     return this.responseCustom(response, rankProduct);

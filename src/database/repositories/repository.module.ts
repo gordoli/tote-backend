@@ -7,7 +7,7 @@ import {
   WishList,
   Feed,
   Follower,
-  RankProduct,
+  Product,
   User,
   Notification,
 } from '../entities';
@@ -15,7 +15,7 @@ import { UserRepository } from './user.repository';
 import { FollowerRepository } from './follower.repository';
 import { BrandRepository } from './brand.repository';
 import { CategoryRepository } from './category.repository';
-import { RankProductRepository } from './rank-product.repository';
+import { ProductRepository } from './rank-product.repository';
 import { FeedRepository } from './feed.repository';
 import { WishListRepository } from './wish-list.repository';
 import { CustomListRepository } from './custom-list.repository';
@@ -25,7 +25,7 @@ const providers = [
   FollowerRepository,
   BrandRepository,
   CategoryRepository,
-  RankProductRepository,
+  ProductRepository,
   FeedRepository,
   CustomListRepository,
   WishListRepository,
@@ -38,7 +38,7 @@ const providers = [
       Follower,
       Brand,
       Category,
-      RankProduct,
+      Product,
       Feed,
       CustomList,
       WishList,

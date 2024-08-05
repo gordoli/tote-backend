@@ -7,7 +7,7 @@ import {
   CustomList,
   CustomListRepository,
   FeedRepository,
-  RankProductRepository,
+  ProductRepository,
   User,
   UserRepository,
   WishList,
@@ -27,7 +27,7 @@ export class WishListService {
     private _customListRepository: CustomListRepository,
     private _wishListRepository: WishListRepository,
     private _feedRepository: FeedRepository,
-    private _rankProductRepository: RankProductRepository,
+    private _rankProductRepository: ProductRepository,
     private _userRepository: UserRepository,
     private _eventEmitter: EventEmitter2,
   ) {}

@@ -237,7 +237,7 @@ export type Database = {
           },
         ];
       };
-      RankProducts: {
+      Products: {
         Row: {
           brandId: string | null;
           categoryId: string | null;
@@ -418,7 +418,7 @@ export type Database = {
             foreignKeyName: 'FK_90226d3531177129476a69788ec';
             columns: ['productId'];
             isOneToOne: false;
-            referencedRelation: 'RankProducts';
+            referencedRelation: 'Products';
             referencedColumns: ['id'];
           },
           {
