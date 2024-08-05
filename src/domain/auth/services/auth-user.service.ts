@@ -3,7 +3,6 @@ import { User, UserRepository } from 'src/database';
 import {
   ChangePasswordDTO,
   ForgotPasswordDTO,
-  RegistrationDTO,
   ResetPasswordDTO,
   VerifyForgotPasswordDTO,
 } from '../dto';
@@ -40,14 +39,6 @@ export class AuthUserService {
 
   public async resetPassword(dto: ResetPasswordDTO) {
     // TODO
-  }
-
-  public async registration(registerDto: RegistrationDTO) {
-    const user = new User(registerDto);
-    if (!(await this.usernameIsUnique(registerDto.username))) {
-      throw new ConflictException('Username already exists');
-    }
-    await this._userRepository.save(user);
   }
 
   public async usernameIsUnique(username: string) {
