@@ -9,7 +9,7 @@ export class LoginDTO {
   password: string;
 }
 
-export class RegistrationDTO {
+export class CreateUserDTO {
   @IsString()
   @IsNotEmpty()
   email: string;

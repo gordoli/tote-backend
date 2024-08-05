@@ -12,18 +12,11 @@ import { User } from 'src/database';
 import { BaseController } from 'src/library';
 import { Public } from '../decorators';
 import { CurrentUser } from '../decorators/current-user.decorator';
-import {
-  ChangePasswordDTO,
-  ForgotPasswordDTO,
-  LoginDTO,
-  RegistrationDTO,
-  ResetPasswordDTO,
-  VerifyForgotPasswordDTO,
-  VerifyOtpDto,
-} from '../dto';
+import { CreateUserDTO, LoginDTO } from '../dto';
 import { AuthUserService } from '../services';
 import {
   ApiInternalServerErrorResponse,
+  ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -51,16 +44,47 @@ export class AuthController extends BaseController {
     type: supabaseJs.AuthApiError,
   })
   @ApiInternalServerErrorResponse({ description: 'Unknown auth errors' })
-  public async login(
-    @Body() loginDto: LoginDTO,
-  ): Promise<
-    LoginResponse<supabaseJs.User, supabaseJs.Session, supabaseJs.WeakPassword>
-  > {
+  public async login(@Body() loginDto: LoginDTO): Promise<LoginResponse> {
     const { data, error } = await supabase.auth.signInWithPassword({
       email: loginDto.email,
       password: loginDto.password,
     });
+    this.handleSupabaseError(error);
+    return data;
+  }
 
+  @Post('logout')
+  @ApiInternalServerErrorResponse({ description: 'Unknown auth errors' })
+  public async logout() {
+    const { error } = await supabase.auth.signOut();
+    this.handleSupabaseError(error);
+    return ApiOkResponse();
+  }
+
+  @Post('user')
+  @ApiUnauthorizedResponse({
+    description: 'User not found, or AuthApiError from Supabase',
+    type: supabaseJs.AuthApiError,
+  })
+  public async createUser(@Body() createUserDTO: CreateUserDTO) {
+    // autoconfirm: returns logged-in session
+    // no autoconfirm: returns User
+    const { data, error } = await supabase.auth.signUp({
+      email: createUserDTO.email,
+      password: createUserDTO.password,
+      options: {
+        data: {
+          username: createUserDTO.username,
+          first_name: createUserDTO.firstName,
+          last_name: createUserDTO.lastName,
+        },
+      },
+    });
+
+    this.handleSupabaseError(error);
+  }
+
+  private handleSupabaseError(error: Error) {
     if (supabaseJs.isAuthApiError(error)) {
       if (error.code == 'user_not_found') {
         throw new UnauthorizedException();
@@ -72,23 +96,5 @@ export class AuthController extends BaseController {
         `Unhandled unknown error: ${error}`,
       );
     }
-
-    return data;
-  }
-
-  @Post('logout')
-  public async logout(@Res() response: Response, @CurrentUser() user: User) {
-    await this._userService.logout(user);
-    return this.responseCustom(response);
-  }
-
-  @Post('change-password')
-  public async changePassword(
-    @Res() response: Response,
-    @CurrentUser() user: User,
-    @Body() dto: ChangePasswordDTO,
-  ) {
-    await this._userService.changePassword(user, dto);
-    return this.responseCustom(response);
   }
 }
