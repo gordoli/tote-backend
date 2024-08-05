@@ -37,7 +37,7 @@ export class EventHandlerService {
 
   @OnEvent(EVENTS.FEED_ACTIVITY.HANDLE)
   public async onFeedHandler(payload: HandleFeedPayload) {
-    this._logger.debug('On create rankProduct feed payload ', payload);
+    this._logger.debug('On create product feed payload ', payload);
     this._logger.debug('Payload action for handler', payload.action);
     try {
       switch (payload.action) {
@@ -63,7 +63,7 @@ export class EventHandlerService {
           break;
       }
     } catch (error) {
-      this._logger.error('Have error when create rankProduct feed ', error);
+      this._logger.error('Have error when create product feed ', error);
     }
   }
 }

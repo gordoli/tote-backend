@@ -31,13 +31,13 @@ export class FeedRepository extends BaseRepository<Feed> {
   public async findByUserId(userId: string) {
     return this.createQueryBuilder('feed')
       .leftJoinAndMapOne(
-        'feed.rankProduct',
+        'feed.product',
         Product,
-        'rankProduct',
-        `feed.referenceId = rankProduct.id AND feed.type = '${FEED_TYPE.RANK_PRODUCT}'`,
+        'product',
+        `feed.referenceId = product.id AND feed.type = '${FEED_TYPE.RANK_PRODUCT}'`,
       )
-      .leftJoinAndSelect('rankProduct.category', 'category')
-      .leftJoinAndSelect('rankProduct.brand', 'brand')
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.brand', 'brand')
       .where('feed.createdBy =:userId', { userId })
       .orderBy('feed.id', 'DESC')
       .getMany();

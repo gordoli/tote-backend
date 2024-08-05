@@ -24,7 +24,7 @@ export class UsersController extends BaseController {
   constructor(
     private _usersService: UsersService,
     private _brandsService: BrandsService,
-    private _rankProductsService: ProductsService,
+    private _productsService: ProductsService,
   ) {
     super();
   }
@@ -76,12 +76,12 @@ export class UsersController extends BaseController {
   }
 
   @Get(':userId/products')
-  public async rankProductsByUser(
+  public async productsByUser(
     @Param('userId') userId: string,
     @Query() dto: ListProductDTO,
     @Res() response: Response,
   ) {
-    const { items, total } = await this._rankProductsService.listByUser(
+    const { items, total } = await this._productsService.listByUser(
       userId,
       dto,
     );

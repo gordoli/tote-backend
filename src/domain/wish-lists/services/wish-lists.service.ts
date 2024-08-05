@@ -27,7 +27,7 @@ export class WishListService {
     private _customListRepository: CustomListRepository,
     private _wishListRepository: WishListRepository,
     private _feedRepository: FeedRepository,
-    private _rankProductRepository: ProductRepository,
+    private _productRepository: ProductRepository,
     private _userRepository: UserRepository,
     private _eventEmitter: EventEmitter2,
   ) {}
@@ -71,20 +71,18 @@ export class WishListService {
     };
   }
 
-  public async addProduct(user: User, rankProductId: string) {
-    const [rankProduct, existed] = await Promise.all([
-      this._rankProductRepository.findOneBy({
-        id: rankProductId,
+  public async addProduct(user: User, productId: string) {
+    const [product, existed] = await Promise.all([
+      this._productRepository.findOneBy({
+        id: productId,
       }),
       this._wishListRepository.findOneBy({
         user: { id: user.id },
-        product: { id: rankProductId },
+        product: { id: productId },
       }),
     ]);
-    if (!rankProduct) {
-      throw new NotFoundException(
-        `Rank product id ${rankProductId} not found!`,
-      );
+    if (!product) {
+      throw new NotFoundException(`Rank product id ${productId} not found!`);
     }
     if (existed) {
       return existed;
@@ -92,7 +90,7 @@ export class WishListService {
     const wishlist = await this._wishListRepository.save(
       new WishList({
         user,
-        product: rankProduct,
+        product: product,
       }),
     );
 
@@ -105,15 +103,15 @@ export class WishListService {
     return wishlist;
   }
 
-  public async deleteProduct(user: User, rankProductId: string) {
+  public async deleteProduct(user: User, productId: string) {
     const wishlist = await this._wishListRepository.findOneBy({
       user: { id: user.id },
-      product: { id: rankProductId },
+      product: { id: productId },
     });
     if (wishlist) {
       const result = await this._wishListRepository.delete({
         user: { id: user.id },
-        product: { id: rankProductId },
+        product: { id: productId },
       });
       this._logger.debug('Delete product result', result);
       const payload: HandleFeedPayload = {

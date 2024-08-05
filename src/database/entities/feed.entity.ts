@@ -23,7 +23,7 @@ export class Feed extends BaseEntity {
   @Index('idx_feeds_referenceId')
   referenceId: string;
 
-  rankProduct?: Product;
+  product?: Product;
 
   @Column({ nullable: true })
   title: string;

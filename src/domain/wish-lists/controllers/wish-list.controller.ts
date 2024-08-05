@@ -44,8 +44,8 @@ export class WishListController extends BaseController {
     @Param('productId') productId: string,
     @Res() response: Response,
   ) {
-    const rankProduct = await this._wishListService.addProduct(user, productId);
-    this.responseCustom(response, rankProduct);
+    const product = await this._wishListService.addProduct(user, productId);
+    this.responseCustom(response, product);
   }
 
   @Delete(':productId')

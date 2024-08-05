@@ -34,7 +34,7 @@ export class BrandsService {
     if (!brand) {
       throw new NotFoundException(`Brand id ${id} not found`);
     }
-    brand.rankProducts = await this._ratingService.getBrandRatings(
+    brand.products = await this._ratingService.getBrandRatings(
       brand.id,
       user.id,
     );

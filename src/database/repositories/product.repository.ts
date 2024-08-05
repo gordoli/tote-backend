@@ -17,18 +17,18 @@ export class ProductRepository extends BaseRepository<Product> {
     const { name, isOnlyFriend, userId, brandId, categoryId, ...rest } = dto;
     const query = this._buildQuery(
       new BaseFilter(rest),
-      this.createQueryBuilder('rankProduct'),
+      this.createQueryBuilder('product'),
     )
-      .leftJoinAndSelect('rankProduct.brand', 'brand')
-      .leftJoinAndSelect('rankProduct.category', 'category')
-      .leftJoin('rankProduct.createdBy', 'createdBy');
+      .leftJoinAndSelect('product.brand', 'brand')
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoin('product.createdBy', 'createdBy');
 
     if (name) {
-      query.andWhere('rankProduct.name LIKE :name', { name: `%${name}%` });
+      query.andWhere('product.name LIKE :name', { name: `%${name}%` });
     }
 
     if (brandId) {
-      query.andWhere('rankProduct.brandId =:brandId', { brandId });
+      query.andWhere('product.brandId =:brandId', { brandId });
     }
 
     if (categoryId) {
@@ -36,40 +36,40 @@ export class ProductRepository extends BaseRepository<Product> {
     }
 
     if (isOnlyFriend && userId) {
-      this._friendOnly(query, 'rankProduct.createdBy', userId);
+      this._friendOnly(query, 'product.createdBy', userId);
     }
     return query
       .addSelect(UserRepository.getMainSelect('createdBy'))
-      .orderBy('rankProduct.id', 'DESC')
+      .orderBy('product.id', 'DESC')
       .getManyAndCount();
   }
   public async listByUser(dto: ListProductDTO) {
     const { name, isOnlyFriend, userId, brandId, ...rest } = dto;
     const query = this._buildQuery(
       new BaseFilter(rest),
-      this.createQueryBuilder('rankProduct'),
+      this.createQueryBuilder('product'),
     )
-      .leftJoinAndSelect('rankProduct.brand', 'brand')
-      .leftJoinAndSelect('rankProduct.category', 'category');
+      .leftJoinAndSelect('product.brand', 'brand')
+      .leftJoinAndSelect('product.category', 'category');
 
     if (name) {
-      query.andWhere('rankProduct.name LIKE :name', { name: `%${name}%` });
+      query.andWhere('product.name LIKE :name', { name: `%${name}%` });
     }
 
     if (brandId) {
-      query.andWhere('rankProduct.brandId =:brandId', { brandId });
+      query.andWhere('product.brandId =:brandId', { brandId });
     }
 
     if (isOnlyFriend && userId) {
-      this._friendOnly(query, 'rankProduct.createdBy', userId);
+      this._friendOnly(query, 'product.createdBy', userId);
     }
-    return query.orderBy('rankProduct.id', 'DESC').getManyAndCount();
+    return query.orderBy('product.id', 'DESC').getManyAndCount();
   }
 
   public async overallRatingBrands(brandIds: string[]) {
     if (brandIds.length) {
-      const query = this.createQueryBuilder('rankProduct').where(
-        'rankProduct.brand IN (:...brandIds)',
+      const query = this.createQueryBuilder('product').where(
+        'product.brand IN (:...brandIds)',
         { brandIds },
       );
 
@@ -91,38 +91,38 @@ export class ProductRepository extends BaseRepository<Product> {
   }
 
   public async overallRatingBrandByUser(brandId: string, userId: string) {
-    const query = this.createQueryBuilder('rankProduct')
-      .where('rankProduct.brand =:brandId', { brandId })
-      .andWhere('rankProduct.createdBy =:userId', { userId });
+    const query = this.createQueryBuilder('product')
+      .where('product.brand =:brandId', { brandId })
+      .andWhere('product.createdBy =:userId', { userId });
 
     this._selectAvgRating(query);
 
-    const rankProduct = await query.getRawOne<{
+    const product = await query.getRawOne<{
       avg: number;
       brandId: string;
     }>();
-    return mapNumber(rankProduct?.avg);
+    return mapNumber(product?.avg);
   }
 
   public async overallFriendsRatingBrandByUser(
     brandId: string,
     userId: string,
   ) {
-    const query = this.createQueryBuilder('rankProduct').where(
-      'rankProduct.brand =:brandId',
+    const query = this.createQueryBuilder('product').where(
+      'product.brand =:brandId',
       { brandId },
     );
 
     this._selectAvgRating(query);
 
-    this._friendOnly(query, 'rankProduct.createdBy', userId);
+    this._friendOnly(query, 'product.createdBy', userId);
 
-    const rankProduct = await query.getRawOne<{
+    const product = await query.getRawOne<{
       avg: number;
       brandId: string;
     }>();
 
-    return mapNumber(rankProduct?.avg);
+    return mapNumber(product?.avg);
   }
 
   public async totalRatingsByUser(userId: string) {
@@ -144,8 +144,8 @@ export class ProductRepository extends BaseRepository<Product> {
 
   private _selectAvgRating(queryBuilder: SelectQueryBuilder<Product>) {
     queryBuilder
-      .select('AVG(rankProduct.rate) as avg')
-      .addSelect('rankProduct.brand')
-      .groupBy('rankProduct.brand');
+      .select('AVG(product.rate) as avg')
+      .addSelect('product.brand')
+      .groupBy('product.brand');
   }
 }
