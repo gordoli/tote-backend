@@ -17,15 +17,15 @@ export class FeedsService {
   constructor(
     private _feedRepository: FeedRepository,
     private _wishListService: WishListService,
-    private _rankProductService: ProductsService,
+    private _productService: ProductsService,
   ) {}
 
-  public async createRatingFeed(rankProduct: Product, user: User) {
+  public async createRatingFeed(product: Product, user: User) {
     const instance = new Feed({
-      referenceId: rankProduct.id,
+      referenceId: product.id,
       createdBy: user,
       type: FEED_TYPE.RANK_PRODUCT,
-      title: rankProduct.name,
+      title: product.name,
     });
     return this._feedRepository.save(instance);
   }
@@ -57,7 +57,7 @@ export class FeedsService {
     const wishlistIds = items
       .filter((item) => item.type === FEED_TYPE.WISHLIST)
       .map((el) => el.referenceId);
-    const rankProductItems = items
+    const productItems = items
       .filter((item) => item.type === FEED_TYPE.RANK_PRODUCT)
       .map((el) => el.referenceId);
     const feedWishlists = await this._wishListService.feedWishlists(
@@ -66,38 +66,36 @@ export class FeedsService {
     const dictionaryFeedWishlist = keyBy(feedWishlists, 'id');
     const productIds = [
       ...new Set(
-        rankProductItems.concat(
+        productItems.concat(
           feedWishlists.map((el) => el.product?.id).filter(Boolean),
         ),
       ),
     ];
-    const dictionaryProduct = await this._rankProductService.dictionaryByIds(
+    const dictionaryProduct = await this._productService.dictionaryByIds(
       productIds,
     );
 
     for (const item of items) {
       if (item.type === FEED_TYPE.WISHLIST) {
         const wishlist = get(dictionaryFeedWishlist, item.referenceId);
-        item.rankProduct = get(dictionaryProduct, wishlist?.product?.id);
+        item.product = get(dictionaryProduct, wishlist?.product?.id);
       } else if (item.type === FEED_TYPE.RANK_PRODUCT) {
-        item.rankProduct = get(dictionaryProduct, item.referenceId);
+        item.product = get(dictionaryProduct, item.referenceId);
       }
     }
   }
 
   public async mapWishListed(items: Feed[], userId: string) {
     if (items.length) {
-      const productIds = items.map((item) => item.rankProduct?.id);
+      const productIds = items.map((item) => item.product?.id);
       const dictionary = await this._wishListService.dictionaryUserProducts(
         productIds,
         userId,
       );
 
       for (const item of items) {
-        if (item.rankProduct?.id) {
-          item.rankProduct.wishlisted = Boolean(
-            dictionary[item.rankProduct?.id],
-          );
+        if (item.product?.id) {
+          item.product.wishlisted = Boolean(dictionary[item.product?.id]);
         }
       }
     }

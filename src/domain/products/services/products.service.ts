@@ -22,7 +22,7 @@ import { HttpExceptionFilter } from 'src/library';
 @Injectable()
 export class ProductsService {
   constructor(
-    private _rankProductRepository: ProductRepository,
+    private _productRepository: ProductRepository,
     private _fileService: FilesService,
     private _brandRepository: BrandRepository,
     private _categoryRepository: CategoryRepository,
@@ -37,22 +37,22 @@ export class ProductsService {
     instance.category = category;
     instance.createdBy = user;
     await this.handleInsertFile(instance);
-    const rankProduct = await this._rankProductRepository.save(instance);
+    const product = await this._productRepository.save(instance);
     const payload: HandleFeedPayload = {
-      data: rankProduct,
+      data: product,
       user,
       action: FEED_PAYLOAD_ACTION.ADD_RANK_PRODUCT,
     };
     this._eventEmitter.emit(EVENTS.FEED_ACTIVITY.HANDLE, payload);
-    return rankProduct;
+    return product;
   }
 
   public async update(id: string, dto: UpdateProductDTO, user: User) {
-    const rankProduct = await this._rankProductRepository.findOneBy({
+    const product = await this._productRepository.findOneBy({
       createdBy: { id: user.id },
       id,
     });
-    if (!rankProduct) {
+    if (!product) {
       HttpExceptionFilter.throwError(
         {
           code: 'not_found_rank_product',
@@ -61,23 +61,23 @@ export class ProductsService {
         HttpStatus.NOT_FOUND,
       );
     }
-    const { brand = rankProduct.brand, category = rankProduct.category } =
+    const { brand = product.brand, category = product.category } =
       await this.assertDto(dto);
 
-    rankProduct.brand = brand;
-    rankProduct.category = category;
+    product.brand = brand;
+    product.category = category;
 
     for (const key in dto) {
-      rankProduct[key] = dto[key] || rankProduct[key];
+      product[key] = dto[key] || product[key];
     }
-    await this.handleInsertFile(rankProduct);
-    return this._rankProductRepository.save(rankProduct);
+    await this.handleInsertFile(product);
+    return this._productRepository.save(product);
   }
 
   public async listByUser(userId: string, dto: ListProductDTO) {
     dto.createdBy = userId;
 
-    const [items, total] = await this._rankProductRepository.listByUser(dto);
+    const [items, total] = await this._productRepository.listByUser(dto);
     return {
       items,
       total,
@@ -85,7 +85,7 @@ export class ProductsService {
   }
 
   public async list(dto: ListProductDTO) {
-    const [items, total] = await this._rankProductRepository.list(dto);
+    const [items, total] = await this._productRepository.list(dto);
     return {
       items,
       total,
@@ -106,14 +106,14 @@ export class ProductsService {
     }
   }
 
-  public async handleInsertFile(rankProduct: Product) {
-    if (rankProduct.image) {
-      rankProduct.image = await this._fileService.storePermanent(
-        rankProduct.image,
+  public async handleInsertFile(product: Product) {
+    if (product.image) {
+      product.image = await this._fileService.storePermanent(
+        product.image,
         COMMON_CONSTANT.FOLDER.RATINGS,
       );
     }
-    return rankProduct;
+    return product;
   }
 
   public async assertDto(dto: CreateProductDTO) {
@@ -139,13 +139,13 @@ export class ProductsService {
   ): Promise<BrandRanking> {
     const [userRating, friendsRating, overallRanking, totalRanking] =
       await Promise.all([
-        this._rankProductRepository.overallRatingBrandByUser(brandId, userId),
-        this._rankProductRepository.overallFriendsRatingBrandByUser(
+        this._productRepository.overallRatingBrandByUser(brandId, userId),
+        this._productRepository.overallFriendsRatingBrandByUser(
           brandId,
           userId,
         ),
-        this._rankProductRepository.overallRatingBrand(brandId),
-        this._rankProductRepository.countBy({ brand: { id: brandId } }),
+        this._productRepository.overallRatingBrand(brandId),
+        this._productRepository.countBy({ brand: { id: brandId } }),
       ]);
     return new BrandRanking({
       friendsRating: Product.getOverallRanking(friendsRating),
@@ -156,15 +156,16 @@ export class ProductsService {
   }
 
   public async getBrandsOverallRanking(brandIds: string[]) {
-    const overallRatings =
-      await this._rankProductRepository.overallRatingBrands(brandIds);
+    const overallRatings = await this._productRepository.overallRatingBrands(
+      brandIds,
+    );
     return keyBy(overallRatings, 'brandId');
   }
 
   public async dictionaryByIds(ids: string[]) {
     if (ids.length) {
-      const rankProducts = await this._rankProductRepository.findByIds(ids);
-      return keyBy(rankProducts, 'id');
+      const products = await this._productRepository.findByIds(ids);
+      return keyBy(products, 'id');
     }
     return {};
   }

@@ -20,7 +20,7 @@ import { ApiTags } from '@nestjs/swagger';
 @Controller('products')
 // TODO: AuthGuard
 export class ProductsController extends BaseController {
-  constructor(private _rankProductsService: ProductsService) {
+  constructor(private _productsService: ProductsService) {
     super();
   }
 
@@ -34,8 +34,8 @@ export class ProductsController extends BaseController {
       dto.userId = user.id;
     }
 
-    const { items, total } = await this._rankProductsService.list(dto);
-    await this._rankProductsService.mapWishlisted(items, user.id);
+    const { items, total } = await this._productsService.list(dto);
+    await this._productsService.mapWishlisted(items, user.id);
     return this.responseCustom(response, items, {
       total,
       page: dto.page,
@@ -49,8 +49,8 @@ export class ProductsController extends BaseController {
     @Res() response: Response,
     @Body() dto: CreateProductDTO,
   ) {
-    const rankProduct = await this._rankProductsService.create(dto, user);
-    return this.responseCustom(response, rankProduct);
+    const product = await this._productsService.create(dto, user);
+    return this.responseCustom(response, product);
   }
 
   @Put(':id')
@@ -60,7 +60,7 @@ export class ProductsController extends BaseController {
     @Res() response: Response,
     @Body() dto: UpdateProductDTO,
   ) {
-    const rankProduct = await this._rankProductsService.update(id, dto, user);
-    return this.responseCustom(response, rankProduct);
+    const product = await this._productsService.update(id, dto, user);
+    return this.responseCustom(response, product);
   }
 }

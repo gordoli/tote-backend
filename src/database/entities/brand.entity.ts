@@ -24,7 +24,7 @@ export class Brand extends BaseEntity {
 
   overallRanking?: number;
 
-  rankProducts?: BrandRanking;
+  products?: BrandRanking;
 
   constructor(data?: Partial<Brand>) {
     super(data);

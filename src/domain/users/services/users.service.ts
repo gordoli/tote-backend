@@ -17,7 +17,7 @@ export class UsersService {
   constructor(
     private _userRepository: UserRepository,
     private _followRepository: FollowerRepository,
-    private _rankProductRepository: ProductRepository,
+    private _productRepository: ProductRepository,
     private _feedRepository: FeedRepository,
   ) {}
 
@@ -25,7 +25,7 @@ export class UsersService {
     const [totalFollowers, totalFollowing, totalRatings] = await Promise.all([
       this._followRepository.getTotalFollowersById(user.id),
       this._followRepository.getTotalFollowingById(user.id),
-      this._rankProductRepository.totalRatingsByUser(user.id),
+      this._productRepository.totalRatingsByUser(user.id),
     ]);
     user.statistics = new UserStatistics({
       followerCount: totalFollowers,

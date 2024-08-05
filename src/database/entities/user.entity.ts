@@ -38,7 +38,7 @@ export class User extends BaseEntity {
   @Column({ default: false })
   isVerified: boolean;
 
-  @OneToMany(() => Product, (rankProduct) => rankProduct.createdBy)
+  @OneToMany(() => Product, (product) => product.createdBy)
   products: Product[];
 
   statistics?: UserStatistics;
