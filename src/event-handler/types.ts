@@ -1,6 +1,6 @@
 import { MailData } from 'src/core';
 import { MAIL_TYPE_KEYS } from 'src/core/mail/constant';
-import { Product, User, WishList } from 'src/database';
+import { Product, User, Wishlist } from 'src/database';
 
 export class SendMailPayload {
   key: MAIL_TYPE_KEYS;
@@ -22,7 +22,7 @@ export type BaseFeedPayload = {
 
 export type FeedData =
   | {
-      data: WishList;
+      data: Wishlist;
       action:
         | FEED_PAYLOAD_ACTION.ADD_WISHLIST
         | FEED_PAYLOAD_ACTION.REMOVE_WISHLIST;

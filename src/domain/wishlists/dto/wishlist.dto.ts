@@ -1,5 +1,5 @@
 import { BaseFilter } from 'src/library';
 
-export class WishListProductDTO extends BaseFilter {
+export class WishlistProductDTO extends BaseFilter {
   user: string;
 }

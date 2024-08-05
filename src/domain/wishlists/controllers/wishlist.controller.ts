@@ -10,23 +10,23 @@ import {
 import { Response } from 'express';
 import { CurrentUser } from 'src/domain/auth';
 import { BaseController } from 'src/library';
-import { WishListProductDTO } from '../dto';
-import { WishListService } from '../services';
+import { WishlistProductDTO } from '../dto';
+import { WishlistService } from '../services';
 import { User } from 'src/database';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Wishlist')
 @Controller('wishlist')
 // TODO: AuthGuard
-export class WishListController extends BaseController {
-  constructor(private _wishListService: WishListService) {
+export class WishlistController extends BaseController {
+  constructor(private _wishListService: WishlistService) {
     super();
   }
 
   @Get(':userId')
   public async list(
     @Param('userId') userId: string,
-    @Query() dto: WishListProductDTO,
+    @Query() dto: WishlistProductDTO,
     @Res() response: Response,
   ) {
     const { items, total, user } =

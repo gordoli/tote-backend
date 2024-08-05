@@ -2,17 +2,17 @@ import { Type } from 'class-transformer';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { BaseFilter } from 'src/library';
 
-export class CreateWishListDTO {
+export class CreateWishlistDTO {
   @IsNotEmpty()
   name: string;
 }
 
-export class AddFeedWishListDTO {
+export class AddFeedWishlistDTO {
   @IsNotEmpty()
   feedId: string;
 }
 
-export class WishListDTO extends BaseFilter {
+export class WishlistDTO extends BaseFilter {
   @IsOptional()
   name: string;
 

@@ -20,7 +20,7 @@ import {
   BrandsModule,
   ProductsModule,
   FeedsModule,
-  WishListsModule,
+  WishlistsModule,
   NotificationsModule,
 } from './domain';
 
@@ -53,7 +53,7 @@ import {
     BrandsModule,
     ProductsModule,
     FeedsModule,
-    WishListsModule,
+    WishlistsModule,
     NotificationsModule,
   ],
   providers: [AppService],

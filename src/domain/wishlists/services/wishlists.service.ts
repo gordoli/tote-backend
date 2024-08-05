@@ -10,35 +10,35 @@ import {
   ProductRepository,
   User,
   UserRepository,
-  WishList,
-  WishListRepository,
+  Wishlist,
+  WishlistRepository,
 } from 'src/database';
 import {
   FEED_PAYLOAD_ACTION,
   HandleFeedPayload,
 } from 'src/event-handler/types';
 import { In } from 'typeorm';
-import { CreateWishListDTO, WishListProductDTO } from '../dto';
+import { CreateWishlistDTO, WishlistProductDTO } from '../dto';
 
 @Injectable()
-export class WishListService {
-  private _logger = new LoggerService(WishListService.name);
+export class WishlistService {
+  private _logger = new LoggerService(WishlistService.name);
   constructor(
     private _customListRepository: CustomListRepository,
-    private _wishListRepository: WishListRepository,
+    private _wishListRepository: WishlistRepository,
     private _feedRepository: FeedRepository,
     private _productRepository: ProductRepository,
     private _userRepository: UserRepository,
     private _eventEmitter: EventEmitter2,
   ) {}
 
-  public async createWishList(dto: CreateWishListDTO, user: User) {
+  public async createWishlist(dto: CreateWishlistDTO, user: User) {
     const instance = new CustomList(dto);
     instance.user = user;
     return this._customListRepository.save(instance);
   }
 
-  public async userWishLists(user: User) {
+  public async userWishlists(user: User) {
     const collections = await this._customListRepository.userList(user.id);
     return {
       items: collections,
@@ -88,7 +88,7 @@ export class WishListService {
       return existed;
     }
     const wishlist = await this._wishListRepository.save(
-      new WishList({
+      new Wishlist({
         user,
         product: product,
       }),
@@ -124,7 +124,7 @@ export class WishListService {
     }
   }
 
-  public async wishListProducts(dto: WishListProductDTO) {
+  public async wishListProducts(dto: WishlistProductDTO) {
     const [items, total] = await this._wishListRepository.wishListProducts(dto);
     return {
       items,
@@ -132,7 +132,7 @@ export class WishListService {
     };
   }
 
-  public async userWishlistProducts(userId: string, dto: WishListProductDTO) {
+  public async userWishlistProducts(userId: string, dto: WishlistProductDTO) {
     dto.user = userId;
     const [user, [items, total]] = await Promise.all([
       this._userRepository.sanitizedUser(userId),
@@ -148,14 +148,14 @@ export class WishListService {
   public async dictionaryUserProducts(
     productIds: string[],
     userId: string,
-  ): Promise<Dictionary<WishList>> {
+  ): Promise<Dictionary<Wishlist>> {
     if (productIds.length) {
-      const foundWishListed =
+      const foundWishlisted =
         await this._wishListRepository.existsByProductIdsAndUser(
           productIds,
           userId,
         );
-      return keyBy(foundWishListed, 'product.id');
+      return keyBy(foundWishlisted, 'product.id');
     }
     return {};
   }

@@ -1,16 +1,20 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
 import { Product } from './product.entity';
+import { Wishlist } from './wishlist.entity';
 import { DATABASE_CONSTANT } from 'src/constants/database.constants';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiProperty, ApiTags } from '@nestjs/swagger';
 
 export enum FEED_TYPE {
   RANK_PRODUCT = 'rank_product',
   WISHLIST = 'wishlist',
-  QUESTION = 'question',
-  REQUEST = 'request',
-  DIRECT_RANK_PRODUCT = 'direct_rank_product',
 }
 
 @ApiTags('Feed')
@@ -19,11 +23,21 @@ export class Feed extends BaseEntity {
   @Column()
   type: FEED_TYPE;
 
-  @Column()
-  @Index('idx_feeds_referenceId')
-  referenceId: string;
-
+  @ApiProperty({
+    description: 'Points to a Product if this feed post is for a product.',
+  })
+  @OneToMany(() => Product, (product) => product.id, {
+    cascade: true,
+  })
   product?: Product;
+
+  @ApiProperty({
+    description: 'Points to a Wishlist if this feed post is for a wishlist.',
+  })
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.id, {
+    cascade: true,
+  })
+  wishlist?: Wishlist;
 
   @Column({ nullable: true })
   title: string;
@@ -38,7 +52,6 @@ export class Feed extends BaseEntity {
   constructor(data?: Partial<Feed>) {
     super(data);
     this.type = data?.type;
-    this.referenceId = data?.referenceId;
     this.title = data?.title;
     this.createdBy = data?.createdBy;
   }

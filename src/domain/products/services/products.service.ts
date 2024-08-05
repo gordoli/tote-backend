@@ -11,7 +11,7 @@ import {
   User,
 } from 'src/database';
 import { FilesService } from 'src/domain/files';
-import { WishListService } from 'src/domain/wish-lists';
+import { WishlistService } from 'src/domain/wishlists';
 import {
   FEED_PAYLOAD_ACTION,
   HandleFeedPayload,
@@ -27,7 +27,7 @@ export class ProductsService {
     private _brandRepository: BrandRepository,
     private _categoryRepository: CategoryRepository,
     private _eventEmitter: EventEmitter2,
-    private _wishListService: WishListService,
+    private _wishListService: WishlistService,
   ) {}
 
   public async create(dto: CreateProductDTO, user: User) {

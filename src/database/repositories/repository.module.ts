@@ -4,7 +4,7 @@ import {
   Brand,
   Category,
   CustomList,
-  WishList,
+  Wishlist,
   Feed,
   Follower,
   Product,
@@ -17,7 +17,7 @@ import { BrandRepository } from './brand.repository';
 import { CategoryRepository } from './category.repository';
 import { ProductRepository } from './product.repository';
 import { FeedRepository } from './feed.repository';
-import { WishListRepository } from './wish-list.repository';
+import { WishlistRepository } from './wishlist.repository';
 import { CustomListRepository } from './custom-list.repository';
 import { NotificationRepository } from './notification.repository';
 const providers = [
@@ -28,7 +28,7 @@ const providers = [
   ProductRepository,
   FeedRepository,
   CustomListRepository,
-  WishListRepository,
+  WishlistRepository,
   NotificationRepository,
 ];
 @Module({
@@ -41,7 +41,7 @@ const providers = [
       Product,
       Feed,
       CustomList,
-      WishList,
+      Wishlist,
       Notification,
     ]),
   ],
