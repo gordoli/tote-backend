@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { COMMON_CONSTANT } from 'src/constants';
 import { Brand, BrandRepository, Product, User } from 'src/database';
 import { FilesService } from 'src/domain/files';
-import { ProductsService } from 'src/domain/rank-products';
+import { ProductsService } from 'src/domain/products';
 import { CreateBrandDTO, ListBrandDTO } from '../dto';
 
 @Injectable()

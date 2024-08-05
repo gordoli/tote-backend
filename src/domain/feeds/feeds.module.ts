@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ProductsModule } from '../rank-products';
+import { ProductsModule } from '../products';
 import { WishListsModule } from '../wish-lists';
 import { FeedsController } from './controllers';
 import { FeedsService } from './services';

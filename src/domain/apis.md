@@ -329,7 +329,7 @@ curl -i -H 'Authorization: Bearer <token>' http://example.com/brands/1
   "website": "http://example.com",
   "createdAt": "2024-06-03T00:00:00.000Z",
   "updatedAt": "2024-06-03T00:00:00.000Z",
-  "rank-products":{
+  "products":{
     "userRating":10,
     "friendsRating":10,
     "overallRanking":10,
@@ -343,10 +343,10 @@ curl -i -H 'Authorization: Bearer <token>' http://example.com/brands/1
 
 ##### Request
 
-`POST /rank-products`
+`POST /products`
 
 ```bash
-curl -i -X POST -H 'Authorization: Bearer <your_access_token>' -d '{"rate": 1, "brandId": 1, "categoryId": 1, "preferProductId": 1, "link": "string", "image": "string", "name": "string"}' http://example.com/rank-products
+curl -i -X POST -H 'Authorization: Bearer <your_access_token>' -d '{"rate": 1, "brandId": 1, "categoryId": 1, "preferProductId": 1, "link": "string", "image": "string", "name": "string"}' http://example.com/products
 ```
 
 ##### Response
@@ -356,14 +356,14 @@ HTTP/1.1 204 No Content
 Date: <Date>
 ```
 
-#### My rank-products
+#### My products
 
 ##### Request
 
-`GET /users/rank-products?page=1&perPage=1&categoryId=1&name=string`
+`GET /users/products?page=1&perPage=1&categoryId=1&name=string`
 
 ```bash
-curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/users/rank-products?page=1&perPage=1&categoryId=1&name=string
+curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/users/products?page=1&perPage=1&categoryId=1&name=string
 ```
 
 ##### Response
@@ -401,10 +401,10 @@ Content-Length: XX
 
 ##### Request
 
-`GET /rank-products/brands/:brandId?page=1&perPage=1`
+`GET /products/brands/:brandId?page=1&perPage=1`
 
 ```bash
-curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/rank-products/brands/:brandId?page=1&perPage=1
+curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/products/brands/:brandId?page=1&perPage=1
 ```
 
 ##### Response
@@ -439,10 +439,10 @@ Content-Length: XX
 
 ##### Request
 
-`GET /users/rank-products/brands/:brandId/friends?page=1&perPage=1`
+`GET /users/products/brands/:brandId/friends?page=1&perPage=1`
 
 ```bash
-curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/users/rank-products/brands/:brandId/friends?page=1&perPage=1
+curl -i -H 'Authorization: Bearer <your_access_token>' http://example.com/users/products/brands/:brandId/friends?page=1&perPage=1
 ```
 
 ##### Response

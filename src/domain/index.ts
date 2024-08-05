@@ -4,7 +4,7 @@ export * from './users';
 export * from './follows';
 export * from './categories';
 export * from './brands';
-export * from './rank-products';
+export * from './products';
 export * from './feeds';
 export * from './wish-lists';
 export * from './notifications';

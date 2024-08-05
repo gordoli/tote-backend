@@ -13,7 +13,7 @@ import { BaseController } from 'src/library';
 import { EditUserDto, SearchMembersDto } from '../dto';
 import { UsersService } from '../services';
 import { BrandsService, ListBrandDTO } from 'src/domain/brands';
-import { ListProductDTO, ProductsService } from 'src/domain/rank-products';
+import { ListProductDTO, ProductsService } from 'src/domain/products';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from 'src/database';
 

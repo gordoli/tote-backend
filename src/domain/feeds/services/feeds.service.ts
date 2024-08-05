@@ -8,7 +8,7 @@ import {
   User,
   WishList,
 } from 'src/database';
-import { ProductsService } from 'src/domain/rank-products';
+import { ProductsService } from 'src/domain/products';
 import { WishListService } from 'src/domain/wish-lists';
 import { ListFeedsDTO } from '../dto';
 
