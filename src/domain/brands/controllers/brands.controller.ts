@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
-import { Response } from 'express';
+
 import { BaseController } from 'src/library';
 import { CreateBrandDTO, ListBrandDTO } from '../dto';
 import { BrandsService } from '../services';
@@ -16,22 +16,14 @@ export class BrandsController extends BaseController {
   }
 
   @Get()
-  public async list(@Res() response: Response, @Query() dto: ListBrandDTO) {
-    const { items, total } = await this._brandService.list(dto);
-    this.responseCustom(response, items, {
-      total,
-      page: dto.page,
-      perPage: dto.perPage,
-    });
+  public async list(@Query() dto: ListBrandDTO) {
+    const { items } = await this._brandService.list(dto);
+    items;
   }
 
   @Get(':id')
-  public async detail(
-    @CurrentUser() user: User,
-    @Param('id') id: string,
-    @Res() response: Response,
-  ) {
+  public async detail(@CurrentUser() user: User, @Param('id') id: string) {
     const brand = await this._brandService.detailById(id, user);
-    this.responseCustom(response, brand);
+    return brand;
   }
 }

@@ -7,7 +7,7 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { Response } from 'express';
+
 import { CurrentUser } from 'src/domain/auth';
 import { BaseController } from 'src/library';
 import { WishlistProductDTO } from '../dto';
@@ -27,34 +27,28 @@ export class WishlistController extends BaseController {
   public async list(
     @Param('userId') userId: string,
     @Query() dto: WishlistProductDTO,
-    @Res() response: Response,
   ) {
-    const { items, total, user } =
-      await this._wishListService.userWishlistProducts(userId, dto);
-    this.responseCustom(
-      response,
-      { user, products: items.map((item) => item.product) },
-      { total },
+    const { items } = await this._wishListService.userWishlistProducts(
+      userId,
+      dto,
     );
+    return { items: items.map((item) => item.product) };
   }
 
   @Post(':productId')
   public async add(
     @CurrentUser() user: User,
     @Param('productId') productId: string,
-    @Res() response: Response,
   ) {
-    const product = await this._wishListService.addProduct(user, productId);
-    this.responseCustom(response, product);
+    this._wishListService.addProduct(user, productId);
   }
 
   @Delete(':productId')
   public async delete(
     @CurrentUser() user: User,
     @Param('productId') productId: string,
-    @Res() response: Response,
   ) {
     const result = await this._wishListService.deleteProduct(user, productId);
-    this.responseCustom(response, { affected: result?.affected });
+    return { affected: result?.affected };
   }
 }

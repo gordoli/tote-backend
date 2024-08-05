@@ -7,7 +7,6 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { CurrentUser } from 'src/domain/auth';
 import { BaseController } from 'src/library';
 import { EditUserDto, SearchMembersDto } from '../dto';
@@ -30,61 +29,48 @@ export class UsersController extends BaseController {
   }
 
   @Get('search')
-  public async search(
-    @Query() dto: SearchMembersDto,
-    @Res() response: Response,
-  ) {
+  public async search(@Query() dto: SearchMembersDto) {
     const { items, total } = await this._usersService.searchMembers(dto);
-    return this.responseCustom(response, items, { total });
+    return items;
   }
 
   @Patch('edit')
-  public async edit(
-    @CurrentUser() user: User,
-    @Body() dto: EditUserDto,
-    @Res() response: Response,
-  ) {
+  public async edit(@CurrentUser() user: User, @Body() dto: EditUserDto) {
     const updatedUser = await this._usersService.editUser(
       user,
       new EditUserDto(dto),
     );
-    return this.responseCustom(response, updatedUser);
+    return updatedUser;
   }
 
   @Get(':userId')
   public async userFullInformation(
     @CurrentUser() currentUser: User,
     @Param('userId') userId: string,
-    @Res() response: Response,
   ) {
     const user = await this._usersService.userFullInformation(
       userId,
       currentUser,
     );
-    return this.responseCustom(response, user);
+    return user;
   }
 
   @Get(':userId/brands')
   public async brandsByUser(
     @Param('userId') userId: string,
     @Query() dto: ListBrandDTO,
-    @Res() response: Response,
   ) {
     dto.userId = userId;
-    const { items, total } = await this._brandsService.list(dto);
-    return this.responseCustom(response, items, { total });
+    const { items } = await this._brandsService.list(dto);
+    return items;
   }
 
   @Get(':userId/products')
   public async productsByUser(
     @Param('userId') userId: string,
     @Query() dto: ListProductDTO,
-    @Res() response: Response,
   ) {
-    const { items, total } = await this._productsService.listByUser(
-      userId,
-      dto,
-    );
-    return this.responseCustom(response, items, { total });
+    const { items } = await this._productsService.listByUser(userId, dto);
+    return items;
   }
 }

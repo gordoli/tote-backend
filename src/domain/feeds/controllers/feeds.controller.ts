@@ -3,7 +3,6 @@ import { CurrentUser } from 'src/domain/auth';
 import { BaseController } from 'src/library';
 import { FeedsService } from '../services';
 import { ListFeedsDTO } from '../dto';
-import { Response } from 'express';
 import { User } from 'src/database';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -16,19 +15,11 @@ export class FeedsController extends BaseController {
   }
 
   @Get()
-  public async list(
-    @Query() dto: ListFeedsDTO,
-    @Res() response: Response,
-    @CurrentUser() user: User,
-  ) {
+  public async list(@Query() dto: ListFeedsDTO, @CurrentUser() user: User) {
     if (dto.isOnlyFriend) {
       dto.userId = user.id;
     }
-    const { items, total } = await this._feedsService.list(dto);
-    this.responseCustom(response, items, {
-      total,
-      page: dto.page,
-      perPage: dto.perPage,
-    });
+    const { items } = await this._feedsService.list(dto);
+    return items;
   }
 }

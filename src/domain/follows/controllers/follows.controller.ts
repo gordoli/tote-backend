@@ -7,7 +7,6 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { User } from 'src/database';
 import { CurrentUser } from 'src/domain/auth';
 import { BaseController, BaseFilter } from 'src/library';
@@ -24,55 +23,35 @@ export class FollowsController extends BaseController {
 
   @Get(':userId/following')
   public async userFollowing(
-    @Res() response: Response,
     @Param('userId') userId: string,
     @Query() dto: BaseFilter,
   ) {
-    const { items, total } = await this._followsService.userFollowing(
-      userId,
-      dto,
-    );
-    this.responseCustom(response, items, {
-      total,
-      page: dto.page,
-      perPage: dto.perPage,
-    });
+    const { items } = await this._followsService.userFollowing(userId, dto);
+    items;
   }
 
   @Get(':userId/followers')
   public async userFollowers(
-    @Res() response: Response,
     @Param('userId') userId: string,
     @Query() dto: BaseFilter,
   ) {
-    const { items, total } = await this._followsService.userFollowers(
-      userId,
-      dto,
-    );
-    this.responseCustom(response, items, {
-      total,
-      page: dto.page,
-      perPage: dto.perPage,
-    });
+    const { items } = await this._followsService.userFollowers(userId, dto);
+    return items;
   }
 
   @Put('following/:userId')
   public async followUser(
-    @Res() response: Response,
     @CurrentUser() user: User,
     @Param('userId') userId: string,
   ) {
     await this._followsService.followUser(user, userId);
-    this.responseCustom(response);
   }
 
   @Delete('following/:userId')
   public async unFollowUser(
-    @Res() response: Response,
     @CurrentUser() user: User,
     @Param('userId') userId: string,
   ) {
     await this._followsService.unFollowUser(user, userId);
-    this.responseCustom(response);
   }
 }

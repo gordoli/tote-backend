@@ -17,23 +17,6 @@ export abstract class BaseController {
     return `${request.protocol}://${request.get('Host')}${request.originalUrl}`;
   }
 
-  public responseCustom<T>(res: Response, data?: T, options?: ResponseOption) {
-    const method = this._request.method;
-    const { message, total, code, status, extraData, page, perPage } =
-      new ResponseOption(options, method);
-
-    res.status(status).send({
-      status,
-      message,
-      data,
-      total,
-      code,
-      extraData,
-      page,
-      perPage,
-    });
-  }
-
   public setCookie<T>(
     response: Response,
     name: string,

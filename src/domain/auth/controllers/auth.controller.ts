@@ -7,7 +7,7 @@ import {
   Res,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Response } from 'express';
+
 import { User } from 'src/database';
 import { BaseController } from 'src/library';
 import { Public } from '../decorators';
@@ -33,8 +33,8 @@ export class AuthController extends BaseController {
   }
 
   @Get('profile')
-  public async profile(@CurrentUser() user: User, @Res() response: Response) {
-    return this.responseCustom(response, user.serialize());
+  public async profile(@CurrentUser() user: User) {
+    return user.serialize();
   }
 
   @Post('login')
