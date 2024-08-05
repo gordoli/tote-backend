@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { WishListsModule } from '../wish-lists';
+import { WishlistsModule } from '../wishlists';
 import { ProductsController } from './controllers';
 import { ProductsService } from './services';
 
 @Module({
-  imports: [WishListsModule],
+  imports: [WishlistsModule],
   controllers: [ProductsController],
   providers: [ProductsService],
   exports: [ProductsService],

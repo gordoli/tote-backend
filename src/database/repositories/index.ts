@@ -6,6 +6,6 @@ export * from './category.repository';
 export * from './product.repository';
 export * from './feed.repository';
 export * from './custom-list.repository';
-export * from './wish-list.repository';
+export * from './wishlist.repository';
 export * from './notification.repository';
 export * from './repository.module';

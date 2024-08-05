@@ -1,4 +1,4 @@
 export * from './controllers';
 export * from './dto';
 export * from './services';
-export * from './wish-lists.module';
+export * from './wishlists.module';

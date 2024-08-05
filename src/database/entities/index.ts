@@ -6,5 +6,5 @@ export * from './category.entity';
 export * from './product.entity';
 export * from './feed.entity';
 export * from './custom-list.entity';
-export * from './wish-list.entity';
+export * from './wishlist.entity';
 export * from './notification.entity';

@@ -6,5 +6,5 @@ export * from './categories';
 export * from './brands';
 export * from './products';
 export * from './feeds';
-export * from './wish-lists';
+export * from './wishlists';
 export * from './notifications';

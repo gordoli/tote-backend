@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { WishListDTO, WishListProductDTO } from 'src/domain';
+import { WishlistDTO, WishlistProductDTO } from 'src/domain';
 import { BaseFilter } from 'src/library';
 import { DataSource, In } from 'typeorm';
-import { WishList } from '../entities';
+import { Wishlist } from '../entities';
 import { BaseRepository } from './base.repository';
 import { UserRepository } from './user.repository';
 
 @Injectable()
-export class WishListRepository extends BaseRepository<WishList> {
+export class WishlistRepository extends BaseRepository<Wishlist> {
   constructor(_dataSource: DataSource) {
-    super(WishList, _dataSource);
+    super(Wishlist, _dataSource);
   }
 
-  public async userList(userId: string, dto: WishListDTO) {
+  public async userList(userId: string, dto: WishlistDTO) {
     const { categoryId, name, collectionId, ...rest } = dto;
     const query = this._buildQuery(
       new BaseFilter(rest),
@@ -39,7 +39,7 @@ export class WishListRepository extends BaseRepository<WishList> {
       .getManyAndCount();
   }
 
-  public async wishListProducts(dto: WishListProductDTO) {
+  public async wishListProducts(dto: WishlistProductDTO) {
     const queryBuilder = this._buildQuery(
       new BaseFilter(dto),
       this.createQueryBuilder('wishlist')
@@ -55,7 +55,7 @@ export class WishListRepository extends BaseRepository<WishList> {
       .getManyAndCount();
   }
 
-  public async wishLists(dto: WishListProductDTO) {
+  public async wishLists(dto: WishlistProductDTO) {
     const queryBuilder = this._buildQuery(
       new BaseFilter(dto),
       this.createQueryBuilder('wishlist')

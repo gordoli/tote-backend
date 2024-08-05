@@ -7,7 +7,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Wishlist')
 @Entity(DATABASE_CONSTANT.TABLE_NAME.WISHLIST)
-export class WishList extends BaseEntity {
+export class Wishlist extends BaseEntity {
   @ManyToOne(() => User, (user) => user.id, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
@@ -17,7 +17,7 @@ export class WishList extends BaseEntity {
   @ManyToOne(() => Product, (product) => product.id)
   product: Product;
 
-  constructor(data?: Partial<WishList>) {
+  constructor(data?: Partial<Wishlist>) {
     super(data);
     this.user = data?.user;
     this.product = data?.product;
