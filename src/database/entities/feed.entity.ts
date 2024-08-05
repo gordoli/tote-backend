@@ -1,7 +1,7 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
-import { RankProduct } from './rank-product.entity';
+import { Product } from './product.entity';
 import { DATABASE_CONSTANT } from 'src/constants/database.constants';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -23,7 +23,7 @@ export class Feed extends BaseEntity {
   @Index('idx_feeds_referenceId')
   referenceId: string;
 
-  rankProduct?: RankProduct;
+  rankProduct?: Product;
 
   @Column({ nullable: true })
   title: string;

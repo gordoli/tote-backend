@@ -1,7 +1,7 @@
 import { DATABASE_CONSTANT } from 'src/constants/database.constants';
 import { Entity, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { RankProduct } from './rank-product.entity';
+import { Product } from './product.entity';
 import { User } from './user.entity';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -14,8 +14,8 @@ export class WishList extends BaseEntity {
   })
   user: User;
 
-  @ManyToOne(() => RankProduct, (product) => product.id)
-  product: RankProduct;
+  @ManyToOne(() => Product, (product) => product.id)
+  product: Product;
 
   constructor(data?: Partial<WishList>) {
     super(data);

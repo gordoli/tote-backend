@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ListFeedsDTO } from 'src/domain';
 import { BaseFilter } from 'src/library';
 import { DataSource } from 'typeorm';
-import { FEED_TYPE, Feed, RankProduct } from '../entities';
+import { FEED_TYPE, Feed, Product } from '../entities';
 import { BaseRepository } from './base.repository';
 import { UserRepository } from './user.repository';
 
@@ -32,7 +32,7 @@ export class FeedRepository extends BaseRepository<Feed> {
     return this.createQueryBuilder('feed')
       .leftJoinAndMapOne(
         'feed.rankProduct',
-        RankProduct,
+        Product,
         'rankProduct',
         `feed.referenceId = rankProduct.id AND feed.type = '${FEED_TYPE.RANK_PRODUCT}'`,
       )

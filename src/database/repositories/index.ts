@@ -3,7 +3,7 @@ export * from './user.repository';
 export * from './follower.repository';
 export * from './brand.repository';
 export * from './category.repository';
-export * from './rank-product.repository';
+export * from './product.repository';
 export * from './feed.repository';
 export * from './custom-list.repository';
 export * from './wish-list.repository';

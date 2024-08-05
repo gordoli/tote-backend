@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { ListRankProductDTO } from 'src/domain';
+import { ListProductDTO } from 'src/domain';
 import { BaseFilter } from 'src/library';
 import { mapNumber } from 'src/utils';
 import { DataSource, In, SelectQueryBuilder } from 'typeorm';
-import { RankProduct } from '../entities';
+import { Product } from '../entities';
 import { BaseRepository } from './base.repository';
 import { UserRepository } from './user.repository';
 
 @Injectable()
-export class RankProductRepository extends BaseRepository<RankProduct> {
+export class ProductRepository extends BaseRepository<Product> {
   constructor(_dataSource: DataSource) {
-    super(RankProduct, _dataSource);
+    super(Product, _dataSource);
   }
 
-  public async list(dto: ListRankProductDTO) {
+  public async list(dto: ListProductDTO) {
     const { name, isOnlyFriend, userId, brandId, categoryId, ...rest } = dto;
     const query = this._buildQuery(
       new BaseFilter(rest),
@@ -43,7 +43,7 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
       .orderBy('rankProduct.id', 'DESC')
       .getManyAndCount();
   }
-  public async listByUser(dto: ListRankProductDTO) {
+  public async listByUser(dto: ListProductDTO) {
     const { name, isOnlyFriend, userId, brandId, ...rest } = dto;
     const query = this._buildQuery(
       new BaseFilter(rest),
@@ -142,7 +142,7 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
     return [];
   }
 
-  private _selectAvgRating(queryBuilder: SelectQueryBuilder<RankProduct>) {
+  private _selectAvgRating(queryBuilder: SelectQueryBuilder<Product>) {
     queryBuilder
       .select('AVG(rankProduct.rate) as avg')
       .addSelect('rankProduct.brand')

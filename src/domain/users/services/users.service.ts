@@ -3,7 +3,7 @@ import { ERROR_CODE_CONSTANT, MESSAGE_CONSTANT } from 'src/constants';
 import {
   FeedRepository,
   FollowerRepository,
-  RankProductRepository,
+  ProductRepository,
   User,
   UserRepository,
   UserStatistics,
@@ -17,7 +17,7 @@ export class UsersService {
   constructor(
     private _userRepository: UserRepository,
     private _followRepository: FollowerRepository,
-    private _rankProductRepository: RankProductRepository,
+    private _rankProductRepository: ProductRepository,
     private _feedRepository: FeedRepository,
   ) {}
 

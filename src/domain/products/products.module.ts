@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { WishListsModule } from '../wish-lists';
 import { ProductsController } from './controllers';
-import { RankProductsService } from './services';
+import { ProductsService } from './services';
 
 @Module({
   imports: [WishListsModule],
   controllers: [ProductsController],
-  providers: [RankProductsService],
-  exports: [RankProductsService],
+  providers: [ProductsService],
+  exports: [ProductsService],
 })
-export class RankProductsModule {}
+export class ProductsModule {}

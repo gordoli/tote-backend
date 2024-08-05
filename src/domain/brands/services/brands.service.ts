@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { COMMON_CONSTANT } from 'src/constants';
-import { Brand, BrandRepository, RankProduct, User } from 'src/database';
+import { Brand, BrandRepository, Product, User } from 'src/database';
 import { FilesService } from 'src/domain/files';
-import { RankProductsService } from 'src/domain/rank-products';
+import { ProductsService } from 'src/domain/products';
 import { CreateBrandDTO, ListBrandDTO } from '../dto';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class BrandsService {
   constructor(
     private _brandRepository: BrandRepository,
     private _fileService: FilesService,
-    private _ratingService: RankProductsService,
+    private _ratingService: ProductsService,
   ) {}
   public async create(dto: CreateBrandDTO) {
     const instance = new Brand(dto);
@@ -63,7 +63,7 @@ export class BrandsService {
     );
 
     for (const brand of brands) {
-      brand.overallRanking = RankProduct.getOverallRanking(
+      brand.overallRanking = Product.getOverallRanking(
         overallRanking[brand.id]?.avg,
       );
     }

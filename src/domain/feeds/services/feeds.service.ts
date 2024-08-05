@@ -4,11 +4,11 @@ import {
   FEED_TYPE,
   Feed,
   FeedRepository,
-  RankProduct,
+  Product,
   User,
   WishList,
 } from 'src/database';
-import { RankProductsService } from 'src/domain/rank-products';
+import { ProductsService } from 'src/domain/products';
 import { WishListService } from 'src/domain/wish-lists';
 import { ListFeedsDTO } from '../dto';
 
@@ -17,10 +17,10 @@ export class FeedsService {
   constructor(
     private _feedRepository: FeedRepository,
     private _wishListService: WishListService,
-    private _rankProductService: RankProductsService,
+    private _rankProductService: ProductsService,
   ) {}
 
-  public async createRatingFeed(rankProduct: RankProduct, user: User) {
+  public async createRatingFeed(rankProduct: Product, user: User) {
     const instance = new Feed({
       referenceId: rankProduct.id,
       createdBy: user,
@@ -49,11 +49,11 @@ export class FeedsService {
 
   public async list(dto: ListFeedsDTO) {
     const [items, total] = await this._feedRepository.list(dto);
-    await this.mapRankProducts(items);
+    await this.mapProducts(items);
     return { items, total };
   }
 
-  public async mapRankProducts(items: Feed[]) {
+  public async mapProducts(items: Feed[]) {
     const wishlistIds = items
       .filter((item) => item.type === FEED_TYPE.WISHLIST)
       .map((el) => el.referenceId);
@@ -71,15 +71,16 @@ export class FeedsService {
         ),
       ),
     ];
-    const dictionaryRankProduct =
-      await this._rankProductService.dictionaryByIds(productIds);
+    const dictionaryProduct = await this._rankProductService.dictionaryByIds(
+      productIds,
+    );
 
     for (const item of items) {
       if (item.type === FEED_TYPE.WISHLIST) {
         const wishlist = get(dictionaryFeedWishlist, item.referenceId);
-        item.rankProduct = get(dictionaryRankProduct, wishlist?.product?.id);
+        item.rankProduct = get(dictionaryProduct, wishlist?.product?.id);
       } else if (item.type === FEED_TYPE.RANK_PRODUCT) {
-        item.rankProduct = get(dictionaryRankProduct, item.referenceId);
+        item.rankProduct = get(dictionaryProduct, item.referenceId);
       }
     }
   }

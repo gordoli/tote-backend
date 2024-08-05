@@ -13,10 +13,7 @@ import { BaseController } from 'src/library';
 import { EditUserDto, SearchMembersDto } from '../dto';
 import { UsersService } from '../services';
 import { BrandsService, ListBrandDTO } from 'src/domain/brands';
-import {
-  ListRankProductDTO,
-  RankProductsService,
-} from 'src/domain/rank-products';
+import { ListProductDTO, ProductsService } from 'src/domain/products';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from 'src/database';
 
@@ -27,7 +24,7 @@ export class UsersController extends BaseController {
   constructor(
     private _usersService: UsersService,
     private _brandsService: BrandsService,
-    private _rankProductsService: RankProductsService,
+    private _rankProductsService: ProductsService,
   ) {
     super();
   }
@@ -81,7 +78,7 @@ export class UsersController extends BaseController {
   @Get(':userId/products')
   public async rankProductsByUser(
     @Param('userId') userId: string,
-    @Query() dto: ListRankProductDTO,
+    @Query() dto: ListProductDTO,
     @Res() response: Response,
   ) {
     const { items, total } = await this._rankProductsService.listByUser(

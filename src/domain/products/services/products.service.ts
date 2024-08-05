@@ -6,8 +6,8 @@ import {
   BrandRanking,
   BrandRepository,
   CategoryRepository,
-  RankProduct,
-  RankProductRepository,
+  Product,
+  ProductRepository,
   User,
 } from 'src/database';
 import { FilesService } from 'src/domain/files';
@@ -16,17 +16,13 @@ import {
   FEED_PAYLOAD_ACTION,
   HandleFeedPayload,
 } from 'src/event-handler/types';
-import {
-  CreateRankProductDTO,
-  ListRankProductDTO,
-  UpdateRankProductDTO,
-} from '../dto';
+import { CreateProductDTO, ListProductDTO, UpdateProductDTO } from '../dto';
 import { HttpExceptionFilter } from 'src/library';
 
 @Injectable()
-export class RankProductsService {
+export class ProductsService {
   constructor(
-    private _rankProductRepository: RankProductRepository,
+    private _rankProductRepository: ProductRepository,
     private _fileService: FilesService,
     private _brandRepository: BrandRepository,
     private _categoryRepository: CategoryRepository,
@@ -34,9 +30,9 @@ export class RankProductsService {
     private _wishListService: WishListService,
   ) {}
 
-  public async create(dto: CreateRankProductDTO, user: User) {
+  public async create(dto: CreateProductDTO, user: User) {
     const { brand, category } = await this.assertDto(dto);
-    const instance = new RankProduct(dto);
+    const instance = new Product(dto);
     instance.brand = brand;
     instance.category = category;
     instance.createdBy = user;
@@ -51,7 +47,7 @@ export class RankProductsService {
     return rankProduct;
   }
 
-  public async update(id: string, dto: UpdateRankProductDTO, user: User) {
+  public async update(id: string, dto: UpdateProductDTO, user: User) {
     const rankProduct = await this._rankProductRepository.findOneBy({
       createdBy: { id: user.id },
       id,
@@ -78,7 +74,7 @@ export class RankProductsService {
     return this._rankProductRepository.save(rankProduct);
   }
 
-  public async listByUser(userId: string, dto: ListRankProductDTO) {
+  public async listByUser(userId: string, dto: ListProductDTO) {
     dto.createdBy = userId;
 
     const [items, total] = await this._rankProductRepository.listByUser(dto);
@@ -88,7 +84,7 @@ export class RankProductsService {
     };
   }
 
-  public async list(dto: ListRankProductDTO) {
+  public async list(dto: ListProductDTO) {
     const [items, total] = await this._rankProductRepository.list(dto);
     return {
       items,
@@ -96,7 +92,7 @@ export class RankProductsService {
     };
   }
 
-  public async mapWishlisted(items: RankProduct[], userId: string) {
+  public async mapWishlisted(items: Product[], userId: string) {
     if (items.length) {
       const productIds = items.map((item) => item.id);
       const dictionary = await this._wishListService.dictionaryUserProducts(
@@ -110,7 +106,7 @@ export class RankProductsService {
     }
   }
 
-  public async handleInsertFile(rankProduct: RankProduct) {
+  public async handleInsertFile(rankProduct: Product) {
     if (rankProduct.image) {
       rankProduct.image = await this._fileService.storePermanent(
         rankProduct.image,
@@ -120,7 +116,7 @@ export class RankProductsService {
     return rankProduct;
   }
 
-  public async assertDto(dto: CreateRankProductDTO) {
+  public async assertDto(dto: CreateProductDTO) {
     const [brand, category] = await Promise.all([
       this._brandRepository.findOneBy({ id: dto.brandId }),
       this._categoryRepository.findOneBy({ id: dto.categoryId }),
@@ -152,9 +148,9 @@ export class RankProductsService {
         this._rankProductRepository.countBy({ brand: { id: brandId } }),
       ]);
     return new BrandRanking({
-      friendsRating: RankProduct.getOverallRanking(friendsRating),
-      overallRanking: RankProduct.getOverallRanking(overallRanking),
-      userRating: RankProduct.getOverallRanking(userRating),
+      friendsRating: Product.getOverallRanking(friendsRating),
+      overallRanking: Product.getOverallRanking(overallRanking),
+      userRating: Product.getOverallRanking(userRating),
       totalRanking,
     });
   }

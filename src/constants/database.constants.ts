@@ -6,7 +6,7 @@ export const DATABASE_CONSTANT = {
     WISHLIST: 'Wishlists',
     FEED: 'Feeds',
     FOLLOWER: 'Followers',
-    RANK_PRODUCT: 'RankProducts',
+    RANK_PRODUCT: 'Products',
     CUSTOM_LIST: 'CustomLists',
     NOTIFICATION: 'Notifications',
   },
