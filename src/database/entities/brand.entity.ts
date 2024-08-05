@@ -3,16 +3,10 @@ import { BaseEntity } from './base.entity';
 import { mapNumber } from 'src/utils';
 import { DATABASE_CONSTANT } from 'src/constants/database.constants';
 import { ApiTags } from '@nestjs/swagger';
-import { User } from './user.entity';
 
 @ApiTags('Brand')
 @Entity(DATABASE_CONSTANT.TABLE_NAME.BRAND)
 export class Brand extends BaseEntity {
-  @ManyToOne(() => User, (user) => user.id, {
-    cascade: true,
-  })
-  user: User;
-
   @Column()
   name: string;
 
@@ -34,7 +28,6 @@ export class Brand extends BaseEntity {
 
   constructor(data?: Partial<Brand>) {
     super(data);
-    this.user = data?.user;
     this.name = data?.name;
     this.description = data?.description;
     this.cover = data?.cover;

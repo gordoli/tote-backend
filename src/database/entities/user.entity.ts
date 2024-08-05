@@ -41,9 +41,6 @@ export class User extends BaseEntity {
   @OneToMany(() => RankProduct, (rankProduct) => rankProduct.createdBy)
   products: RankProduct[];
 
-  @OneToMany(() => Brand, (rankProduct) => rankProduct.user)
-  brands: Brand[];
-
   statistics?: UserStatistics;
 
   feeds?: Feed[];
@@ -61,7 +58,6 @@ export class User extends BaseEntity {
     this.lastName = data?.lastName;
     this.avatar = data?.avatar;
     this.products = data?.products;
-    this.brands = data?.brands;
     this.feeds = data?.feeds;
   }
 
@@ -79,7 +75,6 @@ export class User extends BaseEntity {
       lastName: this.lastName,
       avatar: this.avatar,
       products: this?.products,
-      brands: this?.brands,
       feeds: this?.feeds,
     };
   }

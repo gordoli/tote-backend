@@ -34,14 +34,4 @@ export class BrandsController extends BaseController {
     const brand = await this._brandService.detailById(id, user);
     this.responseCustom(response, brand);
   }
-
-  @Post()
-  public async create(
-    @CurrentUser() user: User,
-    @Body() dto: CreateBrandDTO,
-    @Res() response: Response,
-  ) {
-    const brand = await this._brandService.create(dto, user);
-    this.responseCustom(response, brand);
-  }
 }

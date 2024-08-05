@@ -12,9 +12,8 @@ export class BrandsService {
     private _fileService: FilesService,
     private _ratingService: RankProductsService,
   ) {}
-  public async create(dto: CreateBrandDTO, user: User) {
+  public async create(dto: CreateBrandDTO) {
     const instance = new Brand(dto);
-    instance.user = user;
     await this.handleInsertFiles(instance);
     return this._brandRepository.save(instance);
   }
