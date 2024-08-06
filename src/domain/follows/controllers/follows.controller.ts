@@ -14,12 +14,15 @@ import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
 import { BaseController, BaseFilter } from 'src/library';
 import { FollowsService } from '../services';
 import { ApiTags } from '@nestjs/swagger';
+import { NotificationsService } from 'src/domain/notifications';
 
 @ApiTags('Follows')
 @Controller('follows')
 @UseGuards(JwtAuthUserGuard)
 export class FollowsController extends BaseController {
-  constructor(private _followsService: FollowsService) {
+  constructor(private _followsService: FollowsService,
+              private _notificationService: NotificationsService
+  ) {
     super();
   }
 
@@ -64,6 +67,7 @@ export class FollowsController extends BaseController {
     @Param('userId') userId: string,
   ) {
     await this._followsService.followUser(user, userId);
+    this._notificationService.createFollowingNotification(user, userId);
     this.responseCustom(response);
   }
 

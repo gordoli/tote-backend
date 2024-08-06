@@ -17,6 +17,4 @@ export class NotificationRepository extends BaseRepository<Notification> {
       this.createQueryBuilder('notifications'),
     ).getManyAndCount();
   }
-
-  // TODO: get notifications by reciever
 }

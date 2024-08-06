@@ -16,7 +16,7 @@ export class EventHandlerService {
   private _logger = new LoggerService(EventHandlerService.name);
   constructor(
     private _mailService: MailService,
-    private _feedsService: FeedsService,
+    private _feedsService: FeedsService
   ) {}
 
   @OnEvent(EVENTS.SEND_MAIL)
