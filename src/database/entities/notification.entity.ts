@@ -6,6 +6,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 export enum NotificationType {
   FOLLOW = 'follow',
+  WISHLIST = 'wishlist'
 }
 
 @ApiTags('Notification')
