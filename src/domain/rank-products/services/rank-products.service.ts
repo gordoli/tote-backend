@@ -74,7 +74,7 @@ export class RankProductsService {
     for (const key in dto) {
       rankProduct[key] = dto[key] || rankProduct[key];
     }
-    await this.handleInsertFile(rankProduct);
+    // await this.handleInsertFile(rankProduct);
     return this._rankProductRepository.save(rankProduct);
   }
 

@@ -7,4 +7,8 @@ export class ListNotificationsDto extends BaseFilter {
 
   @IsOptional()
   receiverId: number;
+
+  // type: follow | wishlist
+  // productId?: if wishlist
+  // seen: true | false
 }
