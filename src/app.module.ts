@@ -39,8 +39,10 @@ import {
     DatabaseModule,
     RedisModule.forRootAsync({
       useFactory: () => ({
+        // https://docs.railway.app/guides/private-networking#known-configuration-requirements-for-ipv6
+        // Need `?family=0` to support IvP4 and IvP6 on Railway
         config: {
-          url: `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+          url: `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}?family=0:${process.env.REDIS_PORT}`,
           keyPrefix: 'tote:',
         },
       }),
