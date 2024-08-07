@@ -20,6 +20,8 @@ export class FeedRepository extends BaseRepository<Feed> {
     ).leftJoin('feed.createdBy', 'createdBy');
     if (isOnlyFriend && userId) {
       this._friendOnly(query, 'feed.createdBy', userId);
+      // Return only feeds created by friends of the user AND ALSO THE USER THEMSELF
+      query.orWhere('feed.createdBy =:userId', { userId });
     }
     const userSelects = UserRepository.getMainSelect('createdBy');
     return query
