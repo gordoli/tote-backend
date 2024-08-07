@@ -68,7 +68,7 @@ export class RankProductsService {
     const { brand = rankProduct.brand, category = rankProduct.category } =
       await this.assertDto(dto);
 
-    rankProduct.brand = brand;
+    // rankProduct.brand = brand;
     rankProduct.category = category;
 
     for (const key in dto) {
