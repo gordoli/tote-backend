@@ -200,7 +200,8 @@ export class AuthUserService {
     user.password = hashPassword(registerDto.password);
     user.username = await this.uniqUsername(registerDto.email);
     await this._userRepository.save(user);
-    return this.sendOTP(user.email, sessionID, SendOTPType.VERIFY_EMAIL);
+    // Temporarily disable OTP because we're gonna potentially switch to supabase auth which will do that for us
+    // return this.sendOTP(user.email, sessionID, SendOTPType.VERIFY_EMAIL);
   }
 
   public async uniqUsername(email: string) {
