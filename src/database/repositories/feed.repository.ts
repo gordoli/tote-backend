@@ -20,12 +20,8 @@ export class FeedRepository extends BaseRepository<Feed> {
     ).leftJoin('feed.createdBy', 'createdBy');
     if (isOnlyFriend && userId) {
       this._friendOnly(query, 'feed.createdBy', userId);
-      // Return only feeds created by friends of the user AND ALSO THE USER THEMSELF
     }
     const userSelects = UserRepository.getMainSelect('createdBy');
-    console.log(query.toString());
-    console.log(query.getQueryAndParameters());
-    console.log(query.getSql());
     return query
       .orderBy('feed.id', 'DESC')
       .addSelect(userSelects)

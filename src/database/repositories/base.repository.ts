@@ -109,10 +109,5 @@ export abstract class BaseRepository<T> extends Repository<T> {
     );
 
     return queryBuilder;
-    // return queryBuilder.innerJoin(
-    //   Follower,
-    //   'follower',
-    //   `follower.follower = ${userId} AND follower.user = ${columnAlias}`,
-    // );
   }
 }

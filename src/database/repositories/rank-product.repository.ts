@@ -134,6 +134,7 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
       return this.find({
         where: { id: In(ids) },
         relations: {
+          createdBy: true,
           brand: true,
           category: true,
         },
