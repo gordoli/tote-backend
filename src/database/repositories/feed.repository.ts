@@ -24,6 +24,8 @@ export class FeedRepository extends BaseRepository<Feed> {
     }
     const userSelects = UserRepository.getMainSelect('createdBy');
     console.log(query.toString());
+    console.log(query.getQueryAndParameters());
+    console.log(query.getSql());
     return query
       .orderBy('feed.id', 'DESC')
       .addSelect(userSelects)
