@@ -97,10 +97,22 @@ export abstract class BaseRepository<T> extends Repository<T> {
     columnAlias: string,
     userId: number,
   ) {
-    return queryBuilder.innerJoin(
+    queryBuilder.leftJoin(
       Follower,
       'follower',
       `follower.follower = ${userId} AND follower.user = ${columnAlias}`,
     );
+
+    queryBuilder.andWhere(
+      `(follower.id IS NOT NULL OR ${columnAlias} = :userId)`,
+      { userId },
+    );
+
+    return queryBuilder;
+    // return queryBuilder.innerJoin(
+    //   Follower,
+    //   'follower',
+    //   `follower.follower = ${userId} AND follower.user = ${columnAlias}`,
+    // );
   }
 }
