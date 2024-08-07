@@ -21,6 +21,7 @@ export class FeedsController extends BaseController {
   ) {
     if (dto.isOnlyFriend) {
       dto.userId = user.id;
+      console.log('Current User:', user);
     }
     const { items, total } = await this._feedsService.list(dto);
     await this._feedsService.mapWishListed(items, user.id);
