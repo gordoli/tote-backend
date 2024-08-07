@@ -15,12 +15,16 @@ import { WishListProductDTO } from '../dto';
 import { WishListService } from '../services';
 import { User } from 'src/database';
 import { ApiTags } from '@nestjs/swagger';
+import { NotificationsService } from 'src/domain/notifications';
 
 @ApiTags('Wishlist')
 @Controller('wishlist')
 @UseGuards(JwtAuthUserGuard)
 export class WishListController extends BaseController {
-  constructor(private _wishListService: WishListService) {
+  constructor(
+    private _wishListService: WishListService,
+    private _notificationService: NotificationsService,
+  ) {
     super();
   }
 
@@ -46,6 +50,8 @@ export class WishListController extends BaseController {
     @Res() response: Response,
   ) {
     const rankProduct = await this._wishListService.addProduct(user, productId);
+    this._notificationService.createWishlistNotification(user, productId);
+
     this.responseCustom(response, rankProduct);
   }
 

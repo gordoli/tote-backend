@@ -68,6 +68,7 @@ export class FollowsController extends BaseController {
     @Param('userId') userId: string,
   ) {
     await this._followsService.followUser(user, userId);
+    console.log('Heheheheh');
     this._notificationService.createFollowingNotification(user, userId);
     this.responseCustom(response);
   }

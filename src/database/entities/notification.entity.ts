@@ -38,6 +38,9 @@ export class Notification extends BaseEntity {
   @Column({ type: 'jsonb', nullable: true })
   data: object;
 
+  @Column({ default: null })
+  productId: string;
+
   @Column({ default: false })
   readStatus: boolean;
 
@@ -50,6 +53,7 @@ export class Notification extends BaseEntity {
     this.receiverId = data?.receiverId;
     this.type = data?.type;
     this.data = data?.data;
+    this.productId = data?.productId;
     this.readStatus = data?.readStatus;
     this.createdAt = data?.createdAt;
     this.updatedAt = data?.updatedAt;
