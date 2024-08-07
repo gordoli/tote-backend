@@ -144,6 +144,22 @@ export class AuthController extends BaseController {
   ) {
     const sessionID = this._request.sessionID;
     await this._userService.registration(registerDto, sessionID);
+
+    const loginDTO = {
+      username: registerDto.email,
+      password: registerDto.password,
+    };
+
+    const { user, accessToken, refreshToken } = await this._userService.login(
+      loginDTO,
+    );
+
+    return this.responseCustom(response, {
+      user: user.serialize(),
+      accessToken,
+      refreshToken,
+    });
+
     return this.responseCustom(
       response,
       {
