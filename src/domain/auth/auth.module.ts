@@ -1,8 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { AuthController, AuthUserSocialController } from './controllers';
+import { AuthController } from './controllers';
 import {
-  AuthGoogleService,
   OtpService,
   TokenService,
   AuthUserService,
@@ -13,7 +12,7 @@ import { JwtRefreshUserStrategy, JwtUserStrategy } from './strategies';
 @Global()
 @Module({
   imports: [JwtModule.register({})],
-  controllers: [AuthController, AuthUserSocialController],
+  controllers: [AuthController],
   providers: [
     JwtService,
     AuthUserService,
@@ -22,7 +21,6 @@ import { JwtRefreshUserStrategy, JwtUserStrategy } from './strategies';
     TokenService,
     UserSocialService,
     OtpService,
-    AuthGoogleService,
   ],
   exports: [
     JwtService,
@@ -32,7 +30,6 @@ import { JwtRefreshUserStrategy, JwtUserStrategy } from './strategies';
     TokenService,
     OtpService,
     UserSocialService,
-    AuthGoogleService,
   ],
 })
 export class AuthModule {}

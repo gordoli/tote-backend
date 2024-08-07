@@ -19,7 +19,9 @@ import { JwtAuthRefreshUserGuard, JwtAuthUserGuard } from '../guards';
 import { AuthUserService } from '../services';
 import { OtpService } from '../services/otp.service';
 import { SendOTPType } from '../types';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 @UseGuards(JwtAuthUserGuard)
 export class AuthController extends BaseController {

@@ -5,7 +5,9 @@ import { BaseEntity, ColumnNumericTransformer } from './base.entity';
 import { Brand } from './brand.entity';
 import { Category } from './category.entity';
 import { User } from './user.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Product')
 @Entity(DATABASE_CONSTANT.TABLE_NAME.RANK_PRODUCT)
 export class RankProduct extends BaseEntity {
   @Column({

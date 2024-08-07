@@ -1,4 +1,10 @@
-import { ExecutionContext, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
+import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -28,7 +34,7 @@ export class JwtAuthUserGuard extends AuthGuard(
       }
 
       return await super.canActivate(context);
-    } catch (error) {
+    } catch (error: any) {
       this._logger.error('INVALID JWT ERROR', error);
       const code = error?.response?.code || ERROR_CODE_CONSTANT.USER.NOT_FOUND;
       const message =

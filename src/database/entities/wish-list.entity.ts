@@ -3,7 +3,9 @@ import { Entity, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { RankProduct } from './rank-product.entity';
 import { User } from './user.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Wishlist')
 @Entity(DATABASE_CONSTANT.TABLE_NAME.WISHLIST)
 export class WishList extends BaseEntity {
   @ManyToOne(() => User, (user) => user.id, {

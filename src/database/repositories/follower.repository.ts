@@ -11,7 +11,7 @@ export class FollowerRepository extends BaseRepository<Follower> {
     super(Follower, _dataSource);
   }
 
-  public async getTotalFollowersById(id: number) {
+  public async getTotalFollowersById(id: string) {
     const totalFollowers = await this.createQueryBuilder('followers')
       .where('followers.user =:id', { id })
       .select('COUNT(followers.id)')
@@ -19,7 +19,7 @@ export class FollowerRepository extends BaseRepository<Follower> {
     return mapNumber(totalFollowers?.count);
   }
 
-  public async getTotalFollowingById(id: number) {
+  public async getTotalFollowingById(id: string) {
     const totalFollowing = await this.createQueryBuilder('followers')
       .where('followers.follower =:id', { id })
       .select('COUNT(followers.id)')
@@ -27,7 +27,7 @@ export class FollowerRepository extends BaseRepository<Follower> {
     return mapNumber(totalFollowing?.count);
   }
 
-  public async followingByUserId(userId: number, filter: BaseFilter) {
+  public async followingByUserId(userId: string, filter: BaseFilter) {
     return this._buildQuery(
       new BaseFilter(filter),
       this.createQueryBuilder('follows'),
@@ -38,7 +38,7 @@ export class FollowerRepository extends BaseRepository<Follower> {
       .getManyAndCount();
   }
 
-  public async followersByUserId(userId: number, filter: BaseFilter) {
+  public async followersByUserId(userId: string, filter: BaseFilter) {
     return this._buildQuery(
       new BaseFilter(filter),
       this.createQueryBuilder('follows'),
@@ -49,14 +49,14 @@ export class FollowerRepository extends BaseRepository<Follower> {
       .getManyAndCount();
   }
 
-  public unFollowUser(userId: number, followerId: number) {
+  public unFollowUser(userId: string, followerId: string) {
     return this.delete({
       user: { id: userId },
       follower: { id: followerId },
     });
   }
 
-  public followUser(userId: number, followerId: number) {
+  public followUser(userId: string, followerId: string) {
     return this.upsert(
       {
         user: { id: userId },
@@ -66,7 +66,7 @@ export class FollowerRepository extends BaseRepository<Follower> {
     );
   }
 
-  public async isFollowed(userId: number, followerId: number) {
+  public async isFollowed(userId: string, followerId: string) {
     return this.existsBy({
       user: { id: userId },
       follower: { id: followerId },

@@ -2,11 +2,14 @@ import { DATABASE_CONSTANT } from 'src/constants/database.constants';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
+import { ApiTags } from '@nestjs/swagger';
 
 export enum NotificationType {
   FOLLOW = 'follow',
+  WISHLIST = 'wishlist',
 }
 
+@ApiTags('Notification')
 @Entity({ name: DATABASE_CONSTANT.TABLE_NAME.NOTIFICATION })
 export class Notification extends BaseEntity {
   @ManyToOne(() => User, (user) => user.id, {
@@ -17,7 +20,7 @@ export class Notification extends BaseEntity {
   sender: User;
 
   @Column({ nullable: true })
-  senderId: number;
+  senderId: string;
 
   @ManyToOne(() => User, (user) => user.id, {
     onDelete: 'CASCADE',
@@ -27,7 +30,7 @@ export class Notification extends BaseEntity {
   receiver: User;
 
   @Column({ nullable: true })
-  receiverId: number;
+  receiverId: string;
 
   @Column()
   type: NotificationType;

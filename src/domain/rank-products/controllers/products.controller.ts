@@ -19,7 +19,9 @@ import {
   UpdateRankProductDTO,
 } from '../dto';
 import { RankProductsService } from '../services';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Products')
 @Controller('products')
 @UseGuards(JwtAuthUserGuard)
 export class ProductsController extends BaseController {
@@ -58,7 +60,7 @@ export class ProductsController extends BaseController {
 
   @Put(':id')
   public async update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @CurrentUser() user: User,
     @Res() response: Response,
     @Body() dto: UpdateRankProductDTO,

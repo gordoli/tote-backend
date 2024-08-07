@@ -9,6 +9,7 @@
         "include": "templates/**/**",
         "outDir": "dist/src"
       }
-    ]
+    ],
+    "plugins": ["@nestjs/swagger"]
   }
 }

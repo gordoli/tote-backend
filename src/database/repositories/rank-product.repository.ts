@@ -66,7 +66,7 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
     return query.orderBy('rankProduct.id', 'DESC').getManyAndCount();
   }
 
-  public async overallRatingBrands(brandIds: number[]) {
+  public async overallRatingBrands(brandIds: string[]) {
     if (brandIds.length) {
       const query = this.createQueryBuilder('rankProduct').where(
         'rankProduct.brand IN (:...brandIds)',
@@ -75,7 +75,7 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
 
       this._selectAvgRating(query);
 
-      const data = await query.getRawMany<{ avg: number; brandId: number }>();
+      const data = await query.getRawMany<{ avg: number; brandId: string }>();
       return data.map(({ avg = 0, brandId }) => ({
         avg: mapNumber(avg),
         brandId,
@@ -84,13 +84,13 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
     return [];
   }
 
-  public async overallRatingBrand(brandId: number) {
+  public async overallRatingBrand(brandId: string) {
     const overallRatings = await this.overallRatingBrands([brandId]);
     const overallRanking = overallRatings.pop();
     return mapNumber(overallRanking?.avg);
   }
 
-  public async overallRatingBrandByUser(brandId: number, userId: number) {
+  public async overallRatingBrandByUser(brandId: string, userId: string) {
     const query = this.createQueryBuilder('rankProduct')
       .where('rankProduct.brand =:brandId', { brandId })
       .andWhere('rankProduct.createdBy =:userId', { userId });
@@ -99,14 +99,14 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
 
     const rankProduct = await query.getRawOne<{
       avg: number;
-      brandId: number;
+      brandId: string;
     }>();
     return mapNumber(rankProduct?.avg);
   }
 
   public async overallFriendsRatingBrandByUser(
-    brandId: number,
-    userId: number,
+    brandId: string,
+    userId: string,
   ) {
     const query = this.createQueryBuilder('rankProduct').where(
       'rankProduct.brand =:brandId',
@@ -119,17 +119,17 @@ export class RankProductRepository extends BaseRepository<RankProduct> {
 
     const rankProduct = await query.getRawOne<{
       avg: number;
-      brandId: number;
+      brandId: string;
     }>();
 
     return mapNumber(rankProduct?.avg);
   }
 
-  public async totalRatingsByUser(userId: number) {
+  public async totalRatingsByUser(userId: string) {
     return this.countBy({ createdBy: { id: userId } });
   }
 
-  public async findByIds(ids: number[]) {
+  public async findByIds(ids: string[]) {
     if (ids.length) {
       return this.find({
         where: { id: In(ids) },

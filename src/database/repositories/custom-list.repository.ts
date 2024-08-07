@@ -9,7 +9,7 @@ export class CustomListRepository extends BaseRepository<CustomList> {
     super(CustomList, _dataSource);
   }
 
-  public async userList(userId: number) {
+  public async userList(userId: string) {
     return this.createQueryBuilder('customList')
       .where('customList.user =:userId', { userId })
       .getMany();

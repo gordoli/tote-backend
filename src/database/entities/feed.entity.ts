@@ -3,6 +3,7 @@ import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
 import { RankProduct } from './rank-product.entity';
 import { DATABASE_CONSTANT } from 'src/constants/database.constants';
+import { ApiTags } from '@nestjs/swagger';
 
 export enum FEED_TYPE {
   RANK_PRODUCT = 'rank_product',
@@ -12,6 +13,7 @@ export enum FEED_TYPE {
   DIRECT_RANK_PRODUCT = 'direct_rank_product',
 }
 
+@ApiTags('Feed')
 @Entity(DATABASE_CONSTANT.TABLE_NAME.FEED)
 export class Feed extends BaseEntity {
   @Column()
@@ -19,7 +21,7 @@ export class Feed extends BaseEntity {
 
   @Column()
   @Index('idx_feeds_referenceId')
-  referenceId: number;
+  referenceId: string;
 
   rankProduct?: RankProduct;
 

@@ -9,7 +9,7 @@ export class CreateWishListDTO {
 
 export class AddFeedWishListDTO {
   @IsNotEmpty()
-  feedId: number;
+  feedId: string;
 }
 
 export class WishListDTO extends BaseFilter {
@@ -18,9 +18,9 @@ export class WishListDTO extends BaseFilter {
 
   @IsOptional()
   @Type(() => Number)
-  categoryId: number;
+  categoryId: string;
 
   @IsOptional()
   @Type(() => Number)
-  collectionId: number;
+  collectionId: string;
 }

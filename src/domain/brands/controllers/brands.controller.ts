@@ -14,7 +14,9 @@ import { CreateBrandDTO, ListBrandDTO } from '../dto';
 import { BrandsService } from '../services';
 import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
 import { User } from 'src/database';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Brands')
 @Controller('brands')
 @UseGuards(JwtAuthUserGuard)
 export class BrandsController extends BaseController {
@@ -35,7 +37,7 @@ export class BrandsController extends BaseController {
   @Get(':id')
   public async detail(
     @CurrentUser() user: User,
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Res() response: Response,
   ) {
     const brand = await this._brandService.detailById(id, user);

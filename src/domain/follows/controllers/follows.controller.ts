@@ -13,18 +13,24 @@ import { User } from 'src/database';
 import { CurrentUser, JwtAuthUserGuard } from 'src/domain/auth';
 import { BaseController, BaseFilter } from 'src/library';
 import { FollowsService } from '../services';
+import { ApiTags } from '@nestjs/swagger';
+import { NotificationsService } from 'src/domain/notifications';
 
+@ApiTags('Follows')
 @Controller('follows')
 @UseGuards(JwtAuthUserGuard)
 export class FollowsController extends BaseController {
-  constructor(private _followsService: FollowsService) {
+  constructor(
+    private _followsService: FollowsService,
+    private _notificationService: NotificationsService,
+  ) {
     super();
   }
 
   @Get(':userId/following')
   public async userFollowing(
     @Res() response: Response,
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
     @Query() dto: BaseFilter,
   ) {
     const { items, total } = await this._followsService.userFollowing(
@@ -41,7 +47,7 @@ export class FollowsController extends BaseController {
   @Get(':userId/followers')
   public async userFollowers(
     @Res() response: Response,
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
     @Query() dto: BaseFilter,
   ) {
     const { items, total } = await this._followsService.userFollowers(
@@ -59,9 +65,10 @@ export class FollowsController extends BaseController {
   public async followUser(
     @Res() response: Response,
     @CurrentUser() user: User,
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
   ) {
     await this._followsService.followUser(user, userId);
+    this._notificationService.createFollowingNotification(user, userId);
     this.responseCustom(response);
   }
 
@@ -69,7 +76,7 @@ export class FollowsController extends BaseController {
   public async unFollowUser(
     @Res() response: Response,
     @CurrentUser() user: User,
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
   ) {
     await this._followsService.unFollowUser(user, userId);
     this.responseCustom(response);

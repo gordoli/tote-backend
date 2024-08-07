@@ -11,7 +11,6 @@ import { AppService } from './app.service';
 import { EventHandlerModule } from './event-handler';
 import { LoggerMiddleware } from './middlewares';
 import { AppController } from './app.controller';
-import { HealthModule } from './health-check';
 import {
   FilesModule,
   UsersModule,
@@ -33,7 +32,6 @@ import {
       envFilePath: ['.env.development', '.env'],
       isGlobal: true,
     }),
-    HealthModule,
     EventHandlerModule,
     CoreModule,
     DatabaseModule,
