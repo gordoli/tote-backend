@@ -17,11 +17,13 @@ export class FeedRepository extends BaseRepository<Feed> {
     const query = this._buildQuery(
       new BaseFilter(rest),
       this.createQueryBuilder('feed'),
-    )
-      .leftJoin('feed.createdBy', 'createdBy')
-      .andWhere('feed.createdBy =:userId', { userId });
+    ).leftJoin('feed.createdBy', 'createdBy');
     if (isOnlyFriend && userId) {
-      this._friendOnly(query, 'feed.createdBy', userId);
+      this._friendOnly(query, 'feed.createdBy', userId).innerJoin(
+        Feed,
+        'feed',
+        'feed.createdBy = ${userId}',
+      );
       // Return only feeds created by friends of the user AND ALSO THE USER THEMSELF
     }
     const userSelects = UserRepository.getMainSelect('createdBy');
