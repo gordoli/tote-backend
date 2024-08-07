@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { NotificationRepository, Notification, User, NotificationType } from 'src/database';
+import {
+  NotificationRepository,
+  Notification,
+  User,
+  NotificationType,
+} from 'src/database';
 import { ListNotificationsDto } from '../dto';
 
 @Injectable()
@@ -20,7 +25,7 @@ export class NotificationsService {
     instance.sender = sender;
     instance.senderId = sender.id;
     instance.receiverId = receiverId;
-    instance.createdAt = new Date()
+    instance.createdAt = new Date();
     const newNotification = await this._notificationRepository.save(instance);
     return newNotification;
   }
@@ -29,10 +34,10 @@ export class NotificationsService {
   public async createWishlistNotification(sender: User, receiverId: string) {
     const instance = new Notification();
     instance.type = NotificationType.WISHLIST;
-    instance.sender = sender
+    instance.sender = sender;
     instance.senderId = sender.id;
     instance.receiverId = receiverId;
-    instance.createdAt = new Date()
+    instance.createdAt = new Date();
     //const newNotification = await this._notificationRepository.save(instance);
     //return newNotification;
   }

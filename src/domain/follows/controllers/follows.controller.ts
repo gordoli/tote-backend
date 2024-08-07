@@ -20,8 +20,9 @@ import { NotificationsService } from 'src/domain/notifications';
 @Controller('follows')
 @UseGuards(JwtAuthUserGuard)
 export class FollowsController extends BaseController {
-  constructor(private _followsService: FollowsService,
-              private _notificationService: NotificationsService
+  constructor(
+    private _followsService: FollowsService,
+    private _notificationService: NotificationsService,
   ) {
     super();
   }
