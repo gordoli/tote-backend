@@ -7,4 +7,15 @@ export class ListNotificationsDto extends BaseFilter {
 
   @IsOptional()
   receiverId: string;
+
+  @IsOptional()
+  data: object;
+
+  notificationType: string;
+
+  readStatus: boolean;
+
+  dateCreated: string;
+
+  dateUpdated: string;
 }
